@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrum 立會記錄</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #22263a;
+  --border: #2e3347;
+  --accent: #5b7fff;
+  --accent2: #7c5cff;
+  --text: #e8eaf0;
+  --text2: #8b90a8;
+  --text3: #5a6080;
+  --green: #3ecf8e;
+  --yellow: #f5c518;
+  --red: #ff6b6b;
+  --radius: 10px;
+  --font: 'Noto Sans TC', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;padding:2rem 1rem}
+.container{max-width:860px;margin:0 auto}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-title{font-size:18px;font-weight:700}
+.logo-sub{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* Setup Banner */
+.setup-banner{background:rgba(91,127,255,0.08);border:1px solid rgba(91,127,255,0.25);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem}
+.setup-title{font-size:14px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.setup-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+.setup-row{display:flex;gap:8px;flex-wrap:wrap}
+.setup-input{flex:1;min-width:260px;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px;font-family:var(--mono);color:var(--text)}
+.setup-input:focus{outline:none;border-color:var(--accent)}
+.setup-input::placeholder{color:var(--text3)}
+
+/* Toolbar */
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.date-group{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:7px 13px}
+.date-label{font-size:12px;color:var(--text2)}
+input[type=date]{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:13px;cursor:pointer}
+input[type=date]:focus{outline:none}
+.weekday{font-size:11px;font-weight:600;background:rgba(91,127,255,0.18);color:#8ba4ff;border-radius:5px;padding:2px 8px}
+.spacer{flex:1}
+.btn{font-family:var(--font);font-size:13px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;transition:all 0.15s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:var(--surface2);border-color:#3e4460}
+.btn:disabled{opacity:0.35;cursor:not-allowed}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.btn-accent:hover{background:#4a6fe8;border-color:#4a6fe8}
+.btn-green{background:rgba(62,207,142,0.12);border-color:rgba(62,207,142,0.28);color:var(--green)}
+.btn-green:hover{background:rgba(62,207,142,0.22)}
+.btn-sm{font-size:12px;padding:5px 10px}
+
+/* Status */
+.status-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:1.25rem;min-height:20px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background 0.3s}
+.dot.loading{background:var(--yellow);animation:blink 1s infinite}
+.dot.ok{background:var(--green)}
+.dot.error{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* Member cards */
+.member-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
+.member-card:hover{border-color:#3a3f58}
+.member-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;letter-spacing:0.3px}
+.name-input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font);font-size:14px;font-weight:500}
+.name-input:focus{outline:none}
+.member-num{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.btn-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:15px;padding:3px 5px;border-radius:4px;line-height:1;transition:all 0.15s}
+.btn-del:hover{color:var(--red);background:rgba(255,107,107,0.1)}
+.member-body{display:grid;grid-template-columns:1fr 1fr}
+.section{padding:12px 14px}
+.section:first-child{border-right:1px solid var(--border)}
+.sec-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.pip{width:5px;height:5px;border-radius:50%}
+.pip-y{background:#f5c518}
+.pip-t{background:#3ecf8e}
+textarea{width:100%;background:rgba(15,17,23,0.8);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:var(--font);font-size:13px;line-height:1.75;color:var(--text);resize:vertical;min-height:90px;transition:border-color 0.15s}
+textarea:focus{outline:none;border-color:var(--accent)}
+textarea::placeholder{color:var(--text3)}
+
+/* Add row */
+.add-row{display:none;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border:1px dashed #2e3347;border-radius:var(--radius);margin-bottom:10px}
+.add-row.show{display:flex}
+.add-input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font);font-size:13px}
+.add-input:focus{outline:none}
+.add-input::placeholder{color:var(--text3)}
+
+/* Output */
+.output-panel{margin-top:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:none}
+.output-panel.show{display:block}
+.output-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.output-title{font-size:13px;font-weight:500}
+.output-body{font-family:var(--mono);font-size:12.5px;line-height:1.9;color:var(--text);padding:14px 16px;white-space:pre-wrap;max-height:420px;overflow-y:auto;background:#0a0c12}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:8px;transform:translateY(80px);opacity:0;transition:all 0.25s;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,0.5)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(62,207,142,0.35);color:var(--green)}
+.toast.error{border-color:rgba(255,107,107,0.35);color:var(--red)}
+
+.empty{text-align:center;padding:2.5rem;color:var(--text3);font-size:13px}
+
+@media(max-width:580px){
+  .member-body{grid-template-columns:1fr}
+  .section:first-child{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">📋</div>
+      <div>
+        <div class="logo-title">Scrum 立會記錄</div>
+        <div class="logo-sub">Daily Standup Tracker · Google Sheets</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Setup Banner -->
+  <div class="setup-banner" id="setup-banner">
+    <div class="setup-title">⚙️ 第一次使用：請填入 Apps Script 網址</div>
+    <div class="setup-desc">
+      將你的 Google Apps Script 部署網址貼入下方，儲存後即可開始使用。<br>
+      設定只需做一次，之後所有同仁開此頁面都不需要再設定。<br>
+      <strong>📌 取得方式：</strong>Apps Script → 部署 → 管理部署項目 → 複製網址
+    </div>
+    <div class="setup-row">
+      <input class="setup-input" id="input-url" placeholder="https://script.google.com/macros/s/xxxxxx/exec">
+      <button class="btn btn-accent" onclick="saveConfig()">儲存設定</button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="date-group">
+      <span class="date-label">日期</span>
+      <input type="date" id="date-picker">
+      <span class="weekday" id="weekday"></span>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn" onclick="showAddRow()">＋ 新增成員</button>
+    <button class="btn btn-green" id="btn-load" onclick="loadData()">↓ 從 Sheets 載入</button>
+    <button class="btn btn-accent" id="btn-save" onclick="saveData()">↑ 儲存至 Sheets</button>
+    <button class="btn" onclick="generateText()">產生文字</button>
+  </div>
+
+  <!-- Status -->
+  <div class="status-bar">
+    <div class="dot" id="dot"></div>
+    <span id="status-msg">請先填入 Apps Script 網址</span>
+  </div>
+
+  <!-- Members -->
+  <div id="members"></div>
+
+  <!-- Add Row -->
+  <div class="add-row" id="add-row">
+    <span style="font-size:18px">👤</span>
+    <input class="add-input" id="add-input" type="text" placeholder="輸入成員姓名，按 Enter 確認...">
+    <button class="btn btn-accent btn-sm" onclick="confirmAdd()">新增</button>
+    <button class="btn btn-sm" onclick="cancelAdd()">取消</button>
+  </div>
+
+  <!-- Output -->
+  <div class="output-panel" id="output-panel">
+    <div class="output-head">
+      <span class="output-title">📤 立會文字輸出</span>
+      <button class="btn btn-sm" id="copy-btn" onclick="copyText()">複製</button>
+    </div>
+    <div class="output-body" id="output-body"></div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const WD = ['日','一','二','三','四','五','六'];
+const COLORS = [
+  {bg:'#1a2a4a',fg:'#6b9eff'},{bg:'#1a3a2a',fg:'#4ede9a'},
+  {bg:'#3a2a1a',fg:'#ffb86b'},{bg:'#3a1a2a',fg:'#ff85b8'},
+  {bg:'#2a1a3a',fg:'#c285ff'},{bg:'#1a3a3a',fg:'#50d8d8'},
+];
+
+let members = [
+  {id:1,name:'Arina',yesterday:'',today:''},
+  {id:2,name:'Jake',yesterday:'',today:''},
+  {id:3,name:'Terry',yesterday:'',today:''},
+  {id:4,name:'Ryan',yesterday:'',today:''},
+  {id:5,name:'Nick H',yesterday:'',today:''},
+  {id:6,name:'Nick L',yesterday:'',today:''},
+];
+let nid = 7;
+let GAS_URL = '';
+
+/* ── Config ── */
+function loadConfig() {
+  GAS_URL = localStorage.getItem('gas_url') || '';
+  if (GAS_URL) {
+    document.getElementById('setup-banner').style.display = 'none';
+    document.getElementById('input-url').value = GAS_URL;
+    setStatus('ok', '已連線 Google Sheets');
+  }
+}
+function saveConfig() {
+  const url = document.getElementById('input-url').value.trim();
+  if (!url || !url.startsWith('https://script.google.com')) {
+    toast('❌ 請填入正確的 Apps Script 網址', 'error'); return;
+  }
+  GAS_URL = url;
+  localStorage.setItem('gas_url', url);
+  document.getElementById('setup-banner').style.display = 'none';
+  setStatus('ok', '設定已儲存，已連線 Google Sheets');
+  toast('✅ 設定儲存成功！', 'success');
+}
+
+/* ── Date ── */
+function initDate() {
+  const el = document.getElementById('date-picker');
+  const t = new Date();
+  el.value = t.toISOString().split('T')[0];
+  el.addEventListener('change', updateWD);
+  updateWD();
+}
+function updateWD() {
+  const v = document.getElementById('date-picker').value;
+  const d = v ? new Date(v + 'T12:00:00') : new Date();
+  document.getElementById('weekday').textContent = WD[d.getDay()];
+}
+function getDate() {
+  return document.getElementById('date-picker').value || new Date().toISOString().split('T')[0];
+}
+function getDateLabel() {
+  const d = new Date(getDate() + 'T12:00:00');
+  return `${d.getMonth()+1}/${d.getDate()} ${WD[d.getDay()]}`;
+}
+
+/* ── Status ── */
+function setStatus(state, msg) {
+  const dot = document.getElementById('dot');
+  dot.className = 'dot ' + state;
+  document.getElementById('status-msg').textContent = msg;
+}
+
+/* ── Render ── */
+function initials(name) {
+  const p = name.trim().split(/\s+/);
+  return p.length >= 2 ? (p[0][0]+p[1][0]).toUpperCase() : name.substring(0,2).toUpperCase();
+}
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function render() {
+  const el = document.getElementById('members');
+  if (!members.length) { el.innerHTML = '<div class="empty">尚無成員，請點擊「新增成員」</div>'; return; }
+  el.innerHTML = members.map((m,i) => {
+    const c = COLORS[i % COLORS.length];
+    return `<div class="member-card">
+      <div class="member-header">
+        <div class="avatar" style="background:${c.bg};color:${c.fg}">${initials(m.name)}</div>
+        <input class="name-input" value="${esc(m.name)}" onchange="updateName(${m.id},this.value)" title="點擊編輯姓名">
+        <span class="member-num">[${i+1}]</span>
+        <button class="btn-del" onclick="delMember(${m.id})" title="移除">✕</button>
+      </div>
+      <div class="member-body">
+        <div class="section">
+          <div class="sec-label"><span class="pip pip-y"></span>昨天</div>
+          <textarea id="y${m.id}" placeholder="昨天的工作內容...">${esc(m.yesterday)}</textarea>
+        </div>
+        <div class="section">
+          <div class="sec-label"><span class="pip pip-t"></span>今天</div>
+          <textarea id="t${m.id}" placeholder="今天的工作內容...">${esc(m.today)}</textarea>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function syncFields() {
+  members.forEach(m => {
+    const y = document.getElementById('y'+m.id);
+    const t = document.getElementById('t'+m.id);
+    if(y) m.yesterday = y.value;
+    if(t) m.today = t.value;
+  });
+}
+function updateName(id, v) { const m = members.find(x=>x.id===id); if(m) m.name = v; }
+function delMember(id) { syncFields(); members = members.filter(m=>m.id!==id); render(); }
+
+/* ── Add Member ── */
+function showAddRow() {
+  document.getElementById('add-row').classList.add('show');
+  document.getElementById('add-input').focus();
+}
+function cancelAdd() {
+  document.getElementById('add-row').classList.remove('show');
+  document.getElementById('add-input').value = '';
+}
+function confirmAdd() {
+  const name = document.getElementById('add-input').value.trim();
+  if (!name) return;
+  syncFields();
+  members.push({id:nid++, name, yesterday:'', today:''});
+  cancelAdd();
+  render();
+}
+
+/* ── API ── */
+async function callGAS(params) {
+  if (!GAS_URL) { toast('請先填入 Apps Script 網址', 'error'); return null; }
+  const url = GAS_URL + '?' + new URLSearchParams(params).toString();
+  const res = await fetch(url);
+  return res.json();
+}
+
+async function loadData() {
+  if (!GAS_URL) { toast('請先填入 Apps Script 網址', 'error'); return; }
+  setStatus('loading', '載入中...');
+  try {
+    const result = await callGAS({ action: 'load', date: getDate() });
+    if (result.ok && result.members.length > 0) {
+      members = result.members.map((m,i) => ({
+        id: nid++, name: m.name, yesterday: m.yesterday, today: m.today
+      }));
+      render();
+      setStatus('ok', `已載入 ${members.length} 位成員（${getDateLabel()}）`);
+      toast(`✅ 已載入 ${members.length} 位成員`, 'success');
+    } else if (result.ok) {
+      setStatus('ok', `${getDateLabel()} 尚無記錄，使用預設成員`);
+      toast('此日期尚無記錄', 'error');
+    } else {
+      throw new Error(result.message);
+    }
+  } catch(e) {
+    setStatus('error', '載入失敗：' + e.message);
+    toast('❌ 載入失敗，請確認 Apps Script 網址', 'error');
+  }
+}
+
+async function saveData() {
+  if (!GAS_URL) { toast('請先填入 Apps Script 網址', 'error'); return; }
+  syncFields();
+  setStatus('loading', '儲存中...');
+  try {
+    const payload = members.map(m => ({
+      name: m.name, yesterday: m.yesterday, today: m.today
+    }));
+    const result = await callGAS({ action: 'save', date: getDate(), data: JSON.stringify(payload) });
+    if (result.ok) {
+      setStatus('ok', `已儲存至 Sheets（${getDateLabel()}）`);
+      toast('✅ 已儲存至 Google Sheets！', 'success');
+    } else {
+      throw new Error(result.message);
+    }
+  } catch(e) {
+    setStatus('error', '儲存失敗：' + e.message);
+    toast('❌ 儲存失敗，請確認 Apps Script 網址', 'error');
+  }
+}
+
+/* ── Output ── */
+function generateText() {
+  syncFields();
+  let out = `${getDateLabel()}\n\n`;
+  members.forEach((m,i) => {
+    out += `* [${i+1}] ${m.name}\n`;
+    out += `昨天:\n${m.yesterday || '（無）'}\n`;
+    out += `今天:\n${m.today || '（無）'}\n\n`;
+  });
+  document.getElementById('output-body').textContent = out.trim();
+  const panel = document.getElementById('output-panel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function copyText() {
+  const text = document.getElementById('output-body').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '已複製 ✓';
+    setTimeout(() => btn.textContent = '複製', 2000);
+  });
+}
+
+/* ── Toast ── */
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + (type||'');
+  setTimeout(() => el.className = 'toast', 3000);
+}
+
+/* ── Keyboard ── */
+document.addEventListener('keydown', e => {
+  if (e.target.id === 'add-input') {
+    if (e.key === 'Enter') confirmAdd();
+    if (e.key === 'Escape') cancelAdd();
+  }
+});
+
+/* ── Init ── */
+loadConfig();
+initDate();
+render();
+</script>
+</body>
+</html>
