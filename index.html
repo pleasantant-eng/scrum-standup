@@ -1,275 +1,1075 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0043)file:///C:/Users/pleas/Downloads/index.html -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scrum 立會記錄</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>智能倉儲開發團隊</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #22263a;
-  --border: #2e3347;
-  --accent: #5b7fff;
-  --accent2: #7c5cff;
-  --text: #e8eaf0;
-  --text2: #8b90a8;
-  --text3: #5a6080;
-  --green: #3ecf8e;
-  --yellow: #f5c518;
-  --red: #ff6b6b;
-  --radius: 10px;
-  --font: 'Noto Sans TC', sans-serif;
-  --mono: 'JetBrains Mono', monospace;
+:root{
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;
+  --border:#e2e8f0;--accent:#2563eb;--accent2:#7c3aed;
+  --text:#1e293b;--text2:#64748b;--text3:#94a3b8;
+  --green:#059669;--yellow:#d97706;--red:#dc2626;
+  --radius:12px;--font:'Noto Sans TC',sans-serif;--mono:'JetBrains Mono',monospace;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,0.08),0 2px 4px -1px rgba(0,0,0,0.04);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;padding:2rem 1rem}
-.container{max-width:860px;margin:0 auto}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
 
-/* Header */
-.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.logo-title{font-size:18px;font-weight:700}
-.logo-sub{font-size:11px;color:var(--text2);margin-top:1px}
+/* ══════════════════════════════════════
+   共用 Hero Banner
+══════════════════════════════════════ */
+.hero-banner{background:linear-gradient(135deg,#1e3a5f 0%,#1e40af 50%,#312e81 100%);padding:1.4rem 1rem 1.2rem;position:relative;overflow:hidden}
+.hero-banner::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:relative;z-index:1;flex-wrap:wrap}
+.hero-left{display:flex;align-items:center;gap:12px}
+.hero-icon-wrap{width:50px;height:50px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;cursor:pointer;transition:all 0.2s}
+.hero-icon-wrap:hover{background:rgba(255,255,255,0.25)}
+.hero-title{font-size:19px;font-weight:700;color:#fff;cursor:pointer}
+.hero-title:hover{opacity:0.85}
+.hero-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:3px}
+.hero-illus{display:flex;gap:7px;align-items:center}
+.illus-card{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:9px;padding:7px 11px;text-align:center}
+.illus-icon{font-size:18px;margin-bottom:2px}
+.illus-label{font-size:10px;color:rgba(255,255,255,0.7);white-space:nowrap}
+.hero-badge{font-size:11px;font-weight:500;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:3px 10px;border-radius:20px}
+.back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.5);color:#fff;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:var(--font);letter-spacing:0.01em}
+.back-btn:hover{background:rgba(255,255,255,0.35);border-color:rgba(255,255,255,0.8)}
 
-/* Setup Banner */
-.setup-banner{background:rgba(91,127,255,0.08);border:1px solid rgba(91,127,255,0.25);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem}
-.setup-title{font-size:14px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.setup-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px}
-.setup-row{display:flex;gap:8px;flex-wrap:wrap}
-.setup-input{flex:1;min-width:260px;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px;font-family:var(--mono);color:var(--text)}
-.setup-input:focus{outline:none;border-color:var(--accent)}
-.setup-input::placeholder{color:var(--text3)}
+/* ══════════════════════════════════════
+   頁面切換
+══════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
 
-/* Toolbar */
-.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
-.date-group{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:7px 13px}
-.date-label{font-size:12px;color:var(--text2)}
-input[type=date]{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:13px;cursor:pointer}
-input[type=date]:focus{outline:none}
-.weekday{font-size:11px;font-weight:600;background:rgba(91,127,255,0.18);color:#8ba4ff;border-radius:5px;padding:2px 8px}
-.spacer{flex:1}
-.btn{font-family:var(--font);font-size:13px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;transition:all 0.15s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
-.btn:hover{background:var(--surface2);border-color:#3e4460}
-.btn:disabled{opacity:0.35;cursor:not-allowed}
-.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
-.btn-accent:hover{background:#4a6fe8;border-color:#4a6fe8}
-.btn-green{background:rgba(62,207,142,0.12);border-color:rgba(62,207,142,0.28);color:var(--green)}
-.btn-green:hover{background:rgba(62,207,142,0.22)}
+/* ══════════════════════════════════════
+   首頁 — 主題選擇
+══════════════════════════════════════ */
+.home-container{max-width:1000px;margin:0 auto;padding:2rem 1rem 4rem}
+.home-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
+.home-title{font-size:22px;font-weight:700;color:var(--text)}
+.home-subtitle{font-size:13px;color:var(--text2);margin-top:3px}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:2rem}
+.theme-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.theme-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0}
+.theme-card.color-blue::before{background:linear-gradient(90deg,#2563eb,#7c3aed)}
+.theme-card.color-green::before{background:linear-gradient(90deg,#059669,#0891b2)}
+.theme-card.color-orange::before{background:linear-gradient(90deg,#d97706,#dc2626)}
+.theme-card.color-purple::before{background:linear-gradient(90deg,#7c3aed,#be185d)}
+.theme-card.color-teal::before{background:linear-gradient(90deg,#0891b2,#059669)}
+.theme-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md),0 0 0 2px rgba(37,99,235,0.12);border-color:#93c5fd}
+.theme-card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+.theme-card.color-blue .theme-card-icon{background:#dbeafe}
+.theme-card.color-green .theme-card-icon{background:#dcfce7}
+.theme-card.color-orange .theme-card-icon{background:#fef3c7}
+.theme-card.color-purple .theme-card-icon{background:#ede9fe}
+.theme-card.color-teal .theme-card-icon{background:#ccfbf1}
+.theme-card-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:5px}
+.theme-card-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.theme-card-arrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--text3);transition:transform 0.2s}
+.theme-card:hover .theme-card-arrow{transform:translateY(-50%) translateX(4px);color:var(--accent)}
+.theme-card-actions{display:flex;gap:6px;margin-top:14px}
+.theme-tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:#f1f5f9;color:var(--text2)}
+
+/* 新增主題卡片 */
+.theme-card-add{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:16px;padding:1.5rem;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:160px}
+.theme-card-add:hover{border-color:var(--accent);background:#eff6ff}
+.theme-card-add-icon{font-size:28px;color:var(--text3)}
+.theme-card-add:hover .theme-card-add-icon{color:var(--accent)}
+.theme-card-add-text{font-size:13px;color:var(--text3);font-weight:500}
+.theme-card-add:hover .theme-card-add-text{color:var(--accent)}
+
+/* 主題管理按鈕 */
+.theme-card-del{position:absolute;top:10px;right:10px;background:rgba(220,38,38,0.08);border:none;color:var(--red);width:24px;height:24px;border-radius:6px;cursor:pointer;font-size:13px;display:none;align-items:center;justify-content:center;transition:all 0.15s}
+.theme-card:hover .theme-card-del{display:flex}
+.theme-card-del:hover{background:rgba(220,38,38,0.15)}
+
+/* ══════════════════════════════════════
+   新增主題 Modal
+══════════════════════════════════════ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:1000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border:1px solid var(--border);border-radius:16px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-bottom:1px solid var(--border)}
+.modal-title{font-size:14px;font-weight:600;color:var(--text)}
+.modal-body{padding:20px}
+.form-row{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;display:block}
+.form-input{width:100%;background:#f8fafc;border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px;font-family:var(--font);color:var(--text)}
+.form-input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.color-picker{display:flex;gap:8px;flex-wrap:wrap}
+.color-opt{width:30px;height:30px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;display:flex;align-items:center;justify-content:center;font-size:14px}
+.color-opt.selected{border-color:var(--text);transform:scale(1.15)}
+.icon-picker{display:flex;gap:6px;flex-wrap:wrap}
+.icon-opt{width:36px;height:36px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border);background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all 0.15s}
+.icon-opt.selected{border-color:var(--accent);background:#eff6ff}
+.icon-opt:hover{border-color:var(--accent)}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;background:#f8fafc;border-top:1px solid var(--border)}
+.btn{font-family:var(--font);font-size:13px;padding:7px 14px;border-radius:7px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all 0.15s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;font-weight:500;box-shadow:var(--shadow)}
+.btn:hover{background:#f1f5f9;border-color:#cbd5e1}
+.btn:disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+.btn-accent{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#1d4ed8;color:#fff;font-weight:600;box-shadow:0 1px 3px rgba(37,99,235,0.3)}
+.btn-accent:hover{background:linear-gradient(135deg,#1d4ed8,#1e40af)}
+.btn-green{background:#ecfdf5;border-color:#a7f3d0;color:#059669;font-weight:600}
+.btn-green:hover{background:#d1fae5}
+.btn-parse{background:#fffbeb;border-color:#fde68a;color:#92400e;font-weight:600}
+.btn-parse:hover{background:#fef3c7}
 .btn-sm{font-size:12px;padding:5px 10px}
+.btn-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:15px;padding:4px 6px;border-radius:5px;line-height:1;transition:all 0.15s;flex-shrink:0}
+.btn-del:hover{color:var(--red);background:#fee2e2}
 
-/* Status */
-.status-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:1.25rem;min-height:20px}
+/* ══════════════════════════════════════
+   Scrum 立會 頁面
+══════════════════════════════════════ */
+.container{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;box-shadow:var(--shadow)}
+.date-group{display:flex;align-items:center;gap:8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:6px 12px}
+.date-label{font-size:12px;color:var(--text2);flex-shrink:0}
+/* Scrum 日期選擇器（工具列內） */
+.date-group input[type=date]{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:14px;font-weight:600;cursor:pointer;min-width:130px}
+.date-group input[type=date]:focus{outline:none}
+.date-group input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;width:16px;height:16px;margin-left:4px;opacity:0.5}
+.weekday{font-size:11px;font-weight:700;background:#dbeafe;color:#1d4ed8;border-radius:5px;padding:2px 8px;flex-shrink:0}
+.spacer{flex:1}
+.status-bar{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:1.25rem;min-height:36px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);transition:all 0.3s}
+.status-bar.loading-state{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+.status-bar.ok-state{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+.status-bar.error-state{background:#fef2f2;border-color:#fecaca;color:#991b1b}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background 0.3s}
-.dot.loading{background:var(--yellow);animation:blink 1s infinite}
 .dot.ok{background:var(--green)}
 .dot.error{background:var(--red)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-
-/* Member cards */
-.member-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
-.member-card:hover{border-color:#3a3f58}
-.member-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border)}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;letter-spacing:0.3px}
-.name-input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font);font-size:14px;font-weight:500}
-.name-input:focus{outline:none}
-.member-num{font-size:11px;color:var(--text3);font-family:var(--mono)}
-.btn-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:15px;padding:3px 5px;border-radius:4px;line-height:1;transition:all 0.15s}
-.btn-del:hover{color:var(--red);background:rgba(255,107,107,0.1)}
+.status-spinner{width:16px;height:16px;border:2px solid #bfdbfe;border-top:2px solid #2563eb;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;display:none}
+.status-bar.loading-state .status-spinner{display:block}
+.status-bar.loading-state .dot{display:none}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.88);backdrop-filter:blur(4px);z-index:2000;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.loading-overlay.show{display:flex}
+.loading-spinner-lg{width:52px;height:52px;border:4px solid #e2e8f0;border-top:4px solid #2563eb;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:15px;font-weight:600;color:#1e293b}
+.loading-dots span{display:inline-block;animation:dot-bounce 1.2s infinite;font-size:18px;color:#2563eb}
+.loading-dots span:nth-child(2){animation-delay:0.2s}
+.loading-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dot-bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}}
+.member-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:all 0.2s;box-shadow:var(--shadow)}
+.member-card:hover{border-color:#93c5fd;box-shadow:var(--shadow-md),0 0 0 3px rgba(37,99,235,0.06)}
+.member-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-bottom:1px solid var(--border)}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.name-input{flex:1;background:transparent;border:1px solid transparent;color:var(--text);font-family:var(--font);font-size:14px;font-weight:600;padding:2px 6px;border-radius:5px;transition:border-color 0.15s}
+.name-input:hover{border-color:var(--border)}
+.name-input:focus{outline:none;border-color:var(--accent);background:rgba(37,99,235,0.04)}
+.member-num{font-size:11px;color:var(--text3);font-family:var(--mono);flex-shrink:0}
 .member-body{display:grid;grid-template-columns:1fr 1fr}
 .section{padding:12px 14px}
 .section:first-child{border-right:1px solid var(--border)}
-.sec-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;display:flex;align-items:center;gap:5px}
-.pip{width:5px;height:5px;border-radius:50%}
-.pip-y{background:#f5c518}
-.pip-t{background:#3ecf8e}
-textarea{width:100%;background:rgba(15,17,23,0.8);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:var(--font);font-size:13px;line-height:1.75;color:var(--text);resize:vertical;min-height:90px;transition:border-color 0.15s}
-textarea:focus{outline:none;border-color:var(--accent)}
+.sec-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.pip{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.pip-y{background:#f59e0b}
+.pip-t{background:#10b981}
+textarea{width:100%;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;font-family:var(--font);font-size:13px;line-height:1.75;color:var(--text);resize:none;min-height:90px;overflow:hidden;transition:border-color 0.15s}
+textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
 textarea::placeholder{color:var(--text3)}
-
-/* Add row */
-.add-row{display:none;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border:1px dashed #2e3347;border-radius:var(--radius);margin-bottom:10px}
+.add-row{display:none;align-items:center;gap:8px;padding:10px 14px;background:#fff;border:1.5px dashed #93c5fd;border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow)}
 .add-row.show{display:flex}
 .add-input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font);font-size:13px}
 .add-input:focus{outline:none}
 .add-input::placeholder{color:var(--text3)}
-
-/* Output */
-.output-panel{margin-top:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:none}
+.output-panel{margin-top:1.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:none;box-shadow:var(--shadow-md)}
 .output-panel.show{display:block}
-.output-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border)}
-.output-title{font-size:13px;font-weight:500}
-.output-body{font-family:var(--mono);font-size:12.5px;line-height:1.9;color:var(--text);padding:14px 16px;white-space:pre-wrap;max-height:420px;overflow-y:auto;background:#0a0c12}
-
-/* Toast */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:8px;transform:translateY(80px);opacity:0;transition:all 0.25s;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,0.5)}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.success{border-color:rgba(62,207,142,0.35);color:var(--green)}
-.toast.error{border-color:rgba(255,107,107,0.35);color:var(--red)}
-
+.output-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-bottom:1px solid var(--border)}
+.output-title{font-size:13px;font-weight:600;color:var(--text)}
+.output-body{font-family:var(--mono);font-size:12.5px;line-height:1.9;color:#1e293b;padding:14px 16px;white-space:pre-wrap;max-height:420px;overflow-y:auto;background:#f8fafc}
+.parse-modal-textarea{width:100%;background:#f8fafc;border:1px solid var(--border);border-radius:7px;padding:10px 12px;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text);resize:none;min-height:220px;overflow:hidden}
+.parse-modal-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.parse-modal-textarea::placeholder{color:var(--text3)}
 .empty{text-align:center;padding:2.5rem;color:var(--text3);font-size:13px}
+code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;color:#334155}
 
-@media(max-width:580px){
+/* ══════════════════════════════════════
+   BBP 產值評估 頁面
+══════════════════════════════════════ */
+.bbp-container{max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.bbp-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.bbp-toolbar-title{font-size:16px;font-weight:700;color:var(--text);flex:1}
+.doc-list{display:flex;flex-direction:column;gap:12px}
+.doc-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all 0.2s}
+.doc-card:hover{border-color:#93c5fd;box-shadow:var(--shadow-md)}
+.doc-card-header{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-bottom:1px solid var(--border)}
+.doc-card-header.collapsed{border-bottom:none}
+.doc-card-icon{width:36px;height:36px;border-radius:9px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.doc-card-title{flex:1;font-size:14px;font-weight:600;color:var(--text)}
+.doc-card-meta{font-size:11px;color:var(--text2)}
+.doc-card-chevron{font-size:16px;color:var(--text3);transition:transform 0.2s}
+.doc-card-chevron.open{transform:rotate(180deg)}
+.doc-card-body{padding:20px;display:none}
+.doc-card-body.open{display:block}
+.doc-card-actions{display:flex;gap:8px;padding:10px 16px;border-top:1px solid var(--border);background:#f8fafc}
+/* Markdown 樣式 */
+.md-content h1{font-size:18px;font-weight:700;color:var(--text);margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e2e8f0}
+.md-content h2{font-size:16px;font-weight:700;color:var(--text);margin:18px 0 10px}
+.md-content h3{font-size:14px;font-weight:600;color:#1d4ed8;margin:14px 0 8px}
+.md-content p{font-size:13px;line-height:1.8;color:var(--text);margin-bottom:10px}
+.md-content ul,.md-content ol{font-size:13px;line-height:1.8;color:var(--text);padding-left:20px;margin-bottom:10px}
+.md-content li{margin-bottom:4px}
+.md-content ul ul,.md-content ol ul,.md-content ul ol,.md-content ol ol{margin:4px 0 4px 16px}
+.md-content code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;color:#1d4ed8}
+.md-content pre{background:#f1f5f9;border:1px solid var(--border);border-radius:8px;padding:12px;overflow-x:auto;margin-bottom:12px}
+.md-content pre code{background:none;padding:0;color:var(--text);font-size:12px}
+.md-content table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px;border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+.md-content th{background:#1e40af;color:#fff;padding:8px 12px;text-align:left;font-weight:600;font-size:12px}
+.md-content td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.md-content tr:nth-child(even) td{background:#f8fafc}
+.md-content tr:last-child td{border-bottom:none}
+.md-content strong{font-weight:700;color:var(--text)}
+.phase-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin-right:4px}
+.phase-ra{background:#fef3c7;color:#92400e}
+.phase-sa{background:#dbeafe;color:#1e40af}
+.phase-pd{background:#dcfce7;color:#065f46}
+.phase-uat{background:#ede9fe;color:#4c1d95}
+
+/* BBP 新增按鈕 */
+.doc-add-card{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--text3);font-weight:500}
+.doc-add-card:hover{border-color:var(--accent);color:var(--accent);background:#eff6ff}
+
+/* ══════════════════════════════════════
+   BBP 進度 頁面
+══════════════════════════════════════ */
+.progress-container{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.progress-section{margin-bottom:2rem}
+.progress-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.progress-section-title{font-size:15px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.progress-section-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+.badge-opt{background:#fef3c7;color:#92400e}
+.badge-req{background:#dbeafe;color:#1e40af}
+.progress-table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.progress-table{width:100%;border-collapse:collapse;font-size:13px}
+.progress-table th{background:#1e40af;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap}
+.progress-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.progress-table tr:last-child td{border-bottom:none}
+.progress-table tr:hover td{background:#f8fafc}
+.progress-table td:nth-child(3),.progress-table td:nth-child(4),.progress-table td:nth-child(5){font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--text2)}
+.cell-input{width:100%;border:none;background:transparent;font-family:var(--font);font-size:13px;color:var(--text);padding:0;}
+.cell-input:focus{outline:1px solid var(--accent);border-radius:4px;background:#fff;padding:2px 4px}
+.cell-input.date-input{font-family:var(--mono);font-size:12px;color:var(--text2);width:70px}
+/* 日期選擇器 — 大按鈕，易點擊 */
+.cell-date-picker{
+  width:110px;border:1px solid var(--border);border-radius:6px;
+  background:#f8fafc;font-family:var(--mono);font-size:12px;
+  color:var(--text2);padding:4px 6px;cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;
+}
+.cell-date-picker:hover{border-color:#93c5fd;background:#eff6ff}
+.cell-date-picker:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.cell-date-picker::-webkit-calendar-picker-indicator{cursor:pointer;opacity:0.6;width:14px;height:14px}
+.status-select{border:none;background:transparent;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;padding:2px 4px;border-radius:6px}
+.status-select:focus{outline:1px solid var(--accent)}
+/* 狀態顏色 */
+.s-ra-ing{background:#fef9c3;color:#713f12}
+.s-ra-done{background:#fef3c7;color:#92400e}
+.s-sa-ing{background:#dbeafe;color:#1e40af}
+.s-sa-done{background:#bfdbfe;color:#1e3a8a}
+.s-pd-ing{background:#dcfce7;color:#065f46}
+.s-pd-done{background:#bbf7d0;color:#14532d}
+.s-sa-test-ing{background:#ede9fe;color:#4c1d95}
+.s-sa-test-done{background:#ddd6fe;color:#3730a3}
+.s-qa-ing{background:#fce7f3;color:#831843}
+.s-qa-done{background:#fbcfe8;color:#9d174d}
+.s-user-ing{background:#ffedd5;color:#7c2d12}
+.s-user-done{background:#fed7aa;color:#7c2d12}
+.s-pending{background:#f1f5f9;color:#475569}
+.s-online{background:#dcfce7;color:#166534}
+.row-add{background:#f8fafc;cursor:pointer;transition:background 0.15s}
+.row-add:hover{background:#eff6ff}
+.row-add td{color:var(--accent);font-weight:500;text-align:center;padding:10px}
+.row-del-btn{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px 5px;border-radius:4px;opacity:0;transition:all 0.15s}
+.progress-table tr:hover .row-del-btn{opacity:1}
+.row-del-btn:hover{color:var(--red);background:#fee2e2}
+
+/* ── BBP Doc Modal Tabs ── */
+.doc-tab{font-family:var(--font);font-size:13px;font-weight:500;padding:10px 18px;border:none;background:transparent;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;margin-bottom:-1px}
+.doc-tab:hover{color:var(--text);background:#f1f5f9}
+.doc-tab.active{color:var(--accent);border-bottom:2px solid var(--accent);background:#fff;font-weight:600}
+
+/* ══════════════════════════════════════
+   Toast
+══════════════════════════════════════ */
+.toast{position:fixed;bottom:24px;right:24px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;font-size:13px;display:flex;align-items:center;gap:8px;transform:translateY(80px);opacity:0;transition:all 0.25s;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.12);max-width:320px;font-weight:500}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:#a7f3d0;color:#059669;background:#ecfdf5}
+.toast.error{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+
+@media(max-width:640px){
+  .hero-illus{display:none}
+  .theme-grid{grid-template-columns:1fr}
   .member-body{grid-template-columns:1fr}
   .section:first-child{border-right:none;border-bottom:1px solid var(--border)}
+  .progress-table-wrap{overflow-x:auto}
 }
+/* 子頁面返回列 */
+.page-back-bar{display:flex;align-items:center;padding:8px 16px;background:#fff;border-bottom:1px solid var(--border)}
+.page-back-btn{display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1.5px solid #cbd5e1;color:#1e293b;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:var(--font)}
+.page-back-btn:hover{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
+.page-back-btn .back-arrow{font-size:17px;line-height:1;font-weight:700}
+/* ══════════════════════════════════════
+   BBP 產值評估 — 優化排版
+══════════════════════════════════════ */
+.bbp-container{max-width:960px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.bbp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+.bbp-header-left{display:flex;flex-direction:column;gap:3px}
+.bbp-header-title{font-size:17px;font-weight:700;color:var(--text)}
+.bbp-header-sub{font-size:12px;color:var(--text2)}
+.bbp-header-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* 文件卡片 */
+.doc-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow 0.2s}
+.doc-card:hover{box-shadow:var(--shadow-md)}
+.doc-card-header{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;background:linear-gradient(135deg,#f8fafc,#f1f5f9);user-select:none}
+.doc-card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.doc-icon-req{background:#dbeafe}
+.doc-icon-opt{background:#fef3c7}
+.doc-card-info{flex:1;min-width:0}
+.doc-card-title-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.doc-card-title{font-size:14px;font-weight:600;color:var(--text)}
+.doc-card-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;flex-shrink:0}
+.badge-req-sm{background:#dbeafe;color:#1e40af}
+.badge-opt-sm{background:#fef3c7;color:#92400e}
+.doc-card-points{font-size:12px;color:var(--text2);margin-top:2px}
+.doc-card-right{display:flex;align-items:center;gap:6px}
+.doc-chevron{font-size:14px;color:var(--text3);transition:transform 0.2s;flex-shrink:0}
+.doc-chevron.open{transform:rotate(180deg)}
+.doc-card-body{display:none;border-top:1px solid var(--border)}
+.doc-card-body.open{display:block}
+
+/* 編輯 / 預覽 切換 */
+.doc-view-tabs{display:flex;border-bottom:1px solid var(--border);background:#f8fafc;padding:0 16px}
+.doc-view-tab{font-family:var(--font);font-size:12px;font-weight:500;padding:8px 14px;border:none;background:transparent;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s}
+.doc-view-tab:hover{color:var(--text)}
+.doc-view-tab.active{color:var(--accent);border-bottom:2px solid var(--accent);font-weight:600}
+.doc-preview-wrap{padding:20px 24px;max-height:520px;overflow-y:auto}
+.doc-edit-wrap{padding:12px 16px;max-height:520px;overflow-y:auto}
+.doc-edit-textarea{width:100%;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text);resize:vertical;min-height:280px;transition:border-color 0.15s}
+.doc-edit-textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08)}
+.doc-edit-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.doc-edit-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em}
+.doc-title-edit{width:100%;border:none;background:transparent;font-family:var(--font);font-size:14px;font-weight:600;color:var(--text);padding:2px 4px;border-radius:4px;border:1px solid transparent}
+.doc-title-edit:hover{border-color:var(--border)}
+.doc-title-edit:focus{outline:none;border-color:var(--accent);background:rgba(37,99,235,0.04)}
+.doc-card-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#f8fafc;border-top:1px solid var(--border)}
+
+/* 貼上解析 Modal 優化 */
+.paste-modal{max-width:720px}
+.paste-tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1d4ed8;line-height:1.7;margin-bottom:14px}
+.paste-tip strong{font-weight:600}
+.preview-bar{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:10px}
+.preview-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.preview-label{color:var(--text2)}
+.preview-value{font-weight:600;color:var(--text)}
+.preview-points-val{color:#1d4ed8;font-size:14px;font-weight:700}
+
+/* 新增按鈕區 */
+.doc-add-card{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--text3);font-weight:500;margin-bottom:12px}
+.doc-add-card:hover{border-color:var(--accent);color:var(--accent);background:#eff6ff}
+
+/* Markdown 渲染 */
+.md-content{line-height:1.75;color:var(--text)}
+.md-content{font-size:13px;line-height:1.8;color:#1e293b}
+.md-h1{font-size:18px;font-weight:700;color:#1e293b;margin:0 0 16px;padding-bottom:10px;border-bottom:2px solid #e2e8f0}
+.md-h2{font-size:15px;font-weight:700;color:#1e293b;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}
+.md-h3{font-size:13px;font-weight:700;color:#1d4ed8;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.md-h3::before{content:'';display:inline-block;width:3px;height:14px;background:#1d4ed8;border-radius:2px;flex-shrink:0}
+.md-h4{font-size:13px;font-weight:600;color:#374151;margin:12px 0 6px}
+.md-content table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0 16px;border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+.md-content th{background:#1e40af;color:#fff;padding:8px 12px;text-align:left;font-size:12px;font-weight:600}
+.md-content td{padding:7px 12px;border-bottom:1px solid var(--border);color:#1e293b}
+.md-content tr:nth-child(even) td{background:#f8fafc}
+.md-content tr:last-child td{border-bottom:none}
+
+
+
+
+/* ══════════════════════════════════════
+   拖曳排序
+══════════════════════════════════════ */
+.drag-handle{cursor:grab;color:var(--text3);font-size:15px;padding:0 6px;user-select:none;flex-shrink:0;opacity:0.4;transition:opacity 0.15s}
+.drag-handle:hover{opacity:1;color:var(--text2)}
+.drag-handle:active{cursor:grabbing}
+.dragging{opacity:0.4;box-shadow:0 8px 24px rgba(37,99,235,0.18);transform:scale(1.01)}
+.drag-over{border-top:2px solid var(--accent) !important}
+.member-card[draggable="true"]{transition:opacity 0.15s,transform 0.15s}
+.doc-card[draggable="true"]{transition:opacity 0.15s,transform 0.15s}
+.progress-table tr[draggable="true"]{transition:opacity 0.15s}
+.progress-table tr.dragging td{background:#eff6ff}
+.progress-table tr.drag-over{border-top:2px solid var(--accent)}
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="header">
-    <div class="logo">
-      <div class="logo-icon">📋</div>
+<!-- ══════════════════════════════════════
+     共用 Hero Banner
+══════════════════════════════════════ -->
+<div class="hero-banner" id="hero-banner">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-icon-wrap" onclick="goHome()" title="回首頁">🏭</div>
       <div>
-        <div class="logo-title">Scrum 立會記錄</div>
-        <div class="logo-sub">Daily Standup Tracker · Google Sheets</div>
+        <div class="hero-title" id="hero-title" onclick="goHome()">智能倉儲開發團隊</div>
+        <div class="hero-sub" id="hero-sub">Daily Standup Tracker · 智能倉儲開發團隊</div>
+      </div>
+    </div>
+    <div class="hero-illus">
+      <div class="illus-card"><div class="illus-icon">🤖</div><div class="illus-label">自動化倉儲</div></div>
+      <div class="illus-card"><div class="illus-icon">📦</div><div class="illus-label">WMS系統</div></div>
+      <div class="illus-card"><div class="illus-icon">📊</div><div class="illus-label">即時監控</div></div>
+      <div class="illus-card"><div class="illus-icon">🚀</div><div class="illus-label">敏捷開發</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px" id="hero-right"><span class="hero-badge">⚡ Google Sheets 同步</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     頁面：首頁（主題選擇）
+══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="home-container">
+    <div class="home-header">
+      <div>
+        <div class="home-title">📋 工作主題</div>
+        <div class="home-subtitle">選擇要使用的功能模組</div>
+      </div>
+    </div>
+    <div class="theme-grid" id="theme-grid">
+    <div class="theme-card color-blue" onclick="showPage(&#39;scrum&#39;)">
+      
+      <div class="theme-card-icon">🏃</div>
+      <div class="theme-card-title">Scrum 立會記錄</div>
+      <div class="theme-card-desc">每日立會工作進度記錄</div>
+      <div class="theme-card-arrow">›</div>
+    </div>
+  
+    <div class="theme-card color-green" onclick="showPage(&#39;bbp&#39;)">
+      
+      <div class="theme-card-icon">📑</div>
+      <div class="theme-card-title">BBP 產值評估（需求、優化）</div>
+      <div class="theme-card-desc">點數評估</div>
+      <div class="theme-card-arrow">›</div>
+    </div>
+  
+    <div class="theme-card color-orange" onclick="showPage(&#39;progress&#39;)">
+      
+      <div class="theme-card-icon">📈</div>
+      <div class="theme-card-title">BBP 進度</div>
+      <div class="theme-card-desc">優化與需求項目進度追蹤</div>
+      <div class="theme-card-arrow">›</div>
+    </div>
+  
+    <div class="theme-card-add" style="cursor:not-allowed;opacity:0.7;border-color:#fde68a;background:#fffbeb" title="此功能目前維修中，敬請期待">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="font-size:22px">🔧</div>
+        <div style="font-size:13px;color:#92400e;font-weight:600">新增主題</div>
+        <div style="font-size:11px;color:#b45309;background:#fef3c7;border:1px solid #fde68a;border-radius:20px;padding:2px 10px;font-weight:500">🚧 維修中，敬請期待</div>
       </div>
     </div>
   </div>
-
-  <!-- Setup Banner -->
-  <div class="setup-banner" id="setup-banner">
-    <div class="setup-title">⚙️ 第一次使用：請填入 Apps Script 網址</div>
-    <div class="setup-desc">
-      將你的 Google Apps Script 部署網址貼入下方，儲存後即可開始使用。<br>
-      設定只需做一次，之後所有同仁開此頁面都不需要再設定。<br>
-      <strong>📌 取得方式：</strong>Apps Script → 部署 → 管理部署項目 → 複製網址
-    </div>
-    <div class="setup-row">
-      <input class="setup-input" id="input-url" placeholder="https://script.google.com/macros/s/xxxxxx/exec">
-      <button class="btn btn-accent" onclick="saveConfig()">儲存設定</button>
-    </div>
   </div>
-
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <div class="date-group">
-      <span class="date-label">日期</span>
-      <input type="date" id="date-picker">
-      <span class="weekday" id="weekday"></span>
-    </div>
-    <div class="spacer"></div>
-    <button class="btn" onclick="showAddRow()">＋ 新增成員</button>
-    <button class="btn btn-green" id="btn-load" onclick="loadData()">↓ 從 Sheets 載入</button>
-    <button class="btn btn-accent" id="btn-save" onclick="saveData()">↑ 儲存至 Sheets</button>
-    <button class="btn" onclick="generateText()">產生文字</button>
-  </div>
-
-  <!-- Status -->
-  <div class="status-bar">
-    <div class="dot" id="dot"></div>
-    <span id="status-msg">請先填入 Apps Script 網址</span>
-  </div>
-
-  <!-- Members -->
-  <div id="members"></div>
-
-  <!-- Add Row -->
-  <div class="add-row" id="add-row">
-    <span style="font-size:18px">👤</span>
-    <input class="add-input" id="add-input" type="text" placeholder="輸入成員姓名，按 Enter 確認...">
-    <button class="btn btn-accent btn-sm" onclick="confirmAdd()">新增</button>
-    <button class="btn btn-sm" onclick="cancelAdd()">取消</button>
-  </div>
-
-  <!-- Output -->
-  <div class="output-panel" id="output-panel">
-    <div class="output-head">
-      <span class="output-title">📤 立會文字輸出</span>
-      <button class="btn btn-sm" id="copy-btn" onclick="copyText()">複製</button>
-    </div>
-    <div class="output-body" id="output-body"></div>
-  </div>
-
 </div>
+
+<!-- ══════════════════════════════════════
+     頁面：Scrum 立會記錄
+══════════════════════════════════════ -->
+<div class="page" id="page-scrum">
+  <div class="page-back-bar">
+    <button class="page-back-btn" onclick="goHome()"><span class="back-arrow">‹</span> 返回首頁</button>
+  </div>
+  <div class="container">
+    <div class="toolbar">
+      <div class="date-group">
+        <span class="date-label">📅 日期</span>
+        <input type="date" id="date-picker">
+        <span class="weekday" id="weekday"></span>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn" onclick="showAddRow()">＋ 新增成員</button>
+      <button class="btn btn-green" onclick="loadData()">🔄 重新整理</button>
+      <button class="btn" onclick="copyYesterdayToday()" title="將昨天日期的【今天】欄位，複製到今天日期的【昨天】欄位" style="background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:600">📋 複製昨天內容</button>
+      <button class="btn btn-accent" onclick="saveData()">↑ 儲存至 Sheets</button>
+      <button class="btn" onclick="generateText()">文字輸出</button>
+      <button class="btn btn-parse" onclick="showParseModal()">📥 貼上解析</button>
+    </div>
+    <div class="status-bar" id="status-bar">
+      <div class="status-spinner"></div>
+      <div class="dot"></div>
+      <span class="status-msg-text">連線中...</span>
+    </div>
+    <div id="members"></div>
+    <div class="add-row" id="add-row">
+      <span style="font-size:18px">👤</span>
+      <input class="add-input" id="add-input" type="text" placeholder="輸入成員姓名，按 Enter 新增...">
+      <button class="btn btn-accent btn-sm" onclick="confirmAdd()">新增</button>
+      <button class="btn btn-sm" onclick="cancelAdd()">取消</button>
+    </div>
+    <div class="output-panel" id="output-panel">
+      <div class="output-head">
+        <span class="output-title">📤 立會文字輸出</span>
+        <button class="btn btn-sm" id="copy-btn" onclick="copyText()">複製</button>
+      </div>
+      <div class="output-body" id="output-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     頁面：BBP 產值評估
+══════════════════════════════════════ -->
+<div class="page" id="page-bbp">
+  <div class="page-back-bar">
+    <button class="page-back-btn" onclick="goHome()"><span class="back-arrow">‹</span> 返回首頁</button>
+  </div>
+  <div class="bbp-container">
+    <div class="bbp-header">
+      <div class="bbp-header-left">
+        <div class="bbp-header-title">📑 BBP 產值評估</div>
+        <div class="bbp-header-sub">需求 / 優化 · 點擊文件展開，可預覽或編輯</div>
+      </div>
+      <div class="bbp-header-actions">
+        <button class="btn btn-green" id="bbp-load-btn" onclick="loadBbpFromSheets()" style="font-weight:600">🔄 重新整理</button>
+        <button class="btn btn-accent" id="bbp-sync-btn" onclick="syncBbpToSheets()" style="font-weight:600">↑ 儲存至 Sheets</button>
+        <button class="btn btn-accent" onclick="showAddDocModal()">＋ 手動新增</button>
+      </div>
+    </div>
+    <div class="status-bar" id="bbp-status-bar" style="margin-bottom:1.25rem">
+      <div class="status-spinner"></div>
+      <div class="dot"></div>
+      <span class="status-msg-text">準備就緒</span>
+    </div>
+    <div id="doc-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     頁面：BBP 進度
+══════════════════════════════════════ -->
+<div class="page" id="page-progress">
+  <div class="page-back-bar">
+    <button class="page-back-btn" onclick="goHome()"><span class="back-arrow">‹</span> 返回首頁</button>
+  </div>
+  <div class="progress-container">
+    <!-- Sheets 同步工具列 -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px">
+      <div style="font-size:16px;font-weight:700;color:var(--text)">📈 BBP 進度追蹤</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-green" id="progress-load-btn" onclick="loadProgressFromSheets()" style="font-weight:600">🔄 重新整理</button>
+        <button class="btn btn-accent" id="progress-sync-btn" onclick="syncProgressToSheets()" style="font-weight:600">↑ 儲存至 Sheets</button>
+      </div>
+    </div>
+    <div class="status-bar" id="progress-status-bar" style="margin-bottom:1.25rem">
+      <div class="status-spinner"></div>
+      <div class="dot"></div>
+      <span class="status-msg-text">準備就緒</span>
+    </div>
+    <div class="progress-section">
+      <div class="progress-section-header">
+        <div class="progress-section-title">
+          ⚡ 優化項目
+          <span class="progress-section-badge badge-opt">優化</span>
+        </div>
+        <button class="btn btn-sm" onclick="addProgressRow(&#39;opt&#39;)">＋ 新增列</button>
+      </div>
+      <div class="progress-table-wrap">
+        <table class="progress-table" id="table-opt">
+          <thead>
+            <tr>
+              <th style="width:28px"></th>
+              <th style="width:140px">需求單號</th>
+              <th>需求名稱</th>
+              <th style="width:116px">SA預計</th>
+              <th style="width:116px">PD預計</th>
+              <th style="width:116px">TEST預計</th>
+              <th style="width:120px">狀態</th>
+              <th style="width:130px">ITSR狀態</th>
+              <th style="width:30px"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-opt"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="progress-section">
+      <div class="progress-section-header">
+        <div class="progress-section-title">
+          📋 需求項目
+          <span class="progress-section-badge badge-req">需求</span>
+        </div>
+        <button class="btn btn-sm" onclick="addProgressRow(&#39;req&#39;)">＋ 新增列</button>
+      </div>
+      <div class="progress-table-wrap">
+        <table class="progress-table" id="table-req">
+          <thead>
+            <tr>
+              <th style="width:28px"></th>
+              <th style="width:140px">需求單號</th>
+              <th>需求名稱</th>
+              <th style="width:116px">SA預計</th>
+              <th style="width:116px">PD預計</th>
+              <th style="width:116px">TEST預計</th>
+              <th style="width:120px">狀態</th>
+              <th style="width:130px">ITSR狀態</th>
+              <th style="width:30px"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-req"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Modals
+══════════════════════════════════════ -->
+<!-- 貼上解析 Modal -->
+<div class="modal-overlay" id="parse-modal" onclick="handleModalClick(event,&#39;parse-modal&#39;)">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">📥 貼上立會記錄自動解析</span>
+      <button class="btn-del" onclick="closeModal(&#39;parse-modal&#39;)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px">
+        開啟後自動帶入今天的範例模板，填入工作內容後點「解析並填入」即可。<br>
+        支援格式：<code>- [1] **Arina**</code> 或 <code>- [1] Arina</code>
+      </div>
+      <textarea class="parse-modal-textarea" id="parse-input" placeholder="開啟後會自動帶入今天的範例模板..."></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal(&#39;parse-modal&#39;)">取消</button>
+      <button class="btn" onclick="clearParseInput()">🗑 清除</button>
+      <button class="btn btn-accent" onclick="confirmParse()">✅ 解析並填入</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新增主題 Modal -->
+<div class="modal-overlay" id="add-theme-modal" onclick="handleModalClick(event,&#39;add-theme-modal&#39;)">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">➕ 新增主題</span>
+      <button class="btn-del" onclick="closeModal(&#39;add-theme-modal&#39;)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">主題名稱</label>
+        <input class="form-input" id="new-theme-name" placeholder="例如：Sprint Review">
+      </div>
+      <div class="form-row">
+        <label class="form-label">說明</label>
+        <input class="form-input" id="new-theme-desc" placeholder="簡短說明此主題用途">
+      </div>
+      <div class="form-row">
+        <label class="form-label">圖示</label>
+        <div class="icon-picker" id="icon-picker">
+          <div class="icon-opt selected" data-icon="📋" onclick="selectIcon(this)">📋</div>
+          <div class="icon-opt" data-icon="📊" onclick="selectIcon(this)">📊</div>
+          <div class="icon-opt" data-icon="🗂️" onclick="selectIcon(this)">🗂️</div>
+          <div class="icon-opt" data-icon="💡" onclick="selectIcon(this)">💡</div>
+          <div class="icon-opt" data-icon="🔧" onclick="selectIcon(this)">🔧</div>
+          <div class="icon-opt" data-icon="🚀" onclick="selectIcon(this)">🚀</div>
+          <div class="icon-opt" data-icon="📝" onclick="selectIcon(this)">📝</div>
+          <div class="icon-opt" data-icon="🎯" onclick="selectIcon(this)">🎯</div>
+          <div class="icon-opt" data-icon="📦" onclick="selectIcon(this)">📦</div>
+          <div class="icon-opt" data-icon="⚡" onclick="selectIcon(this)">⚡</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">顏色主題</label>
+        <div class="color-picker">
+          <div class="color-opt selected" data-color="blue" style="background:linear-gradient(135deg,#2563eb,#7c3aed)" onclick="selectColor(this)" title="藍色">✓</div>
+          <div class="color-opt" data-color="green" style="background:linear-gradient(135deg,#059669,#0891b2)" onclick="selectColor(this)" title="綠色"></div>
+          <div class="color-opt" data-color="orange" style="background:linear-gradient(135deg,#d97706,#dc2626)" onclick="selectColor(this)" title="橘色"></div>
+          <div class="color-opt" data-color="purple" style="background:linear-gradient(135deg,#7c3aed,#be185d)" onclick="selectColor(this)" title="紫色"></div>
+          <div class="color-opt" data-color="teal" style="background:linear-gradient(135deg,#0891b2,#059669)" onclick="selectColor(this)" title="青色"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal(&#39;add-theme-modal&#39;)">取消</button>
+      <button class="btn btn-accent" onclick="confirmAddTheme()">新增主題</button>
+    </div>
+  </div>
+</div>
+
+<!-- 貼上解析 Modal -->
+<div class="modal-overlay" id="paste-doc-modal" onclick="handleModalClick(event,&#39;paste-doc-modal&#39;)">
+  <div class="modal paste-modal">
+    <div class="modal-head">
+      <span class="modal-title">📥 BBP 產值評估 — 貼上解析</span>
+      <button class="btn-del" onclick="closeModal(&#39;paste-doc-modal&#39;)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="paste-tip">
+        💡 直接貼上整份 BBP 評估文字，系統自動解析標題、類型與各階段點數。<br>
+        <strong>建議格式：</strong>第一行為 <code># 文件標題</code>，包含 <code>## 階段點數總覽</code> 表格及各階段說明。
+        <span style="float:right"><button class="btn btn-sm" style="font-size:11px" onclick="loadBbpTemplate()">📋 載入範本</button></span>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px">
+          <label style="font-size:12px;font-weight:600;color:var(--text2)">類型</label>
+          <select class="form-input" id="paste-doc-type" style="max-width:100px;padding:5px 8px;font-size:12px">
+            <option value="req">📋 需求</option>
+            <option value="opt">⚡ 優化</option>
+          </select>
+        </div>
+        <div id="paste-preview-bar" style="display:none" class="preview-bar">
+          <div class="preview-item"><span class="preview-label">標題：</span><strong class="preview-value" id="prev-title" style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</strong></div>
+          <div class="preview-item"><span class="preview-label">合計：</span><span class="preview-points-val" id="prev-pts">—</span></div>
+        </div>
+      </div>
+      <textarea class="form-input" id="paste-doc-raw" style="min-height:260px;resize:vertical;font-family:var(--mono);font-size:12px;line-height:1.65" placeholder="將整份 BBP 評估文字貼在這裡...
+
+# 文件標題
+## 階段點數總覽
+| 階段 | 點數 | 說明 |
+..."></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal(&#39;paste-doc-modal&#39;)">取消</button>
+      <button class="btn" onclick="clearPasteDoc()">🗑 清除</button>
+      <button class="btn btn-accent" onclick="confirmPasteDoc()">✅ 解析並新增</button>
+    </div>
+  </div>
+</div>
+
+<!-- 手動新增 BBP 文件 Modal -->
+<div class="modal-overlay" id="add-doc-modal" onclick="handleModalClick(event,&#39;add-doc-modal&#39;)">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">📄 手動新增 BBP 文件</span>
+      <button class="btn-del" onclick="closeModal(&#39;add-doc-modal&#39;)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">文件標題</label>
+        <input class="form-input" id="new-doc-title" placeholder="例如：MIS202604000827 手工單功能">
+      </div>
+      <div class="form-row">
+        <label class="form-label">類型</label>
+        <select class="form-input" id="new-doc-type" style="max-width:120px">
+          <option value="req">📋 需求</option>
+          <option value="opt">⚡ 優化</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">內容（Markdown 格式）</label>
+        <textarea class="form-input" id="new-doc-content" style="min-height:200px;resize:vertical;font-family:var(--mono);font-size:12px;line-height:1.65" placeholder="貼入 Markdown 內容..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal(&#39;add-doc-modal&#39;)">取消</button>
+      <button class="btn btn-accent" onclick="confirmAddDoc()">✅ 新增文件</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner-lg"></div>
+  <div class="loading-text" id="loading-text">處理中...</div>
+  <div class="loading-dots"><span>●</span><span>●</span><span>●</span></div>
+</div>
+
+<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
+/* ══════════════════════════════════════
+   全域常數
+══════════════════════════════════════ */
 const WD = ['日','一','二','三','四','五','六'];
-const COLORS = [
-  {bg:'#1a2a4a',fg:'#6b9eff'},{bg:'#1a3a2a',fg:'#4ede9a'},
-  {bg:'#3a2a1a',fg:'#ffb86b'},{bg:'#3a1a2a',fg:'#ff85b8'},
-  {bg:'#2a1a3a',fg:'#c285ff'},{bg:'#1a3a3a',fg:'#50d8d8'},
+const COLORS_MAP = {
+  blue:  {bg:'#dbeafe',fg:'#1d4ed8'},
+  green: {bg:'#dcfce7',fg:'#15803d'},
+  orange:{bg:'#fef3c7',fg:'#b45309'},
+  purple:{bg:'#ede9fe',fg:'#6d28d9'},
+  teal:  {bg:'#ccfbf1',fg:'#0f766e'},
+};
+const MEMBER_COLORS = [
+  {bg:'#dbeafe',fg:'#1d4ed8'},{bg:'#dcfce7',fg:'#15803d'},
+  {bg:'#fef3c7',fg:'#b45309'},{bg:'#fce7f3',fg:'#be185d'},
+  {bg:'#ede9fe',fg:'#6d28d9'},{bg:'#ccfbf1',fg:'#0f766e'},
+];
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzLne5M4ZUb005wlQGSmgg07anUb6iddcKTypwWWDazfwZpdODdpSPJV_Es5x70ZJGM/exec';
+const DEFAULT_NAMES = ['Arina','Jake','Terry','Ryan','Nick H','Nick L'];
+const API_TIMEOUT_MS = 15000;
+const STORAGE_KEY_THEMES  = 'wms_themes';
+const STORAGE_KEY_DOCS    = 'wms_bbp_docs';
+const STORAGE_KEY_PROGRESS= 'wms_bbp_progress';
+
+/* ══════════════════════════════════════
+   全域狀態
+══════════════════════════════════════ */
+let currentPage = 'home';
+let members = DEFAULT_NAMES.map((n,i)=>({id:i+1,name:n,yesterday:'',today:''}));
+let nid = DEFAULT_NAMES.length + 1;
+let isBusy = false;
+let toastTimer = null;
+let selectedIcon = '📋';
+let selectedColor = 'blue';
+
+// 預設主題
+const DEFAULT_THEMES = [
+  {id:'scrum',  name:'Scrum 立會記錄',        desc:'每日立會工作進度記錄',         icon:'🏃',color:'blue',  page:'scrum',    builtin:true},
+  {id:'bbp',    name:'BBP 產值評估（需求、優化）',desc:'點數評估', icon:'📑',color:'green', page:'bbp',      builtin:true},
+  {id:'progress',name:'BBP 進度',              desc:'優化與需求項目進度追蹤',       icon:'📈',color:'orange',page:'progress', builtin:true},
 ];
 
-let members = [
-  {id:1,name:'Arina',yesterday:'',today:''},
-  {id:2,name:'Jake',yesterday:'',today:''},
-  {id:3,name:'Terry',yesterday:'',today:''},
-  {id:4,name:'Ryan',yesterday:'',today:''},
-  {id:5,name:'Nick H',yesterday:'',today:''},
-  {id:6,name:'Nick L',yesterday:'',today:''},
-];
-let nid = 7;
-let GAS_URL = '';
+let themes = loadFromStorage(STORAGE_KEY_THEMES, DEFAULT_THEMES);
+let bbpDocs = loadFromStorage(STORAGE_KEY_DOCS, getDefaultDocs());
+let progressData = loadFromStorage(STORAGE_KEY_PROGRESS, getDefaultProgress());
 
-/* ── Config ── */
-function loadConfig() {
-  GAS_URL = localStorage.getItem('gas_url') || '';
-  if (GAS_URL) {
-    document.getElementById('setup-banner').style.display = 'none';
-    document.getElementById('input-url').value = GAS_URL;
-    setStatus('ok', '已連線 Google Sheets');
-  }
+/* ══════════════════════════════════════
+   LocalStorage 工具
+══════════════════════════════════════ */
+function loadFromStorage(key, defaultVal) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : defaultVal;
+  } catch(e) { return defaultVal; }
 }
-function saveConfig() {
-  const url = document.getElementById('input-url').value.trim();
-  if (!url || !url.startsWith('https://script.google.com')) {
-    toast('❌ 請填入正確的 Apps Script 網址', 'error'); return;
-  }
-  GAS_URL = url;
-  localStorage.setItem('gas_url', url);
-  document.getElementById('setup-banner').style.display = 'none';
-  setStatus('ok', '設定已儲存，已連線 Google Sheets');
-  toast('✅ 設定儲存成功！', 'success');
+function saveToStorage(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
 }
 
-/* ── Date ── */
+/* ══════════════════════════════════════
+   預設資料
+══════════════════════════════════════ */
+function getDefaultDocs() {
+  return [
+    {
+      id: 'doc1',
+      title: 'DO 手動配貨轉急單 BBP 產值評估',
+      type: 'req',
+      content: `## 階段點數總覽\n| 階段 | 點數 | 說明 |\n|---|---|---|\n| RA | 0.5 | 需求評估 |\n| SA | 4.0 | SA 分析、Code Review、開發完成測試 |\n| PD | 6.5 | 程式設計與開發 |\n| UAT | 1.0 | 使用者驗收測試 |\n| **合計** | **12.0** | |\n\n## RA 點數（0.5 點）\n- 評估需求內容、時程與點數。\n\n## SA 點數（4.0 點）\n1. SA 分析（2.5 點）\n2. Code Review（0.5 點）\n3. 開發完成測試（1.0 點）\n\n## PD 點數（6.5 點）\n1. 建立手工訂單（0.5 點）\n   - 將 AD 單下的庫存 UID 鎖定至 \`reservedConsigneeKey\`（主要）。\n   - 檢查傳入內容，例如 \`reservedConsigneeKey\`（AD 單號）不可為空。\n2. 配貨（3.5 點）\n   - 建立新的配貨策略。\n   - 每條明細補成一箱。\n3. 揀貨、驗貨（0.25 點）\n4. Auto UD（1.5 點）\n5. UD Confirm（0.5 點）\n6. 備料清單（0.25 點）\n\n## UAT 點數（1.0 點）\n- QA 測試。\n- 與易科、LaaS 進行整合測試。`
+    },
+    {
+      id: 'doc2',
+      title: 'MIS202603001468 料號有效期限檢查 BBP 產值評估',
+      type: 'req',
+      content: `## 階段點數總覽\n| 階段 | 點數 | 說明 |\n|---|---|---|\n| RA | 0.5 | 需求評估 |\n| SA | 1 | SA 分析、Code Review、開發完成測試 |\n| PD | 2 | 程式設計與開發 |\n| UAT | 1 | 使用者驗收測試 |\n| 合計 | 4.5 | |\n\n## RA 點數（0.5 點）\n1. 將「已過期」庫存依據 DB 動態設定，精準拆分為「未移庫」、「已移D庫」及獨立的「07/37庫」。\n2. 異動僅限於「已過期」資料的分類與 Excel 產出邏輯。\n\n## SA 點數（1 點）\n1. SA 分析（0.5 點）\n2. Code Review（0.2 點）\n3. 開發完成測試（0.3 點）\n\n## PD 點數（2 點）\n1. DB 查詢擴充（0.5 點）\n2. 動態分類邏輯開發（1 點）\n3. Excel 多 Sheet 產出調整（0.5 點）\n\n## UAT 點數（1 點）\n1. QA 測試（0.4 點）\n2. 使用者驗收測試（0.4 點）\n3. 整合測試（0.2 點）`
+    }
+  ];
+}
+
+function getDefaultProgress() {
+  return {
+    opt: [
+      {id:'o1', mis:'MIS202604000827', name:'【問題優化】Call Off 失敗Retry機制', sa:'4/16', pd:'4/24', test:'4/19', status:'QA測試中', itsr:'QA(liam lo)'},
+      {id:'o2', mis:'MIS202604001283', name:'【問題修正】BBP進貨單多儲區別無法產生CTM Code優化', sa:'4/23', pd:'4/28', test:'5/11', status:'PD開發中', itsr:'處理階段'},
+    ],
+    req: [
+      {id:'r1', mis:'MIS202503001319', name:'B2B2P新增叫料原因X-RAY', sa:'3/12', pd:'3/26', test:'4/7', status:'USER測試中', itsr:'USER(世傑)'},
+      {id:'r2', mis:'MIS202511001580', name:'派車出倉合一', sa:'3/17', pd:'3/30', test:'4/10', status:'SA測試完', itsr:'需求評估(Casey)'},
+      {id:'r3', mis:'MIS202603000356', name:'RLC檢測功能控管優化', sa:'3/19', pd:'4/2', test:'4/14', status:'USER測試中', itsr:'USER(Ken)'},
+      {id:'r4', mis:'MIS202603000984', name:'IQC報表加入品牌排序', sa:'3/25', pd:'4/10', test:'4/17', status:'QA測試中', itsr:'QA(liam lo)'},
+      {id:'r5', mis:'MIS202603001468', name:'料號有效期限檢查', sa:'4/8', pd:'4/17', test:'4/20', status:'QA測試中', itsr:'QA(Teddy)'},
+      {id:'r6', mis:'MIS202603001622', name:'轉進LaaS 收料明細', sa:'4/13', pd:'4/23', test:'4/27', status:'QA測試中', itsr:'QA(liam lo)'},
+      {id:'r7', mis:'MIS202604000754', name:'過期品優化', sa:'4/17', pd:'4/17', test:'4/21', status:'SA測試完', itsr:'PD(LaaS)'},
+      {id:'r8', mis:'待填單', name:'手工單加入填寫機台料站資訊', sa:'4/28', pd:'4/29', test:'5/4', status:'PD開發中', itsr:''},
+      {id:'r9', mis:'待填單', name:'DO手動配貨轉急單', sa:'5/4', pd:'5/18', test:'5/20', status:'', itsr:''},
+    ]
+  };
+}
+
+/* ══════════════════════════════════════
+   頁面路由
+══════════════════════════════════════ */
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+pageId).classList.add('active');
+  currentPage = pageId;
+
+  // 更新 Hero Banner
+  const heroRight = document.getElementById('hero-right');
+  if(pageId === 'home') {
+    document.getElementById('hero-title').textContent = '智能倉儲開發團隊';
+    document.getElementById('hero-sub').textContent = 'Daily Standup Tracker · 智能倉儲開發團隊';
+    heroRight.innerHTML = '<span class="hero-badge">⚡ Google Sheets 同步</span>';
+  } else {
+    const t = themes.find(x=>x.page===pageId) || {};
+    document.getElementById('hero-title').textContent = t.name || '智能倉儲開發團隊';
+    document.getElementById('hero-sub').textContent = t.desc || '';
+    heroRight.innerHTML = '<button class="back-btn" onclick="goHome()"><span style="font-size:16px;line-height:1">‹</span> 返回首頁</button>';
+  }
+
+  // 頁面初始化
+  if(pageId === 'scrum') initScrum();
+  if(pageId === 'bbp') initBbp();
+  if(pageId === 'progress') initProgress();
+}
+
+function goHome() { showPage('home'); }
+
+let bbpInited = false;
+function initBbp() {
+  renderDocs();
+  if(!bbpInited) {
+    bbpInited = true;
+    loadBbpFromSheets();
+  }
+}
+
+let progressInited = false;
+function initProgress() {
+  renderProgress();
+  if(!progressInited) {
+    progressInited = true;
+    loadProgressFromSheets();
+  }
+}
+
+/* ══════════════════════════════════════
+   首頁 — 主題卡片
+══════════════════════════════════════ */
+function renderHomeThemes() {
+  const grid = document.getElementById('theme-grid');
+  grid.innerHTML = themes.map(t=>`
+    <div class="theme-card color-${t.color}" onclick="showPage('${t.page}')">
+      ${t.builtin ? '' : `<button class="theme-card-del" onclick="deleteTheme(event,'${t.id}')" title="刪除">✕</button>`}
+      <div class="theme-card-icon">${t.icon}</div>
+      <div class="theme-card-title">${t.name}</div>
+      <div class="theme-card-desc">${t.desc}</div>
+      <div class="theme-card-arrow">›</div>
+    </div>
+  `).join('') + `
+    <div class="theme-card-add" style="cursor:not-allowed;opacity:0.7;border-color:#fde68a;background:#fffbeb" title="此功能目前維修中，敬請期待">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="font-size:22px">🔧</div>
+        <div style="font-size:13px;color:#92400e;font-weight:600">新增主題</div>
+        <div style="font-size:11px;color:#b45309;background:#fef3c7;border:1px solid #fde68a;border-radius:20px;padding:2px 10px;font-weight:500">🚧 維修中，敬請期待</div>
+      </div>
+    </div>
+  `;
+}
+
+function deleteTheme(e, id) {
+  e.stopPropagation();
+  if(!confirm('確定要刪除此主題？')) return;
+  themes = themes.filter(t=>t.id!==id);
+  saveToStorage(STORAGE_KEY_THEMES, themes);
+  renderHomeThemes();
+}
+
+function openAddThemeModal() {
+  selectedIcon = '📋';
+  selectedColor = 'blue';
+  document.getElementById('new-theme-name').value = '';
+  document.getElementById('new-theme-desc').value = '';
+  document.querySelectorAll('.icon-opt').forEach(el=>el.classList.toggle('selected', el.dataset.icon==='📋'));
+  document.querySelectorAll('.color-opt').forEach(el=>el.classList.toggle('selected', el.dataset.color==='blue'));
+  document.querySelectorAll('.color-opt')[0].textContent = '✓';
+  document.querySelectorAll('.color-opt').forEach((el,i)=>{ if(i>0) el.textContent=''; });
+  openModal('add-theme-modal');
+}
+
+function selectIcon(el) {
+  document.querySelectorAll('.icon-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedIcon = el.dataset.icon;
+}
+
+function selectColor(el) {
+  document.querySelectorAll('.color-opt').forEach(e=>{ e.classList.remove('selected'); e.textContent=''; });
+  el.classList.add('selected');
+  el.textContent = '✓';
+  selectedColor = el.dataset.color;
+}
+
+function confirmAddTheme() {
+  const name = document.getElementById('new-theme-name').value.trim();
+  if(!name) { showToast('請輸入主題名稱','error'); return; }
+  const desc = document.getElementById('new-theme-desc').value.trim();
+  const id = 'custom_' + Date.now();
+  themes.push({id, name, desc, icon:selectedIcon, color:selectedColor, page:'home', builtin:false, isCustom:true});
+  saveToStorage(STORAGE_KEY_THEMES, themes);
+  closeModal('add-theme-modal');
+  renderHomeThemes();
+  showToast(`✅ 已新增主題「${name}」`,'success');
+}
+
+/* ══════════════════════════════════════
+   Modal 工具
+══════════════════════════════════════ */
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function handleModalClick(e, id) { if(e.target===document.getElementById(id)) closeModal(id); }
+
+/* ══════════════════════════════════════
+   Scrum 立會記錄
+══════════════════════════════════════ */
+let scrumInited = false;
+function initScrum() {
+  if(!scrumInited) {
+    scrumInited = true;
+    initDate();
+    renderMembers();
+    setStatus('ok','已連線 Google Sheets');
+    loadData();
+  }
+}
+
 function initDate() {
   const el = document.getElementById('date-picker');
-  const t = new Date();
-  el.value = t.toISOString().split('T')[0];
-  el.addEventListener('change', updateWD);
+  const now = new Date();
+  el.value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  el.addEventListener('change', ()=>{ updateWD(); loadData(); });
   updateWD();
 }
 function updateWD() {
   const v = document.getElementById('date-picker').value;
-  const d = v ? new Date(v + 'T12:00:00') : new Date();
-  document.getElementById('weekday').textContent = WD[d.getDay()];
+  if(!v) return;
+  document.getElementById('weekday').textContent = WD[new Date(v+'T12:00:00').getDay()];
 }
-function getDate() {
-  return document.getElementById('date-picker').value || new Date().toISOString().split('T')[0];
-}
+function getDate() { return document.getElementById('date-picker').value; }
 function getDateLabel() {
-  const d = new Date(getDate() + 'T12:00:00');
+  const v = getDate(); if(!v) return '';
+  const d = new Date(v+'T12:00:00');
   return `${d.getMonth()+1}/${d.getDate()} ${WD[d.getDay()]}`;
 }
-
-/* ── Status ── */
-function setStatus(state, msg) {
-  const dot = document.getElementById('dot');
-  dot.className = 'dot ' + state;
-  document.getElementById('status-msg').textContent = msg;
+function setStatus(state, msg, barId) {
+  const id = barId || 'status-bar';
+  const bar = document.getElementById(id);
+  if(!bar) return;
+  // CSS 已用 .loading-state 控制 spinner/dot 顯示，只需管 className 即可
+  bar.className = 'status-bar' + (state ? ' ' + state + '-state' : '');
+  const dot = bar.querySelector('.dot');
+  const msgEl = bar.querySelector('.status-msg-text');
+  if(dot) dot.className = 'dot' + (state && state !== 'loading' ? ' ' + state : '');
+  if(msgEl) msgEl.textContent = msg;
 }
-
-/* ── Render ── */
-function initials(name) {
-  const p = name.trim().split(/\s+/);
-  return p.length >= 2 ? (p[0][0]+p[1][0]).toUpperCase() : name.substring(0,2).toUpperCase();
+function showLoading(msg, barId) {
+  document.getElementById('loading-text').textContent = msg||'處理中...';
+  document.getElementById('loading-overlay').classList.add('show');
+  setStatus('loading', msg||'處理中...', barId);
 }
-function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hideLoading() { document.getElementById('loading-overlay').classList.remove('show'); }
 
-function render() {
+function safeStr(s) { return s==null?'':String(s); }
+function esc(s) {
+  return safeStr(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function getInitials(name) {
+  const n = safeStr(name).trim(); if(!n) return '?';
+  const p = n.split(/\s+/);
+  return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.substring(0,2).toUpperCase();
+}
+function renderMembers() {
   const el = document.getElementById('members');
-  if (!members.length) { el.innerHTML = '<div class="empty">尚無成員，請點擊「新增成員」</div>'; return; }
-  el.innerHTML = members.map((m,i) => {
-    const c = COLORS[i % COLORS.length];
-    return `<div class="member-card">
+  if(!members.length){ el.innerHTML='<div class="empty">尚無成員</div>'; return; }
+  el.innerHTML = members.map((m,i)=>{
+    const c = MEMBER_COLORS[i%MEMBER_COLORS.length];
+    return `<div class="member-card" draggable="true" data-member-id="${m.id}">
       <div class="member-header">
-        <div class="avatar" style="background:${c.bg};color:${c.fg}">${initials(m.name)}</div>
+        <span class="drag-handle" title="拖曳排序">⠿</span>
+        <div class="avatar" style="background:${c.bg};color:${c.fg}">${getInitials(m.name)}</div>
         <input class="name-input" value="${esc(m.name)}" onchange="updateName(${m.id},this.value)" title="點擊編輯姓名">
         <span class="member-num">[${i+1}]</span>
         <button class="btn-del" onclick="delMember(${m.id})" title="移除">✕</button>
@@ -286,134 +1086,1024 @@ function render() {
       </div>
     </div>`;
   }).join('');
+  setTimeout(()=>{ initTextareas(); initMemberDrag(); }, 0);
 }
 
-function syncFields() {
-  members.forEach(m => {
-    const y = document.getElementById('y'+m.id);
-    const t = document.getElementById('t'+m.id);
-    if(y) m.yesterday = y.value;
-    if(t) m.today = t.value;
+function initMemberDrag() {
+  const container = document.getElementById('members');
+  let dragSrc = null;
+  let dragAllowed = false;
+  container.querySelectorAll('.member-card').forEach(card => {
+    const handle = card.querySelector('.drag-handle');
+    if(handle) {
+      handle.addEventListener('mousedown', () => { dragAllowed = true; });
+    }
+    card.addEventListener('dragstart', e => {
+      if(!dragAllowed) { e.preventDefault(); return; }
+      dragAllowed = false;
+      syncFields();
+      dragSrc = card;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      container.querySelectorAll('.member-card').forEach(c=>c.classList.remove('drag-over'));
+      // 重建 members 順序
+      const newOrder = [];
+      container.querySelectorAll('.member-card').forEach(c=>{
+        const id = parseInt(c.dataset.memberId);
+        const m = members.find(x=>x.id===id);
+        if(m) newOrder.push(m);
+      });
+      members = newOrder;
+      renderMembers();
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if(card !== dragSrc) {
+        container.querySelectorAll('.member-card').forEach(c=>c.classList.remove('drag-over'));
+        card.classList.add('drag-over');
+      }
+    });
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      if(dragSrc && dragSrc !== card) {
+        const cards = [...container.querySelectorAll('.member-card')];
+        const srcIdx = cards.indexOf(dragSrc);
+        const tgtIdx = cards.indexOf(card);
+        if(srcIdx < tgtIdx) card.after(dragSrc);
+        else card.before(dragSrc);
+      }
+    });
   });
 }
-function updateName(id, v) { const m = members.find(x=>x.id===id); if(m) m.name = v; }
-function delMember(id) { syncFields(); members = members.filter(m=>m.id!==id); render(); }
-
-/* ── Add Member ── */
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.max(90,el.scrollHeight)+'px'; }
+function initTextareas() {
+  document.querySelectorAll('#members textarea').forEach(ta=>{ autoResize(ta); ta.oninput=()=>autoResize(ta); });
+}
+function syncFields() {
+  members.forEach(m=>{
+    const y=document.getElementById('y'+m.id), t=document.getElementById('t'+m.id);
+    if(y) m.yesterday=y.value; if(t) m.today=t.value;
+  });
+}
+function updateName(id,val) { const m=members.find(x=>x.id===id); if(m) m.name=safeStr(val).trim(); }
+function delMember(id) {
+  if(!confirm('確定要移除此成員？')) return;
+  syncFields(); members=members.filter(m=>m.id!==id); renderMembers();
+}
 function showAddRow() {
   document.getElementById('add-row').classList.add('show');
-  document.getElementById('add-input').focus();
+  setTimeout(()=>document.getElementById('add-input').focus(),50);
 }
-function cancelAdd() {
-  document.getElementById('add-row').classList.remove('show');
-  document.getElementById('add-input').value = '';
-}
+function cancelAdd() { document.getElementById('add-row').classList.remove('show'); document.getElementById('add-input').value=''; }
 function confirmAdd() {
-  const name = document.getElementById('add-input').value.trim();
-  if (!name) return;
-  syncFields();
-  members.push({id:nid++, name, yesterday:'', today:''});
-  cancelAdd();
-  render();
+  const name=document.getElementById('add-input').value.trim();
+  if(!name){showToast('請輸入成員姓名','error');return;}
+  syncFields(); members.push({id:nid++,name,yesterday:'',today:''}); cancelAdd(); renderMembers();
+  showToast(`✅ 已新增「${name}」`,'success');
 }
 
-/* ── API ── */
-async function callGAS(params) {
-  if (!GAS_URL) { toast('請先填入 Apps Script 網址', 'error'); return null; }
-  const url = GAS_URL + '?' + new URLSearchParams(params).toString();
-  const res = await fetch(url);
-  return res.json();
+async function fetchWithTimeout(url, ms, options) {
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('請求超時，請稍後再試')), ms)
+  );
+  const fetchPromise = fetch(url, options || { redirect: 'follow' })
+    .then(r => r)
+    .catch(e => { throw e; });
+  return Promise.race([fetchPromise, timeoutPromise]);
 }
-
-async function loadData() {
-  if (!GAS_URL) { toast('請先填入 Apps Script 網址', 'error'); return; }
-  setStatus('loading', '載入中...');
+async function callGAS(params, retry=1) {
+  // 只有 saveBbp（docs）和 saveProgress（data 且為大 JSON）才走 POST，避免 URL 超長
+  // Scrum 的 save 雖然也有 data key，但資料量小，也走 POST 也沒問題（GAS 兩種都支援）
+  const needsPost = params.docs !== undefined || params.data !== undefined;
+  let res;
   try {
-    const result = await callGAS({ action: 'load', date: getDate() });
-    if (result.ok && result.members.length > 0) {
-      members = result.members.map((m,i) => ({
-        id: nid++, name: m.name, yesterday: m.yesterday, today: m.today
-      }));
-      render();
-      setStatus('ok', `已載入 ${members.length} 位成員（${getDateLabel()}）`);
-      toast(`✅ 已載入 ${members.length} 位成員`, 'success');
-    } else if (result.ok) {
-      setStatus('ok', `${getDateLabel()} 尚無記錄，使用預設成員`);
-      toast('此日期尚無記錄', 'error');
+    if(needsPost) {
+      res = await fetchWithTimeout(GAS_URL, API_TIMEOUT_MS, {
+        method: 'POST',
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(params)
+      });
     } else {
-      throw new Error(result.message);
+      const url = GAS_URL + '?' + new URLSearchParams(params).toString();
+      res = await fetchWithTimeout(url, API_TIMEOUT_MS);
     }
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    try { return JSON.parse(text); }
+    catch { throw new Error('回應格式錯誤'); }
   } catch(e) {
-    setStatus('error', '載入失敗：' + e.message);
-    toast('❌ 載入失敗，請確認 Apps Script 網址', 'error');
+    if(retry > 0 && !e.message.includes('超時')) {
+      await new Promise(r => setTimeout(r, 800));
+      return callGAS(params, retry - 1);
+    }
+    throw e;
   }
+}
+async function loadData() {
+  if(isBusy) return; isBusy=true;
+  showLoading('從 Google Sheets 載入資料中...');
+  try {
+    const result=await callGAS({action:'load',date:getDate()});
+    if(result.ok&&Array.isArray(result.members)&&result.members.length>0){
+      members=result.members.map(m=>({id:nid++,name:safeStr(m.name),yesterday:safeStr(m.yesterday),today:safeStr(m.today)}));
+      renderMembers(); hideLoading();
+      setStatus('ok',`已載入 ${members.length} 位成員（${getDateLabel()}）`);
+      showToast(`✅ 已載入 ${members.length} 位成員`,'success');
+    } else if(result.ok){
+      members.forEach(m=>{m.yesterday='';m.today='';}); renderMembers(); hideLoading();
+      setStatus('ok',`${getDateLabel()} 尚無紀錄`);
+      showToast(`📭 ${getDateLabel()} 尚無紀錄`,'error');
+    } else { throw new Error(result.message||'未知錯誤'); }
+  } catch(e){ hideLoading(); setStatus('error','載入失敗：'+e.message); showToast('❌ 載入失敗','error'); }
+  isBusy=false;
+}
+async function copyYesterdayToday() {
+  if(isBusy) return;
+
+  // 算出昨天日期
+  const todayVal = getDate();
+  if(!todayVal) { showToast('請先選擇日期','error'); return; }
+  const todayDate = new Date(todayVal + 'T12:00:00');
+  const yestDate = new Date(todayDate);
+  yestDate.setDate(yestDate.getDate() - 1);
+  const yestVal = `${yestDate.getFullYear()}-${String(yestDate.getMonth()+1).padStart(2,'0')}-${String(yestDate.getDate()).padStart(2,'0')}`;
+  const yestLabel = `${yestDate.getMonth()+1}/${yestDate.getDate()} ${WD[yestDate.getDay()]}`;
+
+  // 用 status bar 顯示進度，不用全頁 Loading Overlay（避免擋住操作）
+  isBusy = true;
+  setStatus('loading', `讀取 ${yestLabel} 的資料中...`);
+
+  try {
+    const result = await callGAS({ action: 'load', date: yestVal });
+
+    if(!result.ok || !Array.isArray(result.members) || result.members.length === 0) {
+      setStatus('error', `${yestLabel} 尚無紀錄`);
+      showToast(`📭 ${yestLabel} 尚無紀錄，無法複製`, 'error');
+      isBusy = false;
+      return;
+    }
+
+    // 建立 name → today 對照表（忽略大小寫、去除空白）
+    const yestMap = {};
+    result.members.forEach(m => {
+      const key = safeStr(m.name).trim().toLowerCase();
+      if(key) yestMap[key] = safeStr(m.today);
+    });
+
+    // 先把畫面上目前的輸入值同步回 members（避免覆蓋用戶已輸入的今天欄位）
+    syncFields();
+
+    // 把對應成員的「昨天」欄位填入
+    let matched = 0;
+    members.forEach(m => {
+      const key = safeStr(m.name).trim().toLowerCase();
+      if(key in yestMap) {
+        const val = yestMap[key];
+        m.yesterday = val;
+        const el = document.getElementById('y' + m.id);
+        if(el) { el.value = val; autoResize(el); }
+        matched++;
+      }
+    });
+
+    if(matched === 0) {
+      setStatus('error', `找不到相符的成員名稱（${yestLabel}）`);
+      showToast(`⚠️ 找不到相符的成員名稱（${yestLabel}）`, 'error');
+      isBusy = false;
+      return;
+    }
+
+    // 複製成功後立即自動存檔，避免重新整理時內容消失
+    setStatus('loading', `自動儲存中...`);
+    const payload = members.map(m => ({ name: m.name, yesterday: m.yesterday, today: m.today }));
+    const saveResult = await callGAS({ action: 'save', date: getDate(), data: JSON.stringify(payload) });
+
+    if(saveResult.ok) {
+      setStatus('ok', `已複製 ${matched} 位成員的昨天內容並自動儲存（來源：${yestLabel}）`);
+      showToast(`✅ 已複製 ${matched} 位成員的昨天內容並自動儲存`, 'success');
+    } else {
+      // 存檔失敗不影響畫面，只提示
+      setStatus('ok', `已複製 ${matched} 位成員（自動儲存失敗，請手動儲存）`);
+      showToast(`✅ 已複製，但自動儲存失敗，請手動按「儲存至 Sheets」`, 'error');
+    }
+
+  } catch(e) {
+    setStatus('error', '讀取失敗：' + e.message);
+    showToast('❌ 讀取失敗：' + e.message, 'error');
+    isBusy = false;
+  }
+  isBusy = false;
 }
 
 async function saveData() {
-  if (!GAS_URL) { toast('請先填入 Apps Script 網址', 'error'); return; }
-  syncFields();
-  setStatus('loading', '儲存中...');
+  if(isBusy) return; isBusy=true; syncFields();
+  showLoading('儲存資料至 Google Sheets...');
   try {
-    const payload = members.map(m => ({
-      name: m.name, yesterday: m.yesterday, today: m.today
-    }));
-    const result = await callGAS({ action: 'save', date: getDate(), data: JSON.stringify(payload) });
-    if (result.ok) {
-      setStatus('ok', `已儲存至 Sheets（${getDateLabel()}）`);
-      toast('✅ 已儲存至 Google Sheets！', 'success');
+    const payload=members.map(m=>({name:m.name,yesterday:m.yesterday,today:m.today}));
+    const result=await callGAS({action:'save',date:getDate(),data:JSON.stringify(payload)});
+    if(result.ok){ hideLoading(); setStatus('ok',`已儲存至 Sheets（${getDateLabel()}）`); showToast('✅ 已儲存至 Google Sheets！','success'); }
+    else throw new Error(result.message||'未知錯誤');
+  } catch(e){ hideLoading(); setStatus('error','儲存失敗：'+e.message); showToast('❌ 儲存失敗','error'); }
+  isBusy=false;
+}
+function generateText() {
+  syncFields(); if(!members.length){showToast('尚無成員資料','error');return;}
+  let out=`${getDateLabel()}\n\n`;
+  members.forEach((m,i)=>{ out+=`* [${i+1}] ${m.name}\n昨天:\n${m.yesterday.trim()||'（無）'}\n今天:\n${m.today.trim()||'（無）'}\n\n`; });
+  document.getElementById('output-body').textContent=out.trim();
+  const p=document.getElementById('output-panel'); p.classList.add('show'); p.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function copyText() {
+  const text=document.getElementById('output-body').textContent;
+  if(!text){showToast('沒有可複製的內容','error');return;}
+  const btn=document.getElementById('copy-btn');
+  const done=()=>{btn.textContent='已複製 ✓';setTimeout(()=>btn.textContent='複製',2000);};
+  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  else fallbackCopy(text,done);
+}
+function fallbackCopy(text,cb) {
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy');if(cb)cb();}catch(e){showToast('複製失敗','error');}
+  document.body.removeChild(ta);
+}
+function getTemplateText() {
+  const now=new Date(); const m=now.getMonth()+1,d=now.getDate(),wd=WD[now.getDay()];
+  return `${m}/${d} ${wd}\n- [1] **Arina**\n昨天:\n今天:\n---\n- [2] **Jake**\n昨天:\n今天:\n---\n- [3] **Terry**\n昨天:\n今天:\n---\n- [4] Ryan\n昨天:\n今天:\n---\n- [5] Nick H\n昨天:\n今天:\n---\n- [6] **Nick L**\n昨天:\n今天:`;
+}
+function showParseModal() {
+  openModal('parse-modal');
+  setTimeout(()=>{
+    const ta=document.getElementById('parse-input');
+    if(!ta.value.trim()) ta.value=getTemplateText();
+    autoResize(ta); ta.oninput=()=>autoResize(ta); ta.focus();
+  },100);
+}
+function clearParseInput() { const ta=document.getElementById('parse-input'); ta.value=''; ta.style.height='220px'; ta.focus(); }
+function parseStandupText(raw) {
+  const lines=raw.split('\n'); const result=[]; let current=null,mode=null;
+  for(let i=0;i<lines.length;i++){
+    const trimmed=lines[i].trim();
+    if(trimmed==='---'){if(current){result.push(current);current=null;}mode=null;continue;}
+    const m=trimmed.match(/^-\s*\[(\d+)\]\s*\*{0,2}([^*\n\[]+?)\*{0,2}\s*$/);
+    if(m){if(current)result.push(current);current={order:parseInt(m[1]),name:m[2].trim(),yesterday:'',today:''};mode=null;continue;}
+    if(!current)continue;
+    if(/^昨天[：:]\s*$/.test(trimmed)){mode='yesterday';continue;}
+    if(/^今天[：:]\s*$/.test(trimmed)){mode='today';continue;}
+    if(mode==='yesterday'&&trimmed)current.yesterday+=(current.yesterday?'\n':'')+trimmed;
+    else if(mode==='today'&&trimmed)current.today+=(current.today?'\n':'')+trimmed;
+  }
+  if(current)result.push(current); return result;
+}
+function confirmParse() {
+  const raw=document.getElementById('parse-input').value.trim();
+  if(!raw){showToast('請貼入立會記錄文字','error');return;}
+  const parsed=parseStandupText(raw);
+  if(!parsed.length){showToast('❌ 無法解析，請確認格式','error');return;}
+  syncFields(); let matched=0,unmatched=[];
+  parsed.forEach(p=>{
+    const m=members.find(x=>x.name.trim().toLowerCase()===p.name.toLowerCase());
+    if(m){m.yesterday=p.yesterday;m.today=p.today;matched++;}else unmatched.push(p.name);
+  });
+  renderMembers(); closeModal('parse-modal');
+  if(unmatched.length>0) showToast(`✅ 已填入 ${matched} 位，找不到：${unmatched.join('、')}`,'error');
+  else showToast(`✅ 成功解析並填入 ${matched} 位成員！`,'success');
+}
+
+/* ══════════════════════════════════════
+   BBP 產值評估 — 全新版
+══════════════════════════════════════ */
+
+// ── 渲染文件列表 ──
+function renderDocs() {
+  const el = document.getElementById('doc-list');
+  if(!bbpDocs.length) {
+    el.innerHTML = '<div class="empty" style="padding:3rem">尚無文件，請點擊「貼上解析」或「手動新增」</div>';
+    return;
+  }
+  el.innerHTML = bbpDocs.map((doc,i) => {
+    const isReq = doc.type === 'req';
+    const points = extractBbpTotal(doc.content || '');
+    return `<div class="doc-card" draggable="true" id="doc-${doc.id}">
+      <div class="doc-card-header">
+        <span class="drag-handle" title="拖曳排序" onclick="event.stopPropagation()">⠿</span>
+        <div class="doc-card-icon ${isReq?'doc-icon-req':'doc-icon-opt'}" onclick="toggleDoc('${doc.id}')" style="cursor:pointer">${isReq?'📋':'⚡'}</div>
+        <div class="doc-card-info" onclick="toggleDoc('${doc.id}')" style="cursor:pointer">
+          <div class="doc-card-title-wrap">
+            <span class="doc-card-title">${esc(doc.title)}</span>
+            <span class="doc-card-badge ${isReq?'badge-req-sm':'badge-opt-sm'}">${isReq?'需求':'優化'}</span>
+          </div>
+          ${points ? `<div class="doc-card-points">合計點數：<strong style="color:#1d4ed8">${points} 點</strong></div>` : ''}
+        </div>
+        <div class="doc-card-right">
+          <button class="btn btn-sm" style="font-size:11px;color:var(--red);border-color:rgba(220,38,38,0.2);padding:4px 8px;display:inline-flex;align-items:center;gap:3px" onclick="deleteDoc(event,'${doc.id}')" title="刪除"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 19 6"/><path d="M8 6V4h4v2"/><path d="M19 6l-1 12H4L3 6"/><line x1="10" y1="11" x2="10" y2="15"/><line x1="7" y1="11" x2="7.5" y2="15"/><line x1="13" y1="11" x2="12.5" y2="15"/></svg>刪除</button>
+          <span class="doc-chevron" id="chev-${doc.id}">▾</span>
+        </div>
+      </div>
+      <div class="doc-card-body" id="body-${doc.id}">
+        <!-- 預覽 / 編輯 Tab -->
+        <div class="doc-view-tabs">
+          <button class="doc-view-tab active" id="vtab-preview-${doc.id}" onclick="switchDocView('${doc.id}','preview')">👁 預覽</button>
+          <button class="doc-view-tab" id="vtab-edit-${doc.id}" onclick="switchDocView('${doc.id}','edit')">✏️ 編輯</button>
+        </div>
+        <!-- 預覽區 -->
+        <div class="doc-preview-wrap" id="dview-preview-${doc.id}">
+          <div class="md-content">${parseMarkdown(doc.content)}</div>
+        </div>
+        <!-- 編輯區 -->
+        <div class="doc-edit-wrap" id="dview-edit-${doc.id}" style="display:none">
+          <div class="doc-edit-toolbar">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <span class="doc-edit-label">標題</span>
+              <input class="doc-title-edit" id="title-edit-${doc.id}" value="${esc(doc.title)}" placeholder="文件標題" style="min-width:260px">
+              <select class="form-input" id="type-edit-${doc.id}" style="max-width:100px;padding:4px 8px;font-size:12px">
+                <option value="req" ${doc.type==='req'?'selected':''}>📋 需求</option>
+                <option value="opt" ${doc.type==='opt'?'selected':''}>⚡ 優化</option>
+              </select>
+            </div>
+          </div>
+          <div class="doc-edit-label" style="margin-bottom:6px">Markdown 內容</div>
+          <textarea class="doc-edit-textarea" id="content-edit-${doc.id}" oninput="autoResizeTA(this)">${esc(doc.content)}</textarea>
+        </div>
+        <div class="doc-card-footer">
+          <span style="font-size:11px;color:var(--text3)">上次更新：${doc.updatedAt || '—'}</span>
+          <div style="display:flex;gap:6px" id="footer-btns-${doc.id}">
+            <button class="btn btn-sm" id="save-btn-${doc.id}" style="display:none" onclick="saveDoc('${doc.id}')">💾 儲存</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('') + `<div class="doc-add-card" onclick="showPasteDocModal()">＋ 貼上解析新增文件</div>`;
+
+  // 初始化編輯區 textarea 高度 + 拖曳
+  setTimeout(()=>{
+    bbpDocs.forEach(doc=>{
+      const ta = document.getElementById('content-edit-'+doc.id);
+      if(ta) autoResizeTA(ta);
+    });
+    initDocDrag();
+  }, 50);
+}
+
+function initDocDrag() {
+  const container = document.getElementById('doc-list');
+  let dragSrc = null;
+  let dragAllowed = false;
+  container.querySelectorAll('.doc-card').forEach(card => {
+    // 只有從 drag-handle 開始才允許拖曳
+    const handle = card.querySelector('.drag-handle');
+    if(handle) {
+      handle.addEventListener('mousedown', () => { dragAllowed = true; });
+      handle.addEventListener('touchstart', () => { dragAllowed = true; }, {passive:true});
+    }
+    card.addEventListener('dragstart', e => {
+      if(!dragAllowed) { e.preventDefault(); return; }
+      dragAllowed = false;
+      dragSrc = card;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      container.querySelectorAll('.doc-card').forEach(c=>c.classList.remove('drag-over'));
+      // 重建 bbpDocs 順序
+      const newOrder = [];
+      container.querySelectorAll('.doc-card').forEach(c=>{
+        const id = c.id.replace('doc-','');
+        const d = bbpDocs.find(x=>x.id===id);
+        if(d) newOrder.push(d);
+      });
+      bbpDocs = newOrder;
+      saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+      showToast('✅ 排序已儲存','success');
+    });
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      if(card !== dragSrc && card.classList.contains('doc-card')) {
+        container.querySelectorAll('.doc-card').forEach(c=>c.classList.remove('drag-over'));
+        card.classList.add('drag-over');
+      }
+    });
+    card.addEventListener('drop', e => {
+      e.preventDefault();
+      if(dragSrc && dragSrc !== card) {
+        const cards = [...container.querySelectorAll('.doc-card')];
+        const srcIdx = cards.indexOf(dragSrc);
+        const tgtIdx = cards.indexOf(card);
+        if(srcIdx < tgtIdx) card.after(dragSrc);
+        else card.before(dragSrc);
+      }
+    });
+  });
+}
+
+function autoResizeTA(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.max(280, el.scrollHeight) + 'px';
+}
+
+// ── 展開/收合 ──
+function toggleDoc(id) {
+  const body = document.getElementById('body-'+id);
+  const chev = document.getElementById('chev-'+id);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  if(chev) chev.classList.toggle('open', !isOpen);
+}
+
+// ── 預覽/編輯切換 ──
+function switchDocView(id, view) {
+  const preview = document.getElementById('dview-preview-'+id);
+  const edit    = document.getElementById('dview-edit-'+id);
+  const tabPrev = document.getElementById('vtab-preview-'+id);
+  const tabEdit = document.getElementById('vtab-edit-'+id);
+  const saveBtn = document.getElementById('save-btn-'+id);
+  if(view === 'preview') {
+    preview.style.display = 'block'; edit.style.display = 'none';
+    tabPrev.classList.add('active'); tabEdit.classList.remove('active');
+    if(saveBtn) saveBtn.style.display = 'none';
+  } else {
+    preview.style.display = 'none'; edit.style.display = 'block';
+    tabPrev.classList.remove('active'); tabEdit.classList.add('active');
+    if(saveBtn) saveBtn.style.display = 'inline-flex';
+    setTimeout(()=>{ const ta = document.getElementById('content-edit-'+id); if(ta) autoResizeTA(ta); }, 50);
+  }
+}
+
+// ── 儲存編輯 ──
+function saveDoc(id) {
+  const doc = bbpDocs.find(d=>d.id===id);
+  if(!doc) return;
+  const newTitle   = document.getElementById('title-edit-'+id).value.trim();
+  const newType    = document.getElementById('type-edit-'+id).value;
+  const newContent = document.getElementById('content-edit-'+id).value;
+  if(!newTitle) { showToast('請輸入文件標題','error'); return; }
+  doc.title   = newTitle;
+  doc.type    = newType;
+  doc.content = newContent;
+  doc.updatedAt = new Date().toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+  renderDocs();
+  setTimeout(()=>{
+    const body = document.getElementById('body-'+id);
+    const chev = document.getElementById('chev-'+id);
+    if(body) body.classList.add('open');
+    if(chev) chev.classList.add('open');
+    switchDocView(id,'preview');
+  }, 30);
+  showToast('✅ 文件已儲存，正在同步至 Sheets...','success');
+  syncBbpToSheets();
+}
+
+// ── 刪除 ──
+function deleteDoc(e, id) {
+  e.stopPropagation();
+  const doc = bbpDocs.find(d=>d.id===id);
+  const title = doc ? doc.title : '此文件';
+  if(!confirm(`確定要刪除「${title}」？\n\n刪除後將同步至 Sheets，無法復原。`)) return;
+  bbpDocs = bbpDocs.filter(d=>d.id!==id);
+  saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+  renderDocs();
+  showToast('已刪除文件，正在同步至 Sheets...','success');
+  syncBbpToSheets(true);
+}
+
+// ── 手動新增 ──
+function showAddDocModal() {
+  document.getElementById('new-doc-title').value = '';
+  document.getElementById('new-doc-content').value = '';
+  openModal('add-doc-modal');
+}
+function confirmAddDoc() {
+  const title   = document.getElementById('new-doc-title').value.trim();
+  const type    = document.getElementById('new-doc-type').value;
+  const content = document.getElementById('new-doc-content').value.trim();
+  if(!title) { showToast('請輸入文件標題','error'); return; }
+  const now = new Date().toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  bbpDocs.push({ id:'doc_'+Date.now(), title, type, content, updatedAt:now });
+  saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+  renderDocs(); closeModal('add-doc-modal');
+  showToast('✅ 已新增文件，正在儲存至 Sheets...','success');
+  syncBbpToSheets();
+}
+
+// ── 貼上解析 ──
+function showPasteDocModal() {
+  document.getElementById('paste-doc-raw').value = '';
+  document.getElementById('paste-preview-bar').style.display = 'none';
+  openModal('paste-doc-modal');
+  setTimeout(()=>{
+    const ta = document.getElementById('paste-doc-raw');
+    ta.oninput = ()=>{ autoResizeTA(ta); previewPasteDoc(); };
+    ta.focus();
+  }, 100);
+}
+function clearPasteDoc() {
+  const ta = document.getElementById('paste-doc-raw');
+  ta.value = '';
+  ta.style.height = '260px';
+  document.getElementById('paste-preview-bar').style.display = 'none';
+  ta.focus();
+}
+function loadBbpTemplate() {
+  const tmpl = `# [專案名稱]
+## 階段點數總覽
+| 階段 | 點數 | 說明 |
+|---|---|---|
+| RA |  | 需求評估 |
+| SA |  | SA 分析、Code Review、開發完成測試 |
+| PD |  | 程式設計與開發 |
+| UAT |  | 使用者驗收測試 |
+| **合計** |  |  |
+## 點數說明
+### RA 點數（x 點）
+- 評估需求內容、影響範圍、時程與點數。
+### SA 點數（x 點）
+1. SA 分析（x 點）
+2. Code Review（x 點）
+3. 開發完成測試（x 點）
+### PD 點數（x 點）
+- 開發子功能說明
+### UAT 點數（x 點）
+- QA 測試。
+- 整合測試。`;
+  const ta = document.getElementById('paste-doc-raw');
+  ta.value = tmpl;
+  autoResizeTA(ta);
+  previewPasteDoc();
+  ta.focus();
+}
+function extractBbpTitle(raw) {
+  if(!raw) return '';
+  const h1 = raw.match(/^#\s+(.+)$/m);
+  if(h1) return h1[1].trim();
+  const h2 = raw.match(/^##\s+(.+)$/m);
+  if(h2) return h2[1].trim();
+  const lines = raw.split('\n'); return (lines.find(l=>l.trim())||'').trim().substring(0,60);
+}
+function extractBbpTotal(raw) {
+  if(!raw) return null;
+  const m = raw.match(/\|\s*\*{0,2}合計\*{0,2}\s*\|\s*\*{0,2}([\d.]+)\*{0,2}/);
+  return m ? m[1] : null;
+}
+function previewPasteDoc() {
+  const raw = document.getElementById('paste-doc-raw').value.trim();
+  const bar = document.getElementById('paste-preview-bar');
+  if(!raw) { bar.style.display='none'; return; }
+  document.getElementById('prev-title').textContent = extractBbpTitle(raw) || '（未偵測到標題）';
+  const pts = extractBbpTotal(raw);
+  document.getElementById('prev-pts').textContent = pts ? pts+' 點' : '（未偵測到合計）';
+  bar.style.display = 'flex';
+}
+function confirmPasteDoc() {
+  const raw  = document.getElementById('paste-doc-raw').value.trim();
+  const type = document.getElementById('paste-doc-type').value;
+  if(!raw) { showToast('請貼入 BBP 評估內容','error'); return; }
+  const title = extractBbpTitle(raw);
+  if(!title) { showToast('❌ 無法偵測標題，請確認第一行為 # 標題','error'); return; }
+  // 移除第一行 # 標題，保留其餘為 content
+  const content = raw.replace(/^#[^\n]+/,'').trim();
+  const now = new Date().toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  bbpDocs.push({ id:'doc_'+Date.now(), title, type, content:content||raw, updatedAt:now });
+  saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+  renderDocs(); closeModal('paste-doc-modal');
+  showToast(`✅ 已新增「${title.substring(0,25)}」，正在儲存至 Sheets...`,'success');
+  syncBbpToSheets();
+}
+
+// 簡易 Markdown 解析
+function parseMarkdown(md) {
+  if (!md) return '';
+
+  const lines = md.split('\n');
+  let html = '';
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // 空行 → 段落分隔
+    if (trimmed === '') {
+      html += '<div style="height:8px"></div>';
+      i++; continue;
+    }
+
+    // 表格：連續 | 開頭的行
+    if (trimmed.startsWith('|')) {
+      let tableLines = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      // 移除分隔行（|---|---|）
+      const sepIdx = tableLines.findIndex(l => /^\|[\s\-|:]+\|$/.test(l));
+      const headerLine = sepIdx > 0 ? tableLines[0] : null;
+      const bodyLines  = sepIdx > 0 ? tableLines.slice(sepIdx + 1) : tableLines;
+
+      let tableHtml = '<table>';
+      if (headerLine) {
+        const ths = headerLine.split('|').filter(s=>s.trim()).map(s=>`<th>${inlineMarkdown(s.trim())}</th>`).join('');
+        tableHtml += `<thead><tr>${ths}</tr></thead>`;
+      }
+      tableHtml += '<tbody>';
+      bodyLines.forEach(row => {
+        if (!row.trim()) return;
+        const tds = row.split('|').filter(s=>s.trim()).map(s=>`<td>${inlineMarkdown(s.trim())}</td>`).join('');
+        tableHtml += `<tr>${tds}</tr>`;
+      });
+      tableHtml += '</tbody></table>';
+      html += tableHtml;
+      continue;
+    }
+
+    // 無序清單
+    const ulMatch = line.match(/^(\s*)[-*] (.*)$/);
+    if (ulMatch) {
+      const indent = Math.floor(ulMatch[1].length / 2);
+      let listHtml = `<ul style="margin:4px 0 4px ${indent*20}px;padding-left:18px">`;
+      while (i < lines.length) {
+        const lm = lines[i].match(/^(\s*)[-*] (.*)$/);
+        if (!lm) break;
+        const lvl = Math.floor(lm[1].length / 2);
+        listHtml += `<li style="margin-bottom:3px;margin-left:${(lvl-indent)*20}px">${inlineMarkdown(lm[2].trim())}</li>`;
+        i++;
+      }
+      listHtml += '</ul>';
+      html += listHtml;
+      continue;
+    }
+
+    // 有序清單
+    const olMatch = line.match(/^(\s*)(\d+)\. (.*)$/);
+    if (olMatch) {
+      const indent = Math.floor(olMatch[1].length / 2);
+      let listHtml = `<ol style="margin:4px 0 4px ${indent*20}px;padding-left:20px">`;
+      while (i < lines.length) {
+        const lm = lines[i].match(/^(\s*)(\d+)\. (.*)$/);
+        if (!lm) break;
+        const lvl = Math.floor(lm[1].length / 2);
+        listHtml += `<li style="margin-bottom:3px;margin-left:${(lvl-indent)*20}px">${inlineMarkdown(lm[3])}</li>`;
+        i++;
+      }
+      listHtml += '</ol>';
+      html += listHtml;
+      continue;
+    }
+
+    // 標題 h1
+    const h1 = trimmed.match(/^# (.+)$/);
+    if (h1) { html += `<h1 class="md-h1">${inlineMarkdown(h1[1])}</h1>`; i++; continue; }
+
+    // 標題 h2
+    const h2 = trimmed.match(/^## (.+)$/);
+    if (h2) { html += `<h2 class="md-h2">${inlineMarkdown(h2[1])}</h2>`; i++; continue; }
+
+    // 標題 h3
+    const h3 = trimmed.match(/^### (.+)$/);
+    if (h3) { html += `<h3 class="md-h3">${inlineMarkdown(h3[1])}</h3>`; i++; continue; }
+
+    // 標題 h4
+    const h4 = trimmed.match(/^#### (.+)$/);
+    if (h4) { html += `<h4 class="md-h4">${inlineMarkdown(h4[1])}</h4>`; i++; continue; }
+
+    // 水平線
+    if (/^---+$/.test(trimmed)) { html += '<hr style="border:none;border-top:1px solid #e2e8f0;margin:12px 0">'; i++; continue; }
+
+    // 一般段落
+    html += `<p style="margin:0 0 8px;font-size:13px;line-height:1.8;color:#1e293b">${inlineMarkdown(trimmed)}</p>`;
+    i++;
+  }
+
+  return html;
+}
+
+// 行內 Markdown 處理（粗體、斜體、code、連結）
+function inlineMarkdown(text) {
+  if (!text) return '';
+  // HTML 跳脫
+  let s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // 粗體 **text**
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // 斜體 *text*
+  s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // 行內 code `text`
+  s = s.replace(/`([^`]+)`/g, '<code style="background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;color:#1d4ed8">$1</code>');
+  // 連結 [text](url)
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color:#2563eb;text-decoration:underline">$1</a>');
+  return s;
+}
+
+/* ══════════════════════════════════════
+   BBP 進度
+══════════════════════════════════════ */
+const STATUS_OPTS = ['','RA分析中','RA分析完','SA分析中','SA分析完','PD開發中','PD開發完','SA測試中','SA測試完','QA測試中','QA測試完','USER測試中','USER測試完','待上線','已上線'];
+const STATUS_CLASS = {'RA分析中':'s-ra-ing','RA分析完':'s-ra-done','SA分析中':'s-sa-ing','SA分析完':'s-sa-done','PD開發中':'s-pd-ing','PD開發完':'s-pd-done','SA測試中':'s-sa-test-ing','SA測試完':'s-sa-test-done','QA測試中':'s-qa-ing','QA測試完':'s-qa-done','USER測試中':'s-user-ing','USER測試完':'s-user-done','待上線':'s-pending','已上線':'s-online'};
+
+function renderProgress() {
+  renderTable('opt'); renderTable('req');
+}
+
+// 日期格式轉換：M/D → yyyy-MM-dd（for input[type=date]）
+function dateToInputVal(str) {
+  if(!str) return '';
+  str = String(str).trim();
+  const thisYear = new Date().getFullYear();
+
+  // 已是 yyyy-MM-dd（標準 input[type=date] 格式）
+  if(/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+
+  // M/D 或 MM/DD（原存格式，如 4/16、12/31）
+  const md = str.match(/^(\d{1,2})\/(\d{1,2})$/);
+  if(md) return `${thisYear}-${String(md[1]).padStart(2,'0')}-${String(md[2]).padStart(2,'0')}`;
+
+  // yyyy/M/D 或 yyyy/MM/DD（Sheets 常見格式）
+  const ymd1 = str.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+  if(ymd1) return `${ymd1[1]}-${String(ymd1[2]).padStart(2,'0')}-${String(ymd1[3]).padStart(2,'0')}`;
+
+  // yyyy-M-D（單位數月日）
+  const ymd2 = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if(ymd2) return `${ymd2[1]}-${String(ymd2[2]).padStart(2,'0')}-${String(ymd2[3]).padStart(2,'0')}`;
+
+  // M/D/yyyy（美式）
+  const mdy = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(mdy) return `${mdy[3]}-${String(mdy[1]).padStart(2,'0')}-${String(mdy[2]).padStart(2,'0')}`;
+
+  // GAS Date.toString() 長格式，如 "Mon Apr 16 2025 00:00:00 GMT+0800 ..."
+  // 直接用 Date 解析，但取本地時間（避免時區偏移）
+  const d = new Date(str);
+  if(!isNaN(d.getTime())) {
+    const y = d.getFullYear();
+    const mo = String(d.getMonth() + 1).padStart(2, '0');
+    const dy = String(d.getDate()).padStart(2, '0');
+    return `${y}-${mo}-${dy}`;
+  }
+
+  return '';
+}
+// yyyy-MM-dd → M/D（顯示用）
+function inputValToDate(str) {
+  if(!str) return '';
+  const m = str.match(/^\d{4}-(\d{2})-(\d{2})$/);
+  if(m) return `${parseInt(m[1])}/${parseInt(m[2])}`;
+  return str;
+}
+
+function renderTable(type) {
+  const tbody = document.getElementById('tbody-'+type);
+  const rows = progressData[type] || [];
+  tbody.innerHTML = rows.map(r=>`
+    <tr draggable="true" data-row-id="${r.id}" data-row-type="${type}">
+      <td style="cursor:default"><span class="drag-handle" title="拖曳排序" style="display:inline-block;vertical-align:middle">⠿</span></td>
+      <td><input class="cell-input" value="${esc(r.mis)}" onchange="updateProgressCell('${type}','${r.id}','mis',this.value)" placeholder="需求單號"></td>
+      <td><input class="cell-input" value="${esc(r.name)}" onchange="updateProgressCell('${type}','${r.id}','name',this.value)" placeholder="需求名稱"></td>
+      <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.sa)}" onchange="updateProgressCell('${type}','${r.id}','sa',inputValToDate(this.value))" title="SA預計完成日"></td>
+      <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.pd)}" onchange="updateProgressCell('${type}','${r.id}','pd',inputValToDate(this.value))" title="PD預計完成日"></td>
+      <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.test)}" onchange="updateProgressCell('${type}','${r.id}','test',inputValToDate(this.value))" title="TEST預計完成日"></td>
+      <td>
+        <select class="status-select ${STATUS_CLASS[r.status]||''}" onchange="updateProgressCell('${type}','${r.id}','status',this.value);this.className='status-select '+(STATUS_CLASS[this.value]||'')">
+          ${STATUS_OPTS.map(s=>`<option value="${s}" ${r.status===s?'selected':''}>${s||'—'}</option>`).join('')}
+        </select>
+      </td>
+      <td><input class="cell-input" value="${esc(r.itsr)}" onchange="updateProgressCell('${type}','${r.id}','itsr',this.value)" placeholder="ITSR狀態"></td>
+      <td><button class="row-del-btn" onclick="deleteProgressRow('${type}','${r.id}')">✕</button></td>
+    </tr>
+  `).join('');
+  initRowDrag(type);
+}
+
+function initRowDrag(type) {
+  const tbody = document.getElementById('tbody-'+type);
+  let dragSrc = null;
+  let dragAllowed = false;
+  tbody.querySelectorAll('tr[draggable]').forEach(row => {
+    const handle = row.querySelector('.drag-handle');
+    if(handle) {
+      handle.addEventListener('mousedown', () => { dragAllowed = true; });
+    }
+    row.addEventListener('dragstart', e => {
+      if(!dragAllowed) { e.preventDefault(); return; }
+      dragAllowed = false;
+      dragSrc = row;
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      tbody.querySelectorAll('tr').forEach(r=>r.classList.remove('drag-over'));
+      // 重建順序：用 data-row-id 對應資料，避免 index 過期
+      const newOrder = [];
+      tbody.querySelectorAll('tr[data-row-id]').forEach(r=>{
+        const rowId = r.dataset.rowId;
+        const item = progressData[type].find(x=>x.id===rowId);
+        if(item) newOrder.push(item);
+      });
+      progressData[type] = newOrder;
+      saveToStorage(STORAGE_KEY_PROGRESS, progressData);
+      renderTable(type);
+      showToast('✅ 排序已儲存','success');
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      if(row !== dragSrc) {
+        tbody.querySelectorAll('tr').forEach(r=>r.classList.remove('drag-over'));
+        row.classList.add('drag-over');
+      }
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      if(dragSrc && dragSrc !== row) {
+        const rows = [...tbody.querySelectorAll('tr[draggable]')];
+        const srcIdx = rows.indexOf(dragSrc);
+        const tgtIdx = rows.indexOf(row);
+        if(srcIdx < tgtIdx) row.after(dragSrc);
+        else row.before(dragSrc);
+      }
+    });
+  });
+}
+function updateProgressCell(type, rowId, field, val) {
+  if(!progressData[type]) progressData[type]=[];
+  const row = progressData[type].find(r => r.id === rowId);
+  if(row) row[field] = val;
+  saveToStorage(STORAGE_KEY_PROGRESS, progressData);
+}
+function addProgressRow(type) {
+  if(!progressData[type]) progressData[type]=[];
+  progressData[type].push({id:'r'+Date.now(),mis:'',name:'',sa:'',pd:'',test:'',status:'',itsr:''});
+  saveToStorage(STORAGE_KEY_PROGRESS, progressData);
+  renderTable(type);
+}
+function deleteProgressRow(type, rowId) {
+  if(!confirm('確定要刪除此列？')) return;
+  progressData[type] = progressData[type].filter(r => r.id !== rowId);
+  saveToStorage(STORAGE_KEY_PROGRESS, progressData);
+  renderTable(type);
+}
+
+/* ══════════════════════════════════════
+   BBP 進度 — 儲存至 Sheets / 從 Sheets 載入
+══════════════════════════════════════ */
+async function syncProgressToSheets() {
+  if(isBusy) return;
+  const totalRows = (progressData.opt||[]).length + (progressData.req||[]).length;
+  if(!totalRows) { showToast('尚無進度資料可同步','error'); return; }
+  isBusy = true;
+  const btn = document.getElementById('progress-sync-btn');
+  const origHTML = btn ? btn.innerHTML : '';
+  if(btn) { btn.textContent = '⏳ 儲存中...'; btn.disabled = true; }
+  showLoading('儲存資料至 Google Sheets...', 'progress-status-bar');
+  try {
+    const result = await callGAS({ action: 'saveProgress', data: JSON.stringify(progressData) });
+    hideLoading();
+    if(result && result.ok) {
+      const total = (progressData.opt||[]).length + (progressData.req||[]).length;
+      setStatus('ok', `已儲存 ${total} 筆進度資料至 Sheets`, 'progress-status-bar');
+      showToast('✅ 已儲存進度至 Sheets', 'success');
     } else {
-      throw new Error(result.message);
+      throw new Error((result && result.message) || '儲存失敗');
     }
   } catch(e) {
-    setStatus('error', '儲存失敗：' + e.message);
-    toast('❌ 儲存失敗，請確認 Apps Script 網址', 'error');
+    hideLoading();
+    setStatus('error', '儲存失敗：' + e.message, 'progress-status-bar');
+    showToast('❌ 儲存失敗：' + e.message, 'error');
   }
+  if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
+  isBusy = false;
 }
 
-/* ── Output ── */
-function generateText() {
-  syncFields();
-  let out = `${getDateLabel()}\n\n`;
-  members.forEach((m,i) => {
-    out += `* [${i+1}] ${m.name}\n`;
-    out += `昨天:\n${m.yesterday || '（無）'}\n`;
-    out += `今天:\n${m.today || '（無）'}\n\n`;
-  });
-  document.getElementById('output-body').textContent = out.trim();
-  const panel = document.getElementById('output-panel');
-  panel.classList.add('show');
-  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
-}
-
-function copyText() {
-  const text = document.getElementById('output-body').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-btn');
-    btn.textContent = '已複製 ✓';
-    setTimeout(() => btn.textContent = '複製', 2000);
-  });
-}
-
-/* ── Toast ── */
-function toast(msg, type) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast show ' + (type||'');
-  setTimeout(() => el.className = 'toast', 3000);
-}
-
-/* ── Keyboard ── */
-document.addEventListener('keydown', e => {
-  if (e.target.id === 'add-input') {
-    if (e.key === 'Enter') confirmAdd();
-    if (e.key === 'Escape') cancelAdd();
+async function loadProgressFromSheets() {
+  if(isBusy) return;
+  isBusy = true;
+  const btn = document.getElementById('progress-load-btn');
+  const origHTML = btn ? btn.innerHTML : '';
+  if(btn) { btn.textContent = '⏳ 載入中...'; btn.disabled = true; }
+  showLoading('從 Google Sheets 載入資料中...', 'progress-status-bar');
+  try {
+    const result = await callGAS({ action: 'loadProgress' });
+    if(result && result.ok && result.data) {
+      const loaded = result.data;
+      if((!loaded.opt || !loaded.opt.length) && (!loaded.req || !loaded.req.length)) {
+        hideLoading();
+        setStatus('error', 'Sheets 上尚無 BBP 進度資料', 'progress-status-bar');
+        showToast('📭 Sheets 上尚無 BBP 進度資料', 'error');
+      } else {
+        progressData = loaded;
+        saveToStorage(STORAGE_KEY_PROGRESS, progressData);
+        renderProgress();
+        const total = (loaded.opt||[]).length + (loaded.req||[]).length;
+        hideLoading();
+        setStatus('ok', `已從 Sheets 載入 ${total} 筆進度資料`, 'progress-status-bar');
+        showToast(`✅ 已從 Sheets 載入 ${total} 筆進度資料`, 'success');
+      }
+    } else {
+      throw new Error((result && result.message) || '載入失敗');
+    }
+  } catch(e) {
+    hideLoading();
+    setStatus('error', '載入失敗：' + e.message, 'progress-status-bar');
+    showToast('❌ 載入失敗：' + e.message, 'error');
   }
+  if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
+  isBusy = false;
+}
+
+/* ══════════════════════════════════════
+   BBP 產值評估 — 儲存至 Sheets / 從 Sheets 載入
+══════════════════════════════════════ */
+async function syncBbpToSheets(force) {
+  if(isBusy) return;
+  if(!force && !bbpDocs.length) { showToast('尚無文件可同步','error'); return; }
+  isBusy = true;
+  const btn = document.getElementById('bbp-sync-btn');
+  const origHTML = btn ? btn.innerHTML : '';
+  if(btn) { btn.textContent = '⏳ 儲存中...'; btn.disabled = true; }
+  showLoading('儲存資料至 Google Sheets...', 'bbp-status-bar');
+  try {
+    const result = await callGAS({ action: 'saveBbp', docs: JSON.stringify(bbpDocs) });
+    hideLoading();
+    if(result && result.ok) {
+      setStatus('ok', `已儲存 ${bbpDocs.length} 份文件至 Sheets`, 'bbp-status-bar');
+      showToast(`✅ 已儲存 ${bbpDocs.length} 份文件至 Sheets`, 'success');
+    } else {
+      throw new Error((result && result.message) || '儲存失敗');
+    }
+  } catch(e) {
+    hideLoading();
+    setStatus('error', '儲存失敗：' + e.message, 'bbp-status-bar');
+    showToast('❌ 儲存失敗：' + e.message, 'error');
+  }
+  if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
+  isBusy = false;
+}
+
+async function loadBbpFromSheets() {
+  if(isBusy) return;
+  isBusy = true;
+  const btn = document.getElementById('bbp-load-btn');
+  const origHTML = btn ? btn.innerHTML : '';
+  if(btn) { btn.textContent = '⏳ 載入中...'; btn.disabled = true; }
+  showLoading('從 Google Sheets 載入資料中...', 'bbp-status-bar');
+  try {
+    const result = await callGAS({ action: 'loadBbp' });
+    if(result && result.ok && Array.isArray(result.docs)) {
+      if(result.docs.length === 0) {
+        hideLoading();
+        setStatus('error', 'Sheets 上尚無 BBP 資料', 'bbp-status-bar');
+        showToast('📭 Sheets 上尚無 BBP 資料', 'error');
+      } else {
+        bbpDocs = result.docs;
+        saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+        renderDocs();
+        hideLoading();
+        setStatus('ok', `已從 Sheets 載入 ${result.docs.length} 份文件`, 'bbp-status-bar');
+        showToast(`✅ 已從 Sheets 載入 ${result.docs.length} 份文件`, 'success');
+      }
+    } else {
+      throw new Error((result && result.message) || '載入失敗');
+    }
+  } catch(e) {
+    hideLoading();
+    setStatus('error', '載入失敗：' + e.message, 'bbp-status-bar');
+    showToast('❌ 載入失敗：' + e.message, 'error');
+  }
+  if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
+  isBusy = false;
+}
+
+/* ══════════════════════════════════════
+   Toast
+══════════════════════════════════════ */
+function showToast(msg,type) {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show'+(type?' '+type:'');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.className='toast',3200);
+}
+
+/* ══════════════════════════════════════
+   鍵盤
+══════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    ['parse-modal','add-theme-modal','add-doc-modal','paste-doc-modal'].forEach(id=>{
+      if(document.getElementById(id).classList.contains('show')) closeModal(id);
+    });
+    cancelAdd();
+  }
+  if(e.target.id==='add-input'&&e.key==='Enter') confirmAdd();
 });
 
-/* ── Init ── */
-loadConfig();
-initDate();
-render();
+/* ══════════════════════════════════════
+   啟動
+══════════════════════════════════════ */
+renderHomeThemes();
+showPage('home');
 </script>
-</body>
-</html>
+
+
+</body></html>
