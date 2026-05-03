@@ -51,7 +51,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .home-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
 .home-title{font-size:22px;font-weight:700;color:var(--text)}
 .home-subtitle{font-size:13px;color:var(--text2);margin-top:3px}
-.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:2rem}
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:2rem}
 .theme-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .theme-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0}
 .theme-card.color-blue::before{background:linear-gradient(90deg,#2563eb,#7c3aed)}
@@ -383,8 +383,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 @media(max-width:480px){.login-body{padding:1.5rem}.login-header{padding:1.5rem}}
 
   .hero-illus{display:none}
-  .theme-grid{grid-template-columns:1fr}
-  .member-body{grid-template-columns:1fr}
   .section:first-child{border-right:none;border-bottom:1px solid var(--border)}
   .progress-table-wrap{overflow-x:auto}
 }
