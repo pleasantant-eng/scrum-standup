@@ -299,7 +299,89 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .toast.success{border-color:#a7f3d0;color:#059669;background:#ecfdf5}
 .toast.error{border-color:#fecaca;color:#dc2626;background:#fef2f2}
 
-@media(max-width:640px){
+/* ══════════════════════════════════════
+   登入頁面
+══════════════════════════════════════ */
+.login-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(135deg,#1e3a5f 0%,#1e40af 55%,#312e81 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  transition:opacity 0.4s,visibility 0.4s;
+}
+.login-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.login-overlay::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.login-box{
+  background:#fff;border-radius:20px;
+  width:100%;max-width:400px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.1);
+  overflow:hidden;position:relative;z-index:1;
+  animation:loginSlideUp 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes loginSlideUp{from{opacity:0;transform:translateY(40px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.login-header{
+  background:linear-gradient(135deg,#1e3a5f 0%,#1e40af 100%);
+  padding:2rem 2rem 1.75rem;text-align:center;
+}
+.login-brand-icon{
+  width:64px;height:64px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.3);
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;margin:0 auto 14px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+.login-brand-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.login-brand-sub{font-size:12px;color:rgba(255,255,255,0.6)}
+.login-body{padding:2rem}
+.login-field{margin-bottom:1.1rem}
+.login-label{
+  display:block;font-size:12px;font-weight:600;
+  color:var(--text2);margin-bottom:6px;letter-spacing:0.04em;text-transform:uppercase;
+}
+.login-input{
+  width:100%;background:#f8fafc;border:1.5px solid #e2e8f0;
+  border-radius:10px;padding:11px 14px;
+  font-size:14px;font-family:var(--font);color:var(--text);
+  transition:border-color 0.15s,box-shadow 0.15s,background 0.15s;
+}
+.login-input:focus{
+  outline:none;border-color:var(--accent);background:#fff;
+  box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+}
+.login-input.error{border-color:var(--red);background:#fff5f5}
+.login-error{
+  display:none;align-items:center;gap:6px;
+  background:#fef2f2;border:1px solid #fecaca;
+  border-radius:8px;padding:9px 12px;
+  font-size:12px;color:#991b1b;margin-bottom:14px;font-weight:500;
+}
+.login-error.show{display:flex}
+.login-btn{
+  width:100%;background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  border:none;color:#fff;font-family:var(--font);
+  font-size:15px;font-weight:700;padding:13px;border-radius:10px;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.01em;
+  box-shadow:0 4px 12px rgba(37,99,235,0.35);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.login-btn:hover:not(:disabled){background:linear-gradient(135deg,#1d4ed8,#1e40af);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,0.4)}
+.login-btn:active{transform:translateY(0)}
+.login-btn:disabled{opacity:0.7;cursor:not-allowed;transform:none}
+.login-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top:2px solid #fff;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
+.login-btn.loading .login-spinner{display:block}
+.login-btn.loading .login-btn-text{opacity:0.8}
+.login-footer{
+  text-align:center;padding:0 2rem 1.5rem;
+  font-size:11px;color:var(--text3);
+}
+.login-footer span{display:inline-flex;align-items:center;gap:4px}
+@media(max-width:480px){.login-body{padding:1.5rem}.login-header{padding:1.5rem}}
+
   .hero-illus{display:none}
   .theme-grid{grid-template-columns:1fr}
   .member-body{grid-template-columns:1fr}
@@ -404,6 +486,40 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════
+     登入頁面 Overlay
+══════════════════════════════════════ -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-brand-icon">🏭</div>
+      <div class="login-brand-title">智能倉儲開發團隊</div>
+      <div class="login-brand-sub">Daily Standup Tracker · 請先登入以繼續</div>
+    </div>
+    <div class="login-body">
+      <div class="login-error" id="login-error">
+        <span>⚠️</span>
+        <span id="login-error-msg">帳號或密碼錯誤</span>
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="login-username">帳號</label>
+        <input class="login-input" id="login-username" type="text" placeholder="請輸入帳號" autocomplete="username" autocapitalize="none">
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="login-password">密碼</label>
+        <input class="login-input" id="login-password" type="password" placeholder="請輸入密碼" autocomplete="current-password">
+      </div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">
+        <div class="login-spinner"></div>
+        <span class="login-btn-text">登　入</span>
+      </button>
+    </div>
+    <div class="login-footer">
+      <span>🔒 帳號資訊由 Google Sheets 管理</span>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════
      共用 Hero Banner
@@ -782,6 +898,65 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 
 <script>
 /* ══════════════════════════════════════
+   登入驗證
+══════════════════════════════════════ */
+const SESSION_KEY = 'wms_auth_user';
+
+function checkSession() {
+  const user = sessionStorage.getItem(SESSION_KEY);
+  if (user) {
+    document.getElementById('login-overlay').classList.add('hidden');
+  }
+  // 若沒有 session，overlay 保持顯示
+}
+
+async function doLogin() {
+  const usernameEl = document.getElementById('login-username');
+  const passwordEl = document.getElementById('login-password');
+  const btn        = document.getElementById('login-btn');
+  const errorEl    = document.getElementById('login-error');
+  const errorMsg   = document.getElementById('login-error-msg');
+
+  const username = usernameEl.value.trim();
+  const password = passwordEl.value.trim();
+
+  // 清除錯誤
+  errorEl.classList.remove('show');
+  usernameEl.classList.remove('error');
+  passwordEl.classList.remove('error');
+
+  if (!username) { usernameEl.classList.add('error'); usernameEl.focus(); return; }
+  if (!password) { passwordEl.classList.add('error'); passwordEl.focus(); return; }
+
+  // 顯示 loading
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  try {
+    const result = await callGAS({ action: 'auth', username, password });
+    if (result && result.ok) {
+      sessionStorage.setItem(SESSION_KEY, result.user || username);
+      const overlay = document.getElementById('login-overlay');
+      overlay.classList.add('hidden');
+    } else {
+      const msg = (result && result.message) || '帳號或密碼錯誤';
+      errorMsg.textContent = msg;
+      errorEl.classList.add('show');
+      passwordEl.value = '';
+      usernameEl.classList.add('error');
+      passwordEl.classList.add('error');
+      usernameEl.focus();
+    }
+  } catch(e) {
+    errorMsg.textContent = '連線失敗，請稍後再試';
+    errorEl.classList.add('show');
+  }
+
+  btn.disabled = false;
+  btn.classList.remove('loading');
+}
+
+/* ══════════════════════════════════════
    全域常數
 ══════════════════════════════════════ */
 const WD = ['日','一','二','三','四','五','六'];
@@ -811,6 +986,8 @@ let currentPage = 'home';
 let members = DEFAULT_NAMES.map((n,i)=>({id:i+1,name:n,yesterday:'',today:''}));
 let nid = DEFAULT_NAMES.length + 1;
 let isBusy = false;
+let isBusyBbp = false;
+let isBusyProgress = false;
 let toastTimer = null;
 let selectedIcon = '📋';
 let selectedColor = 'blue';
@@ -913,7 +1090,7 @@ function initBbp() {
   renderDocs();
   if(!bbpInited) {
     bbpInited = true;
-    loadBbpFromSheets();
+    loadBbpFromSheets().catch(()=>{ bbpInited = false; });
   }
 }
 
@@ -922,7 +1099,7 @@ function initProgress() {
   renderProgress();
   if(!progressInited) {
     progressInited = true;
-    loadProgressFromSheets();
+    loadProgressFromSheets().catch(()=>{ progressInited = false; });
   }
 }
 
@@ -1046,11 +1223,18 @@ function setStatus(state, msg, barId) {
   if(msgEl) msgEl.textContent = msg;
 }
 function showLoading(msg, barId) {
-  document.getElementById('loading-text').textContent = msg||'處理中...';
-  document.getElementById('loading-overlay').classList.add('show');
   setStatus('loading', msg||'處理中...', barId);
+  // 只有沒指定 barId 時才顯示全頁遮罩（Scrum 頁面）
+  if(!barId) {
+    document.getElementById('loading-text').textContent = msg||'處理中...';
+    document.getElementById('loading-overlay').classList.add('show');
+  }
 }
-function hideLoading() { document.getElementById('loading-overlay').classList.remove('show'); }
+function hideLoading(barId) {
+  if(!barId) {
+    document.getElementById('loading-overlay').classList.remove('show');
+  }
+}
 
 function safeStr(s) { return s==null?'':String(s); }
 function esc(s) {
@@ -1176,9 +1360,9 @@ async function fetchWithTimeout(url, ms, options) {
   return Promise.race([fetchPromise, timeoutPromise]);
 }
 async function callGAS(params, retry=1) {
-  // 只有 saveBbp（docs）和 saveProgress（data 且為大 JSON）才走 POST，避免 URL 超長
-  // Scrum 的 save 雖然也有 data key，但資料量小，也走 POST 也沒問題（GAS 兩種都支援）
-  const needsPost = params.docs !== undefined || params.data !== undefined;
+  // auth 一律走 POST（密碼不可出現在 URL）
+  // saveBbp（docs）和 saveProgress/save（data）因資料量大也走 POST
+  const needsPost = params.action === 'auth' || params.docs !== undefined || params.data !== undefined;
   let res;
   try {
     if(needsPost) {
@@ -1648,6 +1832,7 @@ function extractBbpTitle(raw) {
 }
 function extractBbpTotal(raw) {
   if(!raw) return null;
+  // 支援「| 合計 | 12.0 |」、「| **合計** | **12.0** |」等格式
   const m = raw.match(/\|\s*\*{0,2}合計\*{0,2}\s*\|\s*\*{0,2}([\d.]+)\*{0,2}/);
   return m ? m[1] : null;
 }
@@ -1708,13 +1893,16 @@ function parseMarkdown(md) {
 
       let tableHtml = '<table>';
       if (headerLine) {
-        const ths = headerLine.split('|').filter(s=>s.trim()).map(s=>`<th>${inlineMarkdown(s.trim())}</th>`).join('');
+        // 用 slice(1,-1) 去除首尾的 | 再 split，保留空儲存格
+        const cols = headerLine.replace(/^\||\|$/g,'').split('|');
+        const ths = cols.map(s=>`<th>${inlineMarkdown(s.trim())}</th>`).join('');
         tableHtml += `<thead><tr>${ths}</tr></thead>`;
       }
       tableHtml += '<tbody>';
       bodyLines.forEach(row => {
-        if (!row.trim()) return;
-        const tds = row.split('|').filter(s=>s.trim()).map(s=>`<td>${inlineMarkdown(s.trim())}</td>`).join('');
+        if (!row.trim() || /^\|[\s\-|:]+\|$/.test(row.trim())) return;
+        const cols = row.replace(/^\||\|$/g,'').split('|');
+        const tds = cols.map(s=>`<td>${inlineMarkdown(s.trim())}</td>`).join('');
         tableHtml += `<tr>${tds}</tr>`;
       });
       tableHtml += '</tbody></table>';
@@ -1727,6 +1915,9 @@ function parseMarkdown(md) {
     if (ulMatch) {
       const indent = Math.floor(ulMatch[1].length / 2);
       let listHtml = `<ul style="margin:4px 0 4px ${indent*20}px;padding-left:18px">`;
+      // 先處理觸發行
+      listHtml += `<li style="margin-bottom:3px">${inlineMarkdown(ulMatch[2].trim())}</li>`;
+      i++;
       while (i < lines.length) {
         const lm = lines[i].match(/^(\s*)[-*] (.*)$/);
         if (!lm) break;
@@ -1744,6 +1935,9 @@ function parseMarkdown(md) {
     if (olMatch) {
       const indent = Math.floor(olMatch[1].length / 2);
       let listHtml = `<ol style="margin:4px 0 4px ${indent*20}px;padding-left:20px">`;
+      // 先處理觸發行
+      listHtml += `<li style="margin-bottom:3px">${inlineMarkdown(olMatch[3])}</li>`;
+      i++;
       while (i < lines.length) {
         const lm = lines[i].match(/^(\s*)(\d+)\. (.*)$/);
         if (!lm) break;
@@ -1813,14 +2007,24 @@ function renderProgress() {
 function dateToInputVal(str) {
   if(!str) return '';
   str = String(str).trim();
-  const thisYear = new Date().getFullYear();
+  const now = new Date();
+  const thisYear = now.getFullYear();
 
   // 已是 yyyy-MM-dd（標準 input[type=date] 格式）
   if(/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
 
-  // M/D 或 MM/DD（原存格式，如 4/16、12/31）
+  // M/D 或 MM/DD（原存格式，如 4/16、12/31）- 智慧判斷年份
   const md = str.match(/^(\d{1,2})\/(\d{1,2})$/);
-  if(md) return `${thisYear}-${String(md[1]).padStart(2,'0')}-${String(md[2]).padStart(2,'0')}`;
+  if(md) {
+    const m = parseInt(md[1]), d = parseInt(md[2]);
+    // 若月份比現在早超過 6 個月，可能是明年；若晚超過 6 個月，可能是去年
+    // 但因為這是計劃日期，優先用今年，再考慮±1年
+    const candidate = new Date(thisYear, m-1, d);
+    const diffMs = candidate - now;
+    let year = thisYear;
+    if(diffMs < -180*24*3600*1000) year = thisYear + 1; // 超過 6 個月前 → 用明年
+    return `${year}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  }
 
   // yyyy/M/D 或 yyyy/MM/DD（Sheets 常見格式）
   const ymd1 = str.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
@@ -1834,8 +2038,7 @@ function dateToInputVal(str) {
   const mdy = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if(mdy) return `${mdy[3]}-${String(mdy[1]).padStart(2,'0')}-${String(mdy[2]).padStart(2,'0')}`;
 
-  // GAS Date.toString() 長格式，如 "Mon Apr 16 2025 00:00:00 GMT+0800 ..."
-  // 直接用 Date 解析，但取本地時間（避免時區偏移）
+  // GAS Date.toString() 長格式或其他可被 Date 解析的格式
   const d = new Date(str);
   if(!isNaN(d.getTime())) {
     const y = d.getFullYear();
@@ -1950,17 +2153,17 @@ function deleteProgressRow(type, rowId) {
    BBP 進度 — 儲存至 Sheets / 從 Sheets 載入
 ══════════════════════════════════════ */
 async function syncProgressToSheets() {
-  if(isBusy) return;
+  if(isBusyProgress) return;
   const totalRows = (progressData.opt||[]).length + (progressData.req||[]).length;
   if(!totalRows) { showToast('尚無進度資料可同步','error'); return; }
-  isBusy = true;
+  isBusyProgress = true;
   const btn = document.getElementById('progress-sync-btn');
   const origHTML = btn ? btn.innerHTML : '';
   if(btn) { btn.textContent = '⏳ 儲存中...'; btn.disabled = true; }
   showLoading('儲存資料至 Google Sheets...', 'progress-status-bar');
   try {
     const result = await callGAS({ action: 'saveProgress', data: JSON.stringify(progressData) });
-    hideLoading();
+    hideLoading('progress-status-bar');
     if(result && result.ok) {
       const total = (progressData.opt||[]).length + (progressData.req||[]).length;
       setStatus('ok', `已儲存 ${total} 筆進度資料至 Sheets`, 'progress-status-bar');
@@ -1969,17 +2172,17 @@ async function syncProgressToSheets() {
       throw new Error((result && result.message) || '儲存失敗');
     }
   } catch(e) {
-    hideLoading();
+    hideLoading('progress-status-bar');
     setStatus('error', '儲存失敗：' + e.message, 'progress-status-bar');
     showToast('❌ 儲存失敗：' + e.message, 'error');
   }
   if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
-  isBusy = false;
+  isBusyProgress = false;
 }
 
 async function loadProgressFromSheets() {
-  if(isBusy) return;
-  isBusy = true;
+  if(isBusyProgress) return;
+  isBusyProgress = true;
   const btn = document.getElementById('progress-load-btn');
   const origHTML = btn ? btn.innerHTML : '';
   if(btn) { btn.textContent = '⏳ 載入中...'; btn.disabled = true; }
@@ -1989,7 +2192,7 @@ async function loadProgressFromSheets() {
     if(result && result.ok && result.data) {
       const loaded = result.data;
       if((!loaded.opt || !loaded.opt.length) && (!loaded.req || !loaded.req.length)) {
-        hideLoading();
+        hideLoading('progress-status-bar');
         setStatus('error', 'Sheets 上尚無 BBP 進度資料', 'progress-status-bar');
         showToast('📭 Sheets 上尚無 BBP 進度資料', 'error');
       } else {
@@ -1997,7 +2200,7 @@ async function loadProgressFromSheets() {
         saveToStorage(STORAGE_KEY_PROGRESS, progressData);
         renderProgress();
         const total = (loaded.opt||[]).length + (loaded.req||[]).length;
-        hideLoading();
+        hideLoading('progress-status-bar');
         setStatus('ok', `已從 Sheets 載入 ${total} 筆進度資料`, 'progress-status-bar');
         showToast(`✅ 已從 Sheets 載入 ${total} 筆進度資料`, 'success');
       }
@@ -2005,28 +2208,28 @@ async function loadProgressFromSheets() {
       throw new Error((result && result.message) || '載入失敗');
     }
   } catch(e) {
-    hideLoading();
+    hideLoading('progress-status-bar');
     setStatus('error', '載入失敗：' + e.message, 'progress-status-bar');
     showToast('❌ 載入失敗：' + e.message, 'error');
   }
   if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
-  isBusy = false;
+  isBusyProgress = false;
 }
 
 /* ══════════════════════════════════════
    BBP 產值評估 — 儲存至 Sheets / 從 Sheets 載入
 ══════════════════════════════════════ */
 async function syncBbpToSheets(force) {
-  if(isBusy) return;
+  if(isBusyBbp) return;
   if(!force && !bbpDocs.length) { showToast('尚無文件可同步','error'); return; }
-  isBusy = true;
+  isBusyBbp = true;
   const btn = document.getElementById('bbp-sync-btn');
   const origHTML = btn ? btn.innerHTML : '';
   if(btn) { btn.textContent = '⏳ 儲存中...'; btn.disabled = true; }
   showLoading('儲存資料至 Google Sheets...', 'bbp-status-bar');
   try {
     const result = await callGAS({ action: 'saveBbp', docs: JSON.stringify(bbpDocs) });
-    hideLoading();
+    hideLoading('bbp-status-bar');
     if(result && result.ok) {
       setStatus('ok', `已儲存 ${bbpDocs.length} 份文件至 Sheets`, 'bbp-status-bar');
       showToast(`✅ 已儲存 ${bbpDocs.length} 份文件至 Sheets`, 'success');
@@ -2034,17 +2237,17 @@ async function syncBbpToSheets(force) {
       throw new Error((result && result.message) || '儲存失敗');
     }
   } catch(e) {
-    hideLoading();
+    hideLoading('bbp-status-bar');
     setStatus('error', '儲存失敗：' + e.message, 'bbp-status-bar');
     showToast('❌ 儲存失敗：' + e.message, 'error');
   }
   if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
-  isBusy = false;
+  isBusyBbp = false;
 }
 
 async function loadBbpFromSheets() {
-  if(isBusy) return;
-  isBusy = true;
+  if(isBusyBbp) return;
+  isBusyBbp = true;
   const btn = document.getElementById('bbp-load-btn');
   const origHTML = btn ? btn.innerHTML : '';
   if(btn) { btn.textContent = '⏳ 載入中...'; btn.disabled = true; }
@@ -2053,14 +2256,14 @@ async function loadBbpFromSheets() {
     const result = await callGAS({ action: 'loadBbp' });
     if(result && result.ok && Array.isArray(result.docs)) {
       if(result.docs.length === 0) {
-        hideLoading();
+        hideLoading('bbp-status-bar');
         setStatus('error', 'Sheets 上尚無 BBP 資料', 'bbp-status-bar');
         showToast('📭 Sheets 上尚無 BBP 資料', 'error');
       } else {
         bbpDocs = result.docs;
         saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
         renderDocs();
-        hideLoading();
+        hideLoading('bbp-status-bar');
         setStatus('ok', `已從 Sheets 載入 ${result.docs.length} 份文件`, 'bbp-status-bar');
         showToast(`✅ 已從 Sheets 載入 ${result.docs.length} 份文件`, 'success');
       }
@@ -2068,12 +2271,12 @@ async function loadBbpFromSheets() {
       throw new Error((result && result.message) || '載入失敗');
     }
   } catch(e) {
-    hideLoading();
+    hideLoading('bbp-status-bar');
     setStatus('error', '載入失敗：' + e.message, 'bbp-status-bar');
     showToast('❌ 載入失敗：' + e.message, 'error');
   }
   if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
-  isBusy = false;
+  isBusyBbp = false;
 }
 
 /* ══════════════════════════════════════
@@ -2089,6 +2292,10 @@ function showToast(msg,type) {
    鍵盤
 ══════════════════════════════════════ */
 document.addEventListener('keydown',e=>{
+  // 登入頁 Enter 觸發登入
+  if(e.key==='Enter' && !document.getElementById('login-overlay').classList.contains('hidden')) {
+    doLogin(); return;
+  }
   if(e.key==='Escape'){
     ['parse-modal','add-theme-modal','add-doc-modal','paste-doc-modal'].forEach(id=>{
       if(document.getElementById(id).classList.contains('show')) closeModal(id);
@@ -2101,6 +2308,7 @@ document.addEventListener('keydown',e=>{
 /* ══════════════════════════════════════
    啟動
 ══════════════════════════════════════ */
+checkSession();
 renderHomeThemes();
 showPage('home');
 </script>
