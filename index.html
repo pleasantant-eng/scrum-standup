@@ -243,12 +243,22 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .badge-opt{background:#fef3c7;color:#92400e}
 .badge-req{background:#dbeafe;color:#1e40af}
 .progress-table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
-.progress-table{width:100%;border-collapse:collapse;font-size:13px}
+.progress-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.progress-table th:nth-child(1){width:28px}
+.progress-table th:nth-child(2){width:140px}
+.progress-table th:nth-child(3){width:auto}
+.progress-table th:nth-child(4){width:116px}
+.progress-table th:nth-child(5){width:116px}
+.progress-table th:nth-child(6){width:116px}
+.progress-table th:nth-child(7){width:120px}
+.progress-table th:nth-child(8){width:130px}
+.progress-table th:nth-child(9){width:30px}
 .progress-table th{background:#1e40af;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap}
 .progress-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .progress-table tr:last-child td{border-bottom:none}
 .progress-table tr:hover td{background:#f8fafc}
-.progress-table td:nth-child(3),.progress-table td:nth-child(4),.progress-table td:nth-child(5){font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--text2)}
+.progress-table td:nth-child(4),.progress-table td:nth-child(5){font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--text2)}
+.progress-table td:nth-child(3){min-width:160px}
 .cell-input{width:100%;border:none;background:transparent;font-family:var(--font);font-size:13px;color:var(--text);padding:0;}
 .cell-input:focus{outline:1px solid var(--accent);border-radius:4px;background:#fff;padding:2px 4px}
 .cell-input.date-input{font-family:var(--mono);font-size:12px;color:var(--text2);width:70px}
@@ -693,15 +703,15 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
         <table class="progress-table" id="table-opt">
           <thead>
             <tr>
-              <th style="width:28px"></th>
-              <th style="width:140px">需求單號</th>
+              <th></th>
+              <th>需求單號</th>
               <th>需求名稱</th>
-              <th style="width:116px">SA預計</th>
-              <th style="width:116px">PD預計</th>
-              <th style="width:116px">TEST預計</th>
-              <th style="width:120px">狀態</th>
-              <th style="width:130px">ITSR狀態</th>
-              <th style="width:30px"></th>
+              <th>SA預計</th>
+              <th>PD預計</th>
+              <th>TEST預計</th>
+              <th>狀態</th>
+              <th>ITSR狀態</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="tbody-opt"></tbody>
@@ -720,15 +730,15 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
         <table class="progress-table" id="table-req">
           <thead>
             <tr>
-              <th style="width:28px"></th>
-              <th style="width:140px">需求單號</th>
+              <th></th>
+              <th>需求單號</th>
               <th>需求名稱</th>
-              <th style="width:116px">SA預計</th>
-              <th style="width:116px">PD預計</th>
-              <th style="width:116px">TEST預計</th>
-              <th style="width:120px">狀態</th>
-              <th style="width:130px">ITSR狀態</th>
-              <th style="width:30px"></th>
+              <th>SA預計</th>
+              <th>PD預計</th>
+              <th>TEST預計</th>
+              <th>狀態</th>
+              <th>ITSR狀態</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="tbody-req"></tbody>
@@ -2062,7 +2072,7 @@ function renderTable(type) {
     <tr draggable="true" data-row-id="${r.id}" data-row-type="${type}">
       <td style="cursor:default"><span class="drag-handle" title="拖曳排序" style="display:inline-block;vertical-align:middle">⠿</span></td>
       <td><input class="cell-input" value="${esc(r.mis)}" onchange="updateProgressCell('${type}','${r.id}','mis',this.value)" placeholder="需求單號"></td>
-      <td><input class="cell-input" value="${esc(r.name)}" onchange="updateProgressCell('${type}','${r.id}','name',this.value)" placeholder="需求名稱"></td>
+      <td><input class="cell-input" value="${esc(r.name)}" title="${esc(r.name)}" onchange="updateProgressCell('${type}','${r.id}','name',this.value);this.title=this.value" placeholder="需求名稱"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.sa)}" onchange="updateProgressCell('${type}','${r.id}','sa',inputValToDate(this.value))" title="SA預計完成日"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.pd)}" onchange="updateProgressCell('${type}','${r.id}','pd',inputValToDate(this.value))" title="PD預計完成日"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.test)}" onchange="updateProgressCell('${type}','${r.id}','test',inputValToDate(this.value))" title="TEST預計完成日"></td>
