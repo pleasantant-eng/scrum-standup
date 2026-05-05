@@ -655,6 +655,20 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   transition:border-color 0.15s;
 }
 .col-resizer:hover,.col-resizer.dragging{border-right-color:var(--accent)}
+
+/* 甘特圖狀態欄 */
+.gantt-table td.status-cell{
+  background:#fff;font-size:11px;font-weight:600;
+  padding:4px 8px;border:1px solid var(--border);
+  text-align:center;white-space:nowrap;
+  position:sticky;left:280px;z-index:5;
+  min-width:90px;
+}
+.gantt-table tr:hover td.status-cell{background:#f8fafc}
+.gantt-table th.status-header{
+  background:#1e3a8a;min-width:90px;text-align:center;
+  position:sticky;left:280px;z-index:6;
+}
 </style>
 </head>
 <body>
@@ -962,6 +976,26 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
           <span class="gantt-filter-label">系統：</span>
           <select class="gantt-filter-select" id="gantt-filter-sys" onchange="renderGantt()">
             <option value="all">全部</option>
+          </select>
+        </div>
+        <div class="gantt-filter-group">
+          <span class="gantt-filter-label">狀態：</span>
+          <select class="gantt-filter-select" id="gantt-filter-status" onchange="renderGantt()">
+            <option value="all">全部</option>
+            <option value="RA分析中">RA分析中</option>
+            <option value="RA分析完">RA分析完</option>
+            <option value="SA分析中">SA分析中</option>
+            <option value="SA分析完">SA分析完</option>
+            <option value="PD開發中">PD開發中</option>
+            <option value="PD開發完">PD開發完</option>
+            <option value="SA測試中">SA測試中</option>
+            <option value="SA測試完">SA測試完</option>
+            <option value="QA測試中">QA測試中</option>
+            <option value="QA測試完">QA測試完</option>
+            <option value="USER測試中">USER測試中</option>
+            <option value="USER測試完">USER測試完</option>
+            <option value="待上線">待上線</option>
+            <option value="已上線">已上線</option>
           </select>
         </div>
         <div class="spacer"></div>
@@ -2924,8 +2958,9 @@ function renderGantt() {
   if(ganttAllMonths.length === 0) buildGanttMonthList();
   updateGanttSysFilter();
 
-  const typeFilter = (document.getElementById('gantt-filter-type')||{}).value || 'all';
-  const sysFilter  = (document.getElementById('gantt-filter-sys') ||{}).value || 'all';
+  const typeFilter   = (document.getElementById('gantt-filter-type')  ||{}).value || 'all';
+  const sysFilter    = (document.getElementById('gantt-filter-sys')   ||{}).value || 'all';
+  const statusFilter = (document.getElementById('gantt-filter-status')||{}).value || 'all';
   const el = document.getElementById('gantt-content');
   if(!el) return;
 
@@ -2983,7 +3018,8 @@ function renderGantt() {
     if(typeFilter !== 'all' && typeFilter !== type) return;
     (progressData[type]||[]).map(upgradeProgressItem).forEach(m=>{
       (m.systems||[]).forEach(sys=>{
-        if(sysFilter !== 'all' && sys.system !== sysFilter) return;
+        if(sysFilter    !== 'all' && sys.system !== sysFilter)    return;
+        if(statusFilter !== 'all' && sys.status !== statusFilter) return;
         items.push({ type, mis:m.mis||'', name:m.name||'', sys });
       });
     });
@@ -3036,6 +3072,7 @@ function renderGantt() {
   html += '<thead><tr>';
   html += `<th class="label-header" rowspan="2">需求名稱</th>`;
   html += `<th class="sys-header" rowspan="2">系統</th>`;
+  html += `<th class="status-header" rowspan="2">狀態</th>`;
   monthGroups.forEach(mg=>{
     html += `<th class="month-header" colspan="${mg.count}">${mg.label}</th>`;
   });
@@ -3059,7 +3096,7 @@ function renderGantt() {
   }
 
   groups.forEach(grp=>{
-    html += `<tr class="group-row"><td colspan="${2+weeks.length}">${grp.label}</td></tr>`;
+    html += `<tr class="group-row"><td colspan="${3+weeks.length}">${grp.label}</td></tr>`;
 
     grp.items.forEach(item=>{
       const sys      = item.sys;
@@ -3074,9 +3111,11 @@ function renderGantt() {
       if(pdD) tipLines.push(`PD：${pdD}`);
       if(sys.status) tipLines.push(`狀態：${sys.status}`);
 
+      const statusCls2 = STATUS_CLASS[sys.status]||'';
       html += `<tr>`;
       html += `<td class="label-cell" title="${esc(labelText)}">${esc(labelText)}</td>`;
       html += `<td class="sys-cell ${sysCls}">${esc(sys.system)||'?'}</td>`;
+      html += `<td class="status-cell"><span class="status-select ${statusCls2}" style="padding:2px 6px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap">${esc(sys.status)||'—'}</span></td>`;
 
       weeks.forEach((w,wi)=>{
         const isTodayWeek = wi===todayWeekIdx;
