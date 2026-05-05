@@ -511,7 +511,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .sys-laas{background:#dcfce7;color:#065f46}
 .sys-other{background:#f1f5f9;color:#475569}
 /* Point inputs */
-.point-input{width:44px;border:1px solid var(--border);border-radius:5px;background:#f8fafc;font-family:var(--mono);font-size:11px;color:#1d4ed8;font-weight:600;padding:2px 3px;text-align:center}
+.point-input{width:38px;border:1px solid var(--border);border-radius:4px;background:#f8fafc;font-family:var(--mono);font-size:11px;color:#1d4ed8;font-weight:600;padding:2px 3px;text-align:center}
 .point-input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
 .master-point-total{font-family:var(--mono);font-size:12px;font-weight:700;color:#7c3aed;background:#ede9fe;padding:2px 8px;border-radius:20px}
 .add-detail-btn{font-size:11px;padding:3px 10px;border-radius:5px;border:1px dashed #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-weight:500;white-space:nowrap;transition:all 0.15s}
@@ -519,22 +519,22 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .expand-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;color:var(--text2);transition:all 0.15s;line-height:1}
 .expand-btn:hover{background:#dbeafe;color:var(--accent)}
 /* 進度表欄寬 */
-/* Master-Detail Table — 使用 auto layout 讓欄寬隨內容自動分配 */
-.progress-table.master-detail-table{table-layout:auto;width:100%;min-width:900px}
-/* 拖曳 */
+/* Master-Detail Table — 固定欄寬（可手動拖拉調整） */
+.progress-table.master-detail-table{table-layout:fixed;width:100%;min-width:900px}
+/* 拖曳把手 */
 .progress-table.master-detail-table th:nth-child(1){width:28px;min-width:28px}
 /* 展開按鈕 */
 .progress-table.master-detail-table th:nth-child(2){width:32px;min-width:32px}
 /* 需求單號 */
-.progress-table.master-detail-table th:nth-child(3){min-width:140px;width:14%}
-/* 需求名稱 */
-.progress-table.master-detail-table th:nth-child(4){min-width:180px;width:28%}
+.progress-table.master-detail-table th:nth-child(3){width:180px;min-width:100px}
+/* 需求名稱（最寬） */
+.progress-table.master-detail-table th:nth-child(4){width:280px;min-width:140px}
 /* ITSR 狀態 */
-.progress-table.master-detail-table th:nth-child(5){min-width:120px;width:13%}
+.progress-table.master-detail-table th:nth-child(5){width:200px;min-width:100px}
 /* 預計整合測試 */
-.progress-table.master-detail-table th:nth-child(6){min-width:110px;width:11%}
+.progress-table.master-detail-table th:nth-child(6){width:200px;min-width:100px}
 /* 預計上線日期 */
-.progress-table.master-detail-table th:nth-child(7){min-width:110px;width:11%}
+.progress-table.master-detail-table th:nth-child(7){width:200px;min-width:100px}
 /* 刪除按鈕 */
 .progress-table.master-detail-table th:nth-child(8){width:28px;min-width:28px}
 
@@ -644,6 +644,17 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .gantt-month-btn{font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);
   background:#fff;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
 .gantt-month-btn:hover{background:#f1f5f9;border-color:#cbd5e1}
+
+/* ── 可拖拉欄寬 ── */
+.progress-table th{position:relative;user-select:none}
+.col-resizer{
+  position:absolute;right:-3px;top:0;bottom:0;width:7px;
+  cursor:col-resize;z-index:5;
+  background:transparent;
+  border-right:2px solid transparent;
+  transition:border-color 0.15s;
+}
+.col-resizer:hover,.col-resizer.dragging{border-right-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -2351,7 +2362,7 @@ function renderTable(type) {
       </td>
       <td><input class="cell-input" value="${esc(r.mis)}" onchange="updateMasterCell('${type}','${r.id}','mis',this.value)" placeholder="需求單號" style="font-weight:600"></td>
       <td>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap">
           <input class="cell-input" value="${esc(r.name)}" onchange="updateMasterCell('${type}','${r.id}','name',this.value)" placeholder="需求名稱" style="font-weight:600;flex:1;min-width:120px">
           <span style="font-size:11px;color:var(--text3);white-space:nowrap">${sysCount}系統</span>
           ${pts?`<span class="master-point-total">${pts}pt</span>`:''}
@@ -2404,48 +2415,50 @@ function renderTable(type) {
 
         <!-- RA 負責 + 日期 -->
         <td style="padding:5px 8px;border-right:1px solid var(--border)">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap">
             <input class="cell-input" value="${esc(sys.ra||'')}"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','ra',this.value)"
-              placeholder="負責人" style="font-size:12px;width:70px">
+              placeholder="負責人" style="font-size:12px;width:60px;flex-shrink:0">
             <input type="date" class="cell-date-picker" value="${dateToInputVal(sys.raDate||'')}"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','raDate',inputValToDate(this.value))"
-              style="border:none;background:transparent;font-family:var(--mono);font-size:12px;color:var(--text2);width:120px">
+              style="border:none;background:transparent;font-family:var(--mono);font-size:12px;color:var(--text2);min-width:100px;flex:1">
           </div>
         </td>
 
         <!-- SA 負責 + 日期 -->
         <td style="padding:5px 8px;border-right:1px solid var(--border)">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap">
             <input class="cell-input" value="${esc(sys.sa||'')}"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','sa',this.value)"
-              placeholder="負責人" style="font-size:12px;width:70px">
+              placeholder="負責人" style="font-size:12px;width:60px;flex-shrink:0">
             <input type="date" class="cell-date-picker" value="${dateToInputVal(sys.saDate||'')}"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','saDate',inputValToDate(this.value))"
-              style="border:none;background:transparent;font-family:var(--mono);font-size:12px;color:var(--text2);width:120px">
+              style="border:none;background:transparent;font-family:var(--mono);font-size:12px;color:var(--text2);min-width:100px;flex:1">
           </div>
         </td>
 
         <!-- PD 負責 + 日期 -->
         <td style="padding:5px 8px;border-right:1px solid var(--border)">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap">
             <input class="cell-input" value="${esc(sys.pd||'')}"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','pd',this.value)"
-              placeholder="負責人" style="font-size:12px;width:70px">
+              placeholder="負責人" style="font-size:12px;width:60px;flex-shrink:0">
             <input type="date" class="cell-date-picker" value="${dateToInputVal(sys.pdDate||'')}"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','pdDate',inputValToDate(this.value))"
-              style="border:none;background:transparent;font-family:var(--mono);font-size:12px;color:var(--text2);width:120px">
+              style="border:none;background:transparent;font-family:var(--mono);font-size:12px;color:var(--text2);min-width:100px;flex:1">
           </div>
         </td>
 
         <!-- 狀態 + Points -->
         <td style="padding:5px 8px;border-right:1px solid var(--border)">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-            <select class="status-select ${statusCls}" style="flex-shrink:0"
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <!-- 狀態下拉（第一行） -->
+            <select class="status-select ${statusCls}" style="flex-shrink:0;width:fit-content"
               onchange="updateDetailCell('${type}','${r.id}','${sys.id}','status',this.value);this.className='status-select '+(STATUS_CLASS[this.value]||'')">
               ${STATUS_OPTS.map(s=>`<option value="${s}" ${sys.status===s?'selected':''}>${s||'—'}</option>`).join('')}
             </select>
-            <div style="display:flex;align-items:center;gap:3px;flex-wrap:wrap">
+            <!-- Points（第二行） -->
+            <div style="display:flex;align-items:center;gap:3px;flex-wrap:nowrap;white-space:nowrap">
               ${[['raPoint','RA'],['saPoint','SA'],['pdPoint','PD'],['uatPoint','UAT']].map(([f,lbl])=>`
                 <span style="font-size:9px;color:var(--text3);font-weight:600">${lbl}</span>
                 <input type="number" class="point-input" value="${sys[f]!==''&&sys[f]!=null?sys[f]:''}" step="0.5" min="0" placeholder="—"
@@ -3300,38 +3313,35 @@ function initResizableCols(table) {
   if(!table) return;
   const ths = table.querySelectorAll('thead th');
   ths.forEach((th, i) => {
-    // 最後一欄（刪除按鈕）和前兩欄（拖曳/展開）不加 resizer
+    // 前兩欄（拖曳/展開）和最後一欄（刪除按鈕）不加 resizer
     if(i < 2 || i === ths.length - 1) return;
     // 避免重複建立
     if(th.querySelector('.col-resizer')) return;
+
     const resizer = document.createElement('div');
     resizer.className = 'col-resizer';
     th.style.overflow = 'hidden';
     th.appendChild(resizer);
 
-    let startX, startW, nextTh, nextW;
+    let startX, startW;
     resizer.addEventListener('mousedown', e => {
       e.preventDefault();
+      e.stopPropagation();
       startX = e.clientX;
-      startW = th.offsetWidth;
-      nextTh = ths[i + 1];
-      nextW  = nextTh ? nextTh.offsetWidth : null;
+      startW = th.getBoundingClientRect().width;
       resizer.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
 
       const onMove = e => {
-        const dx = e.clientX - startX;
-        const newW = Math.max(60, startW + dx);
-        th.style.width = newW + 'px';
+        const newW = Math.max(80, startW + (e.clientX - startX));
+        th.style.width    = newW + 'px';
         th.style.minWidth = newW + 'px';
-        // shrink/grow next col if exists
-        if(nextTh && nextW !== null) {
-          const nw = Math.max(60, nextW - dx);
-          nextTh.style.width = nw + 'px';
-          nextTh.style.minWidth = nw + 'px';
-        }
       };
       const onUp = () => {
         resizer.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseup', onUp);
       };
