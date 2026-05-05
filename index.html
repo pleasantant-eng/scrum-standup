@@ -869,7 +869,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
           ⚡ 優化項目
           <span class="progress-section-badge badge-opt">優化</span>
         </div>
-        <button class="btn btn-sm" onclick="addProgressRow(&#39;opt&#39;)">＋ 新增主項目</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="btn btn-sm section-toggle-btn" id="toggle-opt"
+            onclick="toggleAllRows('opt',this)" title="一鍵展開／閉合所有項目"
+            style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:600">
+            ▼ 全部展開
+          </button>
+          <button class="btn btn-sm" onclick="addProgressRow(&#39;opt&#39;)">＋ 新增主項目</button>
+        </div>
       </div>
       <div class="progress-table-wrap">
         <table class="progress-table master-detail-table" id="table-opt">
@@ -895,7 +902,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
           📋 需求項目
           <span class="progress-section-badge badge-req">需求</span>
         </div>
-        <button class="btn btn-sm" onclick="addProgressRow(&#39;req&#39;)">＋ 新增主項目</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="btn btn-sm section-toggle-btn" id="toggle-req"
+            onclick="toggleAllRows('req',this)" title="一鍵展開／閉合所有項目"
+            style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:600">
+            ▼ 全部展開
+          </button>
+          <button class="btn btn-sm" onclick="addProgressRow(&#39;req&#39;)">＋ 新增主項目</button>
+        </div>
       </div>
       <div class="progress-table-wrap">
         <table class="progress-table master-detail-table" id="table-req">
@@ -2487,6 +2501,7 @@ function renderTable(type) {
   initMasterDrag(type);
   setTimeout(() => {
     initResizableCols(document.getElementById('table-' + type));
+    syncSectionToggleBtn(type);
   }, 0);
 }
 
@@ -2514,6 +2529,34 @@ function rerenderSysBadge(input) {
   const colorCls = getSysColorClass(input.value);
   badge.textContent = input.value||'?';
   badge.className = 'sys-badge ' + (colorCls==='sys-color-wms'?'sys-wms':colorCls==='sys-color-laas'?'sys-laas':'sys-other');
+}
+
+/* ── 一鍵展開／閉合 ── */
+function toggleAllRows(type, btn) {
+  if(!progressData[type]) return;
+  const items = progressData[type].map(upgradeProgressItem);
+  if(!items.length) return;
+
+  // 判斷目前狀態：若全部展開 → 閉合全部；否則 → 展開全部
+  const allExpanded = items.every(r => r._expanded !== false);
+  const newState    = !allExpanded;
+
+  items.forEach(r => { r._expanded = newState; });
+  saveToStorage(STORAGE_KEY_PROGRESS, progressData);
+  renderTable(type);
+  syncSectionToggleBtn(type);
+}
+
+// 同步按鈕文字與外觀
+function syncSectionToggleBtn(type) {
+  const btn = document.getElementById('toggle-' + type);
+  if(!btn) return;
+  const items = (progressData[type]||[]).map(upgradeProgressItem);
+  const allExpanded = items.length > 0 && items.every(r => r._expanded !== false);
+  btn.textContent  = allExpanded ? '▲ 全部閉合' : '▼ 全部展開';
+  btn.style.background    = allExpanded ? '#f0fdf4' : '#eff6ff';
+  btn.style.borderColor   = allExpanded ? '#86efac' : '#93c5fd';
+  btn.style.color         = allExpanded ? '#15803d' : '#1d4ed8';
 }
 
 function toggleMasterRow(type, masterId) {
