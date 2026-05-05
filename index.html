@@ -235,36 +235,43 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 /* ══════════════════════════════════════
    BBP 進度 頁面
 ══════════════════════════════════════ */
-.progress-container{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.progress-container{max-width:1200px;margin:0 auto;padding:1.5rem 1rem 4rem}
 .progress-section{margin-bottom:2rem}
 .progress-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
 .progress-section-title{font-size:15px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
 .progress-section-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
 .badge-opt{background:#fef3c7;color:#92400e}
 .badge-req{background:#dbeafe;color:#1e40af}
-.progress-table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
-.progress-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
-.progress-table th:nth-child(1){width:28px}
-.progress-table th:nth-child(2){width:140px}
-.progress-table th:nth-child(3){width:auto}
-.progress-table th:nth-child(4){width:116px}
-.progress-table th:nth-child(5){width:116px}
-.progress-table th:nth-child(6){width:116px}
-.progress-table th:nth-child(7){width:120px}
-.progress-table th:nth-child(8){width:130px}
-.progress-table th:nth-child(9){width:30px}
-.progress-table th{background:#1e40af;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap}
-.progress-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.progress-table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow-x:auto;box-shadow:var(--shadow)}
+.progress-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;min-width:1140px}
+.progress-table th{background:#1e40af;color:#fff;padding:9px 10px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap}
+.progress-table td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
 .progress-table tr:last-child td{border-bottom:none}
 .progress-table tr:hover td{background:#f8fafc}
-.progress-table td:nth-child(4),.progress-table td:nth-child(5){font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--text2)}
-.progress-table td:nth-child(3){min-width:160px}
-.cell-input{width:100%;border:none;background:transparent;font-family:var(--font);font-size:13px;color:var(--text);padding:0;}
-.cell-input:focus{outline:1px solid var(--accent);border-radius:4px;background:#fff;padding:2px 4px}
+/* 欄位順序：(1)拖曳 (2)需求單號 (3)需求名稱 (4)SA (5)PD (6)TEST (7)預計上線 (8)狀態 (9)ITSR (10)刪除 */
+.progress-table td:nth-child(4),.progress-table td:nth-child(5),.progress-table td:nth-child(6),.progress-table td:nth-child(7){font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--text2)}
+.cell-input{width:100%;border:none;background:transparent;font-family:var(--font);font-size:13px;color:var(--text);padding:0;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+.cell-input-name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.cell-input:focus{outline:1px solid var(--accent);border-radius:4px;background:#fff;padding:2px 4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+/* 需求名稱：顯示模式 + 編輯模式 */
+.cell-name-wrap{width:100%;height:100%;display:flex;align-items:center}
+.cell-name-display{
+  font-family:var(--font);font-size:13px;color:var(--text);
+  width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  cursor:text;padding:4px 2px;border-radius:4px;border:1px solid transparent;
+  transition:border-color 0.15s,background 0.15s;
+}
+.cell-name-display:hover{border-color:var(--border);background:#f8fafc;}
+.cell-name-input{
+  width:100%;border:1px solid var(--accent);background:#fff;
+  font-family:var(--font);font-size:13px;color:var(--text);
+  padding:4px 6px;border-radius:4px;outline:none;
+  box-shadow:0 0 0 3px rgba(37,99,235,0.08);
+}
 .cell-input.date-input{font-family:var(--mono);font-size:12px;color:var(--text2);width:70px}
 /* 日期選擇器 — 大按鈕，易點擊 */
 .cell-date-picker{
-  width:110px;border:1px solid var(--border);border-radius:6px;
+  width:100%;border:1px solid var(--border);border-radius:6px;
   background:#f8fafc;font-family:var(--mono);font-size:12px;
   color:var(--text2);padding:4px 6px;cursor:pointer;
   transition:border-color 0.15s,background 0.15s;
@@ -419,8 +426,13 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .doc-icon-req{background:#dbeafe}
 .doc-icon-opt{background:#fef3c7}
 .doc-card-info{flex:1;min-width:0}
-.doc-card-title-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.doc-card-title{font-size:14px;font-weight:600;color:var(--text)}
+.doc-card-title-wrap{display:flex;align-items:flex-start;gap:8px}
+.doc-card-title{
+  font-size:14px;font-weight:600;color:var(--text);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;line-height:1.5;word-break:break-all;
+  cursor:default;
+}
 .doc-card-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;flex-shrink:0}
 .badge-req-sm{background:#dbeafe;color:#1e40af}
 .badge-opt-sm{background:#fef3c7;color:#92400e}
@@ -666,7 +678,28 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
       <div class="dot"></div>
       <span class="status-msg-text">準備就緒</span>
     </div>
-    <div id="doc-list"></div>
+    <!-- 優化項目區塊 -->
+    <div class="progress-section" style="margin-bottom:2rem">
+      <div class="progress-section-header">
+        <div class="progress-section-title">
+          ⚡ 優化項目
+          <span class="progress-section-badge badge-opt">優化</span>
+        </div>
+        <button class="btn btn-sm" onclick="showAddDocModalWithType('opt')">＋ 新增優化文件</button>
+      </div>
+      <div id="doc-list-opt"></div>
+    </div>
+    <!-- 需求項目區塊 -->
+    <div class="progress-section">
+      <div class="progress-section-header">
+        <div class="progress-section-title">
+          📋 需求項目
+          <span class="progress-section-badge badge-req">需求</span>
+        </div>
+        <button class="btn btn-sm" onclick="showAddDocModalWithType('req')">＋ 新增需求文件</button>
+      </div>
+      <div id="doc-list-req"></div>
+    </div>
   </div>
 </div>
 
@@ -703,15 +736,16 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
         <table class="progress-table" id="table-opt">
           <thead>
             <tr>
-              <th></th>
-              <th>需求單號</th>
+              <th style="width:28px"></th>
+              <th style="width:160px">需求單號</th>
               <th>需求名稱</th>
-              <th>SA預計</th>
-              <th>PD預計</th>
-              <th>TEST預計</th>
-              <th>狀態</th>
-              <th>ITSR狀態</th>
-              <th></th>
+              <th style="width:130px">SA預計</th>
+              <th style="width:130px">PD預計</th>
+              <th style="width:130px">TEST預計</th>
+              <th style="width:130px">預計上線日期</th>
+              <th style="width:112px">狀態</th>
+              <th style="width:120px">ITSR狀態</th>
+              <th style="width:30px"></th>
             </tr>
           </thead>
           <tbody id="tbody-opt"></tbody>
@@ -730,15 +764,16 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
         <table class="progress-table" id="table-req">
           <thead>
             <tr>
-              <th></th>
-              <th>需求單號</th>
+              <th style="width:28px"></th>
+              <th style="width:160px">需求單號</th>
               <th>需求名稱</th>
-              <th>SA預計</th>
-              <th>PD預計</th>
-              <th>TEST預計</th>
-              <th>狀態</th>
-              <th>ITSR狀態</th>
-              <th></th>
+              <th style="width:130px">SA預計</th>
+              <th style="width:130px">PD預計</th>
+              <th style="width:130px">TEST預計</th>
+              <th style="width:130px">預計上線日期</th>
+              <th style="width:112px">狀態</th>
+              <th style="width:120px">ITSR狀態</th>
+              <th style="width:30px"></th>
             </tr>
           </thead>
           <tbody id="tbody-req"></tbody>
@@ -1047,19 +1082,19 @@ function getDefaultDocs() {
 function getDefaultProgress() {
   return {
     opt: [
-      {id:'o1', mis:'MIS202604000827', name:'【問題優化】Call Off 失敗Retry機制', sa:'4/16', pd:'4/24', test:'4/19', status:'QA測試中', itsr:'QA(liam lo)'},
-      {id:'o2', mis:'MIS202604001283', name:'【問題修正】BBP進貨單多儲區別無法產生CTM Code優化', sa:'4/23', pd:'4/28', test:'5/11', status:'PD開發中', itsr:'處理階段'},
+      {id:'o1', mis:'MIS202604000827', name:'【問題優化】Call Off 失敗Retry機制', sa:'4/16', pd:'4/24', test:'4/19', golive:'', status:'QA測試中', itsr:'QA(liam lo)'},
+      {id:'o2', mis:'MIS202604001283', name:'【問題修正】BBP進貨單多儲區別無法產生CTM Code優化', sa:'4/23', pd:'4/28', test:'5/11', golive:'', status:'PD開發中', itsr:'處理階段'},
     ],
     req: [
-      {id:'r1', mis:'MIS202503001319', name:'B2B2P新增叫料原因X-RAY', sa:'3/12', pd:'3/26', test:'4/7', status:'USER測試中', itsr:'USER(世傑)'},
-      {id:'r2', mis:'MIS202511001580', name:'派車出倉合一', sa:'3/17', pd:'3/30', test:'4/10', status:'SA測試完', itsr:'需求評估(Casey)'},
-      {id:'r3', mis:'MIS202603000356', name:'RLC檢測功能控管優化', sa:'3/19', pd:'4/2', test:'4/14', status:'USER測試中', itsr:'USER(Ken)'},
-      {id:'r4', mis:'MIS202603000984', name:'IQC報表加入品牌排序', sa:'3/25', pd:'4/10', test:'4/17', status:'QA測試中', itsr:'QA(liam lo)'},
-      {id:'r5', mis:'MIS202603001468', name:'料號有效期限檢查', sa:'4/8', pd:'4/17', test:'4/20', status:'QA測試中', itsr:'QA(Teddy)'},
-      {id:'r6', mis:'MIS202603001622', name:'轉進LaaS 收料明細', sa:'4/13', pd:'4/23', test:'4/27', status:'QA測試中', itsr:'QA(liam lo)'},
-      {id:'r7', mis:'MIS202604000754', name:'過期品優化', sa:'4/17', pd:'4/17', test:'4/21', status:'SA測試完', itsr:'PD(LaaS)'},
-      {id:'r8', mis:'待填單', name:'手工單加入填寫機台料站資訊', sa:'4/28', pd:'4/29', test:'5/4', status:'PD開發中', itsr:''},
-      {id:'r9', mis:'待填單', name:'DO手動配貨轉急單', sa:'5/4', pd:'5/18', test:'5/20', status:'', itsr:''},
+      {id:'r1', mis:'MIS202503001319', name:'B2B2P新增叫料原因X-RAY', sa:'3/12', pd:'3/26', test:'4/7', golive:'', status:'USER測試中', itsr:'USER(世傑)'},
+      {id:'r2', mis:'MIS202511001580', name:'派車出倉合一', sa:'3/17', pd:'3/30', test:'4/10', golive:'', status:'SA測試完', itsr:'需求評估(Casey)'},
+      {id:'r3', mis:'MIS202603000356', name:'RLC檢測功能控管優化', sa:'3/19', pd:'4/2', test:'4/14', golive:'', status:'USER測試中', itsr:'USER(Ken)'},
+      {id:'r4', mis:'MIS202603000984', name:'IQC報表加入品牌排序', sa:'3/25', pd:'4/10', test:'4/17', golive:'', status:'QA測試中', itsr:'QA(liam lo)'},
+      {id:'r5', mis:'MIS202603001468', name:'料號有效期限檢查', sa:'4/8', pd:'4/17', test:'4/20', golive:'', status:'QA測試中', itsr:'QA(Teddy)'},
+      {id:'r6', mis:'MIS202603001622', name:'轉進LaaS 收料明細', sa:'4/13', pd:'4/23', test:'4/27', golive:'', status:'QA測試中', itsr:'QA(liam lo)'},
+      {id:'r7', mis:'MIS202604000754', name:'過期品優化', sa:'4/17', pd:'4/17', test:'4/21', golive:'', status:'SA測試完', itsr:'PD(LaaS)'},
+      {id:'r8', mis:'待填單', name:'手工單加入填寫機台料站資訊', sa:'4/28', pd:'4/29', test:'5/4', golive:'', status:'PD開發中', itsr:''},
+      {id:'r9', mis:'待填單', name:'DO手動配貨轉急單', sa:'5/4', pd:'5/18', test:'5/20', golive:'', status:'', itsr:''},
     ]
   };
 }
@@ -1571,14 +1606,25 @@ function confirmParse() {
    BBP 產值評估 — 全新版
 ══════════════════════════════════════ */
 
-// ── 渲染文件列表 ──
+// ── 渲染文件列表（分優化/需求兩區） ──
 function renderDocs() {
-  const el = document.getElementById('doc-list');
-  if(!bbpDocs.length) {
-    el.innerHTML = '<div class="empty" style="padding:3rem">尚無文件，請點擊「貼上解析」或「手動新增」</div>';
+  const optDocs = bbpDocs.filter(d => d.type === 'opt');
+  const reqDocs = bbpDocs.filter(d => d.type === 'req');
+  renderDocSection('doc-list-opt', optDocs, 'opt');
+  renderDocSection('doc-list-req', reqDocs, 'req');
+}
+
+function renderDocSection(containerId, docs, type) {
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const addLabel = type === 'opt' ? '＋ 貼上解析新增優化文件' : '＋ 貼上解析新增需求文件';
+  const addType  = type === 'opt' ? 'opt' : 'req';
+  if(!docs.length) {
+    el.innerHTML = `<div class="empty" style="padding:2rem">尚無文件，請點擊上方「新增」按鈕</div>
+      <div class="doc-add-card" onclick="showPasteDocModalWithType('${addType}')">${addLabel}</div>`;
     return;
   }
-  el.innerHTML = bbpDocs.map((doc,i) => {
+  el.innerHTML = docs.map((doc) => {
     const isReq = doc.type === 'req';
     const points = extractBbpTotal(doc.content || '');
     return `<div class="doc-card" draggable="true" id="doc-${doc.id}">
@@ -1587,8 +1633,8 @@ function renderDocs() {
         <div class="doc-card-icon ${isReq?'doc-icon-req':'doc-icon-opt'}" onclick="toggleDoc('${doc.id}')" style="cursor:pointer">${isReq?'📋':'⚡'}</div>
         <div class="doc-card-info" onclick="toggleDoc('${doc.id}')" style="cursor:pointer">
           <div class="doc-card-title-wrap">
-            <span class="doc-card-title">${esc(doc.title)}</span>
-            <span class="doc-card-badge ${isReq?'badge-req-sm':'badge-opt-sm'}">${isReq?'需求':'優化'}</span>
+            <span class="doc-card-title" title="${esc(doc.title)}">${esc(doc.title)}</span>
+            <span class="doc-card-badge ${isReq?'badge-req-sm':'badge-opt-sm'}" style="flex-shrink:0;margin-top:2px">${isReq?'需求':'優化'}</span>
           </div>
           ${points ? `<div class="doc-card-points">合計點數：<strong style="color:#1d4ed8">${points} 點</strong></div>` : ''}
         </div>
@@ -1630,20 +1676,21 @@ function renderDocs() {
         </div>
       </div>
     </div>`;
-  }).join('') + `<div class="doc-add-card" onclick="showPasteDocModal()">＋ 貼上解析新增文件</div>`;
+  }).join('') + `<div class="doc-add-card" onclick="showPasteDocModalWithType('${addType}')">${addLabel}</div>`;
 
   // 初始化編輯區 textarea 高度 + 拖曳
   setTimeout(()=>{
-    bbpDocs.forEach(doc=>{
+    docs.forEach(doc=>{
       const ta = document.getElementById('content-edit-'+doc.id);
       if(ta) autoResizeTA(ta);
     });
-    initDocDrag();
+    initDocDrag(containerId, type);
   }, 50);
 }
 
-function initDocDrag() {
-  const container = document.getElementById('doc-list');
+function initDocDrag(containerId, docType) {
+  const container = document.getElementById(containerId || 'doc-list-opt');
+  if(!container) return;
   let dragSrc = null;
   let dragAllowed = false;
   container.querySelectorAll('.doc-card').forEach(card => {
@@ -1663,14 +1710,15 @@ function initDocDrag() {
     card.addEventListener('dragend', () => {
       card.classList.remove('dragging');
       container.querySelectorAll('.doc-card').forEach(c=>c.classList.remove('drag-over'));
-      // 重建 bbpDocs 順序
+      // 重建 bbpDocs 順序：先保留其他 type，再依 DOM 順序更新本 type
+      const otherDocs = bbpDocs.filter(d => d.type !== docType);
       const newOrder = [];
       container.querySelectorAll('.doc-card').forEach(c=>{
         const id = c.id.replace('doc-','');
         const d = bbpDocs.find(x=>x.id===id);
         if(d) newOrder.push(d);
       });
-      bbpDocs = newOrder;
+      bbpDocs = [...otherDocs, ...newOrder];
       saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
       showToast('✅ 排序已儲存','success');
     });
@@ -1771,6 +1819,12 @@ function showAddDocModal() {
   document.getElementById('new-doc-content').value = '';
   openModal('add-doc-modal');
 }
+function showAddDocModalWithType(type) {
+  document.getElementById('new-doc-title').value = '';
+  document.getElementById('new-doc-content').value = '';
+  document.getElementById('new-doc-type').value = type;
+  openModal('add-doc-modal');
+}
 function confirmAddDoc() {
   const title   = document.getElementById('new-doc-title').value.trim();
   const type    = document.getElementById('new-doc-type').value;
@@ -1786,8 +1840,12 @@ function confirmAddDoc() {
 
 // ── 貼上解析 ──
 function showPasteDocModal() {
+  showPasteDocModalWithType('req');
+}
+function showPasteDocModalWithType(type) {
   document.getElementById('paste-doc-raw').value = '';
   document.getElementById('paste-preview-bar').style.display = 'none';
+  document.getElementById('paste-doc-type').value = type || 'req';
   openModal('paste-doc-modal');
   setTimeout(()=>{
     const ta = document.getElementById('paste-doc-raw');
@@ -2071,11 +2129,21 @@ function renderTable(type) {
   tbody.innerHTML = rows.map(r=>`
     <tr draggable="true" data-row-id="${r.id}" data-row-type="${type}">
       <td style="cursor:default"><span class="drag-handle" title="拖曳排序" style="display:inline-block;vertical-align:middle">⠿</span></td>
-      <td><input class="cell-input" value="${esc(r.mis)}" onchange="updateProgressCell('${type}','${r.id}','mis',this.value)" placeholder="需求單號"></td>
-      <td><input class="cell-input" value="${esc(r.name)}" title="${esc(r.name)}" onchange="updateProgressCell('${type}','${r.id}','name',this.value);this.title=this.value" placeholder="需求名稱"></td>
+      <td><input class="cell-input" value="${esc(r.mis)}" onchange="updateProgressCell('${type}','${r.id}','mis',this.value)" placeholder="需求單號" title="${esc(r.mis)}"></td>
+      <td style="padding:0 10px">
+        <div class="cell-name-wrap" id="wrap-${r.id}">
+          <div class="cell-name-display" title="${esc(r.name)}" onclick="switchToInput('${r.id}','${type}')">${esc(r.name)||'<span style="color:var(--text3)">需求名稱</span>'}</div>
+          <input class="cell-name-input" id="nameinput-${r.id}" value="${esc(r.name)}" placeholder="需求名稱"
+            onblur="switchToDisplay('${r.id}','${type}',this.value)"
+            onchange="updateProgressCell('${type}','${r.id}','name',this.value)"
+            onkeydown="if(event.key==='Enter'||event.key==='Escape')this.blur()"
+            style="display:none">
+        </div>
+      </td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.sa)}" onchange="updateProgressCell('${type}','${r.id}','sa',inputValToDate(this.value))" title="SA預計完成日"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.pd)}" onchange="updateProgressCell('${type}','${r.id}','pd',inputValToDate(this.value))" title="PD預計完成日"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.test)}" onchange="updateProgressCell('${type}','${r.id}','test',inputValToDate(this.value))" title="TEST預計完成日"></td>
+      <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.golive)}" onchange="updateProgressCell('${type}','${r.id}','golive',inputValToDate(this.value))" title="預計上線日期"></td>
       <td>
         <select class="status-select ${STATUS_CLASS[r.status]||''}" onchange="updateProgressCell('${type}','${r.id}','status',this.value);this.className='status-select '+(STATUS_CLASS[this.value]||'')">
           ${STATUS_OPTS.map(s=>`<option value="${s}" ${r.status===s?'selected':''}>${s||'—'}</option>`).join('')}
@@ -2144,9 +2212,28 @@ function updateProgressCell(type, rowId, field, val) {
   if(row) row[field] = val;
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
 }
+function switchToInput(rowId, type) {
+  const display = document.querySelector(`#wrap-${rowId} .cell-name-display`);
+  const input   = document.getElementById('nameinput-'+rowId);
+  if(!display||!input) return;
+  display.style.display = 'none';
+  input.style.display   = 'block';
+  input.focus();
+  input.select();
+}
+function switchToDisplay(rowId, type, val) {
+  updateProgressCell(type, rowId, 'name', val);
+  const display = document.querySelector(`#wrap-${rowId} .cell-name-display`);
+  const input   = document.getElementById('nameinput-'+rowId);
+  if(!display||!input) return;
+  display.innerHTML = val ? esc(val) : '<span style="color:var(--text3)">需求名稱</span>';
+  display.title     = val;
+  input.style.display   = 'none';
+  display.style.display = 'block';
+}
 function addProgressRow(type) {
   if(!progressData[type]) progressData[type]=[];
-  progressData[type].push({id:'r'+Date.now(),mis:'',name:'',sa:'',pd:'',test:'',status:'',itsr:''});
+  progressData[type].push({id:'r'+Date.now(),mis:'',name:'',sa:'',pd:'',test:'',golive:'',status:'',itsr:''});
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
   renderTable(type);
 }
