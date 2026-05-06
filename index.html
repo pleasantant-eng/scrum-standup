@@ -413,21 +413,21 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 /* 文件卡片 */
 .doc-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow 0.2s}
 .doc-card:hover{box-shadow:var(--shadow-md)}
-.doc-card-header{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;background:linear-gradient(135deg,#f8fafc,#f1f5f9);user-select:none}
+.doc-card-header{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;cursor:pointer;background:linear-gradient(135deg,#f8fafc,#f1f5f9);flex-shrink:0;min-height:90px}
 .doc-card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .doc-icon-req{background:#dbeafe}
 .doc-icon-opt{background:#fef3c7}
 .doc-card-info{flex:1;min-width:0}
 .doc-card-title-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.doc-card-title{font-size:14px;font-weight:600;color:var(--text)}
+.doc-card-title{font-size:13px;font-weight:600;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4;height:2.8em}
 .doc-card-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;flex-shrink:0}
 .badge-req-sm{background:#dbeafe;color:#1e40af}
 .badge-opt-sm{background:#fef3c7;color:#92400e}
-.doc-card-points{font-size:12px;color:var(--text2);margin-top:2px}
+.doc-card-points{font-size:12px;color:var(--text2);margin-top:4px;white-space:nowrap}
 .doc-card-right{display:flex;align-items:center;gap:6px}
 .doc-chevron{font-size:14px;color:var(--text3);transition:transform 0.2s;flex-shrink:0}
 .doc-chevron.open{transform:rotate(180deg)}
-.doc-card-body{display:none;border-top:1px solid var(--border)}
+.doc-card-body{display:none;border-top:1px solid var(--border);flex:1;flex-direction:column}
 .doc-card-body.open{display:block}
 
 /* 編輯 / 預覽 切換 */
@@ -444,7 +444,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .doc-title-edit{width:100%;border:none;background:transparent;font-family:var(--font);font-size:14px;font-weight:600;color:var(--text);padding:2px 4px;border-radius:4px;border:1px solid transparent}
 .doc-title-edit:hover{border-color:var(--border)}
 .doc-title-edit:focus{outline:none;border-color:var(--accent);background:rgba(37,99,235,0.04)}
-.doc-card-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#f8fafc;border-top:1px solid var(--border)}
+.doc-card-footer{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:#f8fafc;border-top:1px solid var(--border);height:36px;min-height:36px;max-height:36px;overflow:hidden;flex-shrink:0}
 
 /* 貼上解析 Modal 優化 */
 .paste-modal{max-width:720px}
@@ -455,6 +455,22 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .preview-label{color:var(--text2)}
 .preview-value{font-weight:600;color:var(--text)}
 .preview-points-val{color:#1d4ed8;font-size:14px;font-weight:700}
+
+/* 分區 Grid 排版 */
+.doc-section{margin-bottom:28px}
+.doc-section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.doc-section-icon{font-size:16px}
+.doc-section-title{font-size:15px;font-weight:700;color:var(--text)}
+.doc-section-count{font-size:12px;color:var(--text3);background:#f1f5f9;border-radius:20px;padding:2px 9px;font-weight:600}
+.doc-section-opt .doc-section-header{border-bottom-color:#fbbf24}
+.doc-section-req .doc-section-header{border-bottom-color:#3b82f6}
+.doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.doc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.doc-grid{grid-template-columns:1fr}}
+.doc-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow 0.2s;margin-bottom:0;display:flex;flex-direction:column}
+
+/* 展開時卡片佔滿整行 */
+.doc-card.is-open{grid-column:1/-1}
 
 /* 新增按鈕區 */
 .doc-add-card{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--text3);font-weight:500;margin-bottom:12px}
@@ -1882,22 +1898,21 @@ function renderDocs() {
     el.innerHTML = '<div class="empty" style="padding:3rem">尚無文件，請點擊「貼上解析」或「手動新增」</div>';
     return;
   }
-  el.innerHTML = bbpDocs.map((doc,i) => {
+
+  function cardHTML(doc) {
     const isReq = doc.type === 'req';
     const points = extractBbpTotal(doc.content || '');
-    return `<div class="doc-card" draggable="true" id="doc-${doc.id}">
+    return `<div class="doc-card" id="doc-${doc.id}">
       <div class="doc-card-header">
         <span class="drag-handle" title="拖曳排序" onclick="event.stopPropagation()">⠿</span>
         <div class="doc-card-icon ${isReq?'doc-icon-req':'doc-icon-opt'}" onclick="toggleDoc('${doc.id}')" style="cursor:pointer">${isReq?'📋':'⚡'}</div>
         <div class="doc-card-info" onclick="toggleDoc('${doc.id}')" style="cursor:pointer">
           <div class="doc-card-title-wrap">
             <span class="doc-card-title">${esc(doc.title)}</span>
-            <span class="doc-card-badge ${isReq?'badge-req-sm':'badge-opt-sm'}">${isReq?'需求':'優化'}</span>
           </div>
           ${points ? `<div class="doc-card-points">合計點數：<strong style="color:#1d4ed8">${points} 點</strong></div>` : ''}
         </div>
         <div class="doc-card-right">
-          <button class="btn btn-sm" style="font-size:11px;color:var(--red);border-color:rgba(220,38,38,0.2);padding:4px 8px;display:inline-flex;align-items:center;gap:3px" onclick="deleteDoc(event,'${doc.id}')" title="刪除"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 19 6"/><path d="M8 6V4h4v2"/><path d="M19 6l-1 12H4L3 6"/><line x1="10" y1="11" x2="10" y2="15"/><line x1="7" y1="11" x2="7.5" y2="15"/><line x1="13" y1="11" x2="12.5" y2="15"/></svg>刪除</button>
           <span class="doc-chevron" id="chev-${doc.id}">▾</span>
         </div>
       </div>
@@ -1926,15 +1941,51 @@ function renderDocs() {
           <div class="doc-edit-label" style="margin-bottom:6px">Markdown 內容</div>
           <textarea class="doc-edit-textarea" id="content-edit-${doc.id}" oninput="autoResizeTA(this)">${esc(doc.content)}</textarea>
         </div>
-        <div class="doc-card-footer">
-          <span style="font-size:11px;color:var(--text3)">上次更新：${doc.updatedAt || '—'}</span>
-          <div style="display:flex;gap:6px" id="footer-btns-${doc.id}">
-            <button class="btn btn-sm" id="save-btn-${doc.id}" style="display:none" onclick="saveDoc('${doc.id}')">💾 儲存</button>
-          </div>
+      </div>
+      <!-- footer 固定在卡片底部，刪除按鈕永遠可見 -->
+      <div class="doc-card-footer" id="footer-${doc.id}">
+        <span style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;display:inline-block">更新：${doc.updatedAt || '—'}</span>
+        <div style="display:flex;gap:6px;align-items:center" id="footer-btns-${doc.id}">
+          <button class="btn btn-sm" id="save-btn-${doc.id}" style="display:none" onclick="saveDoc('${doc.id}')">💾 儲存</button>
+          <button class="btn btn-sm" style="font-size:11px;color:var(--red);border-color:rgba(220,38,38,0.2);padding:4px 8px;display:inline-flex;align-items:center;gap:3px" onclick="deleteDoc(event,'${doc.id}')" title="刪除"><svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 19 6"/><path d="M8 6V4h4v2"/><path d="M19 6l-1 12H4L3 6"/><line x1="10" y1="11" x2="10" y2="15"/><line x1="7" y1="11" x2="7.5" y2="15"/><line x1="13" y1="11" x2="12.5" y2="15"/></svg>刪除</button>
         </div>
       </div>
     </div>`;
-  }).join('') + `<div class="doc-add-card" onclick="showPasteDocModal()">＋ 貼上解析新增文件</div>`;
+  }
+
+  const optDocs = bbpDocs.filter(d => d.type === 'opt');
+  const reqDocs = bbpDocs.filter(d => d.type === 'req');
+
+  let html = '';
+
+  if(optDocs.length) {
+    html += `<div class="doc-section doc-section-opt">
+      <div class="doc-section-header">
+        <span class="doc-section-icon">⚡</span>
+        <span class="doc-section-title">優化</span>
+        <span class="doc-section-count">${optDocs.length} 件</span>
+      </div>
+      <div class="doc-grid" id="grid-opt">
+        ${optDocs.map(doc => cardHTML(doc)).join('')}
+      </div>
+    </div>`;
+  }
+
+  if(reqDocs.length) {
+    html += `<div class="doc-section doc-section-req">
+      <div class="doc-section-header">
+        <span class="doc-section-icon">📋</span>
+        <span class="doc-section-title">需求</span>
+        <span class="doc-section-count">${reqDocs.length} 件</span>
+      </div>
+      <div class="doc-grid" id="grid-req">
+        ${reqDocs.map(doc => cardHTML(doc)).join('')}
+      </div>
+    </div>`;
+  }
+
+  html += `<div class="doc-add-card" onclick="showPasteDocModal()">＋ 貼上解析新增文件</div>`;
+  el.innerHTML = html;
 
   // 初始化編輯區 textarea 高度 + 拖曳
   setTimeout(()=>{
@@ -1950,66 +2001,82 @@ function initDocDrag() {
   const container = document.getElementById('doc-list');
   let dragSrc = null;
   let dragAllowed = false;
-  container.querySelectorAll('.doc-card').forEach(card => {
-    // 只有從 drag-handle 開始才允許拖曳
-    const handle = card.querySelector('.drag-handle');
-    if(handle) {
-      handle.addEventListener('mousedown', () => { dragAllowed = true; });
-      handle.addEventListener('touchstart', () => { dragAllowed = true; }, {passive:true});
-    }
-    card.addEventListener('dragstart', e => {
-      if(!dragAllowed) { e.preventDefault(); return; }
-      dragAllowed = false;
-      dragSrc = card;
-      card.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-      container.querySelectorAll('.doc-card').forEach(c=>c.classList.remove('drag-over'));
-      // 重建 bbpDocs 順序
-      const newOrder = [];
-      container.querySelectorAll('.doc-card').forEach(c=>{
-        const id = c.id.replace('doc-','');
-        const d = bbpDocs.find(x=>x.id===id);
-        if(d) newOrder.push(d);
+
+  // 針對每個 grid 區塊各自處理拖曳（opt/req 分開，不互相干擾）
+  container.querySelectorAll('.doc-grid').forEach(grid => {
+    grid.querySelectorAll('.doc-card').forEach(card => {
+      const handle = card.querySelector('.drag-handle');
+      if(handle) {
+        handle.addEventListener('mousedown', () => { dragAllowed = true; card.draggable = true; });
+        handle.addEventListener('touchstart', () => { dragAllowed = true; card.draggable = true; }, {passive:true});
+        handle.addEventListener('mouseup', () => { setTimeout(() => { card.draggable = false; }, 100); });
+      }
+      card.addEventListener('dragstart', e => {
+        if(!dragAllowed) { e.preventDefault(); card.draggable = false; return; }
+        dragAllowed = false;
+        dragSrc = card;
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
       });
-      bbpDocs = newOrder;
-      saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
-      showToast('✅ 排序已儲存','success');
-    });
-    card.addEventListener('dragover', e => {
-      e.preventDefault();
-      if(card !== dragSrc && card.classList.contains('doc-card')) {
+      card.addEventListener('dragend', () => {
+        card.draggable = false;
+        card.classList.remove('dragging');
         container.querySelectorAll('.doc-card').forEach(c=>c.classList.remove('drag-over'));
-        card.classList.add('drag-over');
-      }
-    });
-    card.addEventListener('drop', e => {
-      e.preventDefault();
-      if(dragSrc && dragSrc !== card) {
-        const cards = [...container.querySelectorAll('.doc-card')];
-        const srcIdx = cards.indexOf(dragSrc);
-        const tgtIdx = cards.indexOf(card);
-        if(srcIdx < tgtIdx) card.after(dragSrc);
-        else card.before(dragSrc);
-      }
+        // 重建 bbpDocs 順序（全部 grid 合併，保持 opt 在前、req 在後）
+        const newOrder = [];
+        container.querySelectorAll('.doc-grid').forEach(g => {
+          g.querySelectorAll('.doc-card').forEach(c => {
+            const id = c.id.replace('doc-','');
+            const d = bbpDocs.find(x=>x.id===id);
+            if(d) newOrder.push(d);
+          });
+        });
+        bbpDocs = newOrder;
+        saveToStorage(STORAGE_KEY_DOCS, bbpDocs);
+        showToast('✅ 排序已儲存','success');
+      });
+      card.addEventListener('dragover', e => {
+        e.preventDefault();
+        if(card !== dragSrc && card.classList.contains('doc-card')) {
+          grid.querySelectorAll('.doc-card').forEach(c=>c.classList.remove('drag-over'));
+          card.classList.add('drag-over');
+        }
+      });
+      card.addEventListener('drop', e => {
+        e.preventDefault();
+        if(dragSrc && dragSrc !== card && card.closest('.doc-grid') === grid) {
+          const cards = [...grid.querySelectorAll('.doc-card')];
+          const srcIdx = cards.indexOf(dragSrc);
+          const tgtIdx = cards.indexOf(card);
+          if(srcIdx < tgtIdx) card.after(dragSrc);
+          else card.before(dragSrc);
+        }
+      });
     });
   });
 }
 
 function autoResizeTA(el) {
+  const start = el.selectionStart;
+  const end   = el.selectionEnd;
   el.style.height = 'auto';
   el.style.height = Math.max(280, el.scrollHeight) + 'px';
+  el.setSelectionRange(start, end);
 }
+
+
+
+
 
 // ── 展開/收合 ──
 function toggleDoc(id) {
   const body = document.getElementById('body-'+id);
   const chev = document.getElementById('chev-'+id);
+  const card = document.getElementById('doc-'+id);
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   if(chev) chev.classList.toggle('open', !isOpen);
+  if(card) card.classList.toggle('is-open', !isOpen);
 }
 
 // ── 預覽/編輯切換 ──
@@ -2048,8 +2115,10 @@ function saveDoc(id) {
   setTimeout(()=>{
     const body = document.getElementById('body-'+id);
     const chev = document.getElementById('chev-'+id);
+    const card = document.getElementById('doc-'+id);
     if(body) body.classList.add('open');
     if(chev) chev.classList.add('open');
+    if(card) card.classList.add('is-open');
     switchDocView(id,'preview');
   }, 30);
   showToast('✅ 文件已儲存，正在同步至 Sheets...','success');
