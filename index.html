@@ -2,7 +2,7 @@
 <html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智能倉儲開發團隊</title>
+<title>LSD1(運籌系統1處)｜SCRUM PO 產值 & 進度管理</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -696,8 +696,8 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   <div class="login-box">
     <div class="login-header">
       <div class="login-brand-icon">🏭</div>
-      <div class="login-brand-title">智能倉儲開發團隊</div>
-      <div class="login-brand-sub">Daily Standup Tracker · 請先登入以繼續</div>
+      <div class="login-brand-title">LSD1(運籌系統1處)</div>
+      <div class="login-brand-sub">SCRUM PO 產值 &amp; 進度管理</div>
     </div>
     <div class="login-body">
       <div class="login-error" id="login-error">
@@ -731,8 +731,8 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
     <div class="hero-left">
       <div class="hero-icon-wrap" onclick="goHome()" title="回首頁">🏭</div>
       <div>
-        <div class="hero-title" id="hero-title" onclick="goHome()">智能倉儲開發團隊</div>
-        <div class="hero-sub" id="hero-sub">Daily Standup Tracker · 智能倉儲開發團隊</div>
+        <div class="hero-title" id="hero-title" onclick="goHome()">LSD1(運籌系統1處)</div>
+        <div class="hero-sub" id="hero-sub">SCRUM PO 產值 &amp; 進度管理</div>
       </div>
     </div>
     <div class="hero-illus">
@@ -1394,12 +1394,12 @@ function showPage(pageId) {
   // 更新 Hero Banner
   const heroRight = document.getElementById('hero-right');
   if(pageId === 'home') {
-    document.getElementById('hero-title').textContent = '智能倉儲開發團隊';
-    document.getElementById('hero-sub').textContent = 'Daily Standup Tracker · 智能倉儲開發團隊';
+    document.getElementById('hero-title').textContent = 'LSD1(運籌系統1處)';
+    document.getElementById('hero-sub').textContent = 'SCRUM PO 產值 & 進度管理';
     heroRight.innerHTML = '<span class="hero-badge">⚡ Google Sheets 同步</span>';
   } else {
     const t = themes.find(x=>x.page===pageId) || {};
-    document.getElementById('hero-title').textContent = t.name || '智能倉儲開發團隊';
+    document.getElementById('hero-title').textContent = t.name || 'LSD1(運籌系統1處)';
     document.getElementById('hero-sub').textContent = t.desc || '';
     heroRight.innerHTML = '<button class="back-btn" onclick="goHome()"><span style="font-size:16px;line-height:1">‹</span> 返回首頁</button>';
   }
