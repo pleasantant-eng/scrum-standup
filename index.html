@@ -1236,6 +1236,10 @@ async function doLogin() {
     const result = await callGAS({ action: 'auth', username, password });
     if (result && result.ok) {
       sessionStorage.setItem(SESSION_KEY, result.user || username);
+      // ★ 儲存 Token，之後每次呼叫 API 都會自動帶上
+      if (result.token) {
+        sessionStorage.setItem('wms_api_token', result.token);
+      }
       const overlay = document.getElementById('login-overlay');
       overlay.classList.add('hidden');
     } else {
@@ -1688,6 +1692,11 @@ async function fetchWithTimeout(url, ms, options) {
   return Promise.race([fetchPromise, timeoutPromise]);
 }
 async function callGAS(params, retry=1) {
+  // ★ 自動帶入 Token（auth 與 ping 不需要）
+  if (params.action !== 'auth' && params.action !== 'ping') {
+    const token = sessionStorage.getItem('wms_api_token');
+    if (token) params.token = token;
+  }
   // auth 一律走 POST（密碼不可出現在 URL）
   // saveBbp（docs）和 saveProgress/save（data）因資料量大也走 POST
   const needsPost = params.action === 'auth' || params.docs !== undefined || params.data !== undefined;
