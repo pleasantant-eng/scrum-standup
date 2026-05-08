@@ -295,6 +295,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.08);background:#fff}
 .itsr-select.itsr-am{background:#fef3c7;border-color:#fde68a;color:#92400e}
 .itsr-select.itsr-pm{background:#fed7aa;border-color:#fdba74;color:#9a3412}
+.itsr-select.itsr-assessment{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
 .itsr-select.itsr-sa{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
 .itsr-select.itsr-review{background:#ede9fe;border-color:#ddd6fe;color:#4c1d95}
 .itsr-select.itsr-dev{background:#dcfce7;border-color:#bbf7d0;color:#065f46}
@@ -329,6 +330,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-filter-item .itsr-tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;line-height:1.4}
 .itsr-tag.itsr-am{background:#fef3c7;color:#92400e}
 .itsr-tag.itsr-pm{background:#fed7aa;color:#9a3412}
+.itsr-tag.itsr-assessment{background:#dbeafe;color:#1e40af}
 .itsr-tag.itsr-sa{background:#dbeafe;color:#1e40af}
 .itsr-tag.itsr-review{background:#ede9fe;color:#4c1d95}
 .itsr-tag.itsr-dev{background:#dcfce7;color:#065f46}
@@ -2526,9 +2528,9 @@ const STATUS_OPTS = ['','RA分析中','RA分析完','SA分析中','SA分析完',
 const STATUS_CLASS = {'RA分析中':'s-ra-ing','RA分析完':'s-ra-done','SA分析中':'s-sa-ing','SA分析完':'s-sa-done','PD開發中':'s-pd-ing','PD開發完':'s-pd-done','SA測試中':'s-sa-test-ing','SA測試完':'s-sa-test-done','QA測試中':'s-qa-ing','QA測試完':'s-qa-done','USER測試中':'s-user-ing','USER測試完':'s-user-done','待上線':'s-pending','已上線':'s-online'};
 
 /* ITSR 狀態選項（13 項） */
-const ITSR_OPTS = ['AM','PM','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
+const ITSR_OPTS = ['AM','PM','需求評估','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
 const ITSR_CLASS = {
-  'AM':'itsr-am','PM':'itsr-pm','系統分析':'itsr-sa','主管審核':'itsr-review',
+  'AM':'itsr-am','PM':'itsr-pm','需求評估':'itsr-assessment','系統分析':'itsr-sa','主管審核':'itsr-review',
   '程式開發':'itsr-dev','程式驗收/測試':'itsr-test','申請人驗收':'itsr-uat',
   '上線申請':'itsr-apply','上線追蹤':'itsr-track','待重新上線':'itsr-relaunch','處理階段':'itsr-processing',
   '結案':'itsr-done','Reject':'itsr-reject'
