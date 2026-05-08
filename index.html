@@ -295,7 +295,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.08);background:#fff}
 .itsr-select.itsr-am{background:#fef3c7;border-color:#fde68a;color:#92400e}
 .itsr-select.itsr-pm{background:#fed7aa;border-color:#fdba74;color:#9a3412}
-.itsr-select.itsr-assessment{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
 .itsr-select.itsr-sa{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
 .itsr-select.itsr-review{background:#ede9fe;border-color:#ddd6fe;color:#4c1d95}
 .itsr-select.itsr-dev{background:#dcfce7;border-color:#bbf7d0;color:#065f46}
@@ -330,7 +329,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-filter-item .itsr-tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;line-height:1.4}
 .itsr-tag.itsr-am{background:#fef3c7;color:#92400e}
 .itsr-tag.itsr-pm{background:#fed7aa;color:#9a3412}
-.itsr-tag.itsr-assessment{background:#dbeafe;color:#1e40af}
 .itsr-tag.itsr-sa{background:#dbeafe;color:#1e40af}
 .itsr-tag.itsr-review{background:#ede9fe;color:#4c1d95}
 .itsr-tag.itsr-dev{background:#dcfce7;color:#065f46}
@@ -635,15 +633,21 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .gantt-filter-select:focus{outline:none;border-color:var(--accent)}
 
 /* ── 甘特表格主體 ── */
-.gantt-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:auto;box-shadow:var(--shadow)}
-.gantt-table{border-collapse:collapse;min-width:100%;font-size:12px;white-space:nowrap}
+.gantt-wrap{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  overflow:auto;box-shadow:var(--shadow);
+  max-height:calc(100vh - 220px);   /* ★ 限高度讓表頭可 sticky 凍結於頂部 */
+}
+.gantt-table{border-collapse:separate;border-spacing:0;min-width:100%;font-size:12px;white-space:nowrap}
 
 /* 表頭 */
 .gantt-table th{background:#1e40af;color:#fff;font-weight:600;text-align:center;border:1px solid rgba(255,255,255,0.15);padding:6px 10px;font-size:11px;white-space:nowrap}
-.gantt-table th.month-header{background:#1e3a8a;font-size:12px;letter-spacing:0.04em}
-.gantt-table th.label-header{background:#1e3a8a;text-align:left;min-width:220px}
-.gantt-table th.sys-header{background:#1e3a8a;min-width:60px;text-align:center}
-.gantt-table th.week-header{min-width:90px;font-family:var(--mono);font-size:11px;font-weight:600}
+/* ★ 凍結表頭：所有 thead th 採 sticky 浮於頂部 */
+.gantt-table thead th{position:sticky;z-index:7}
+.gantt-table thead th.month-header{top:0;background:#1e3a8a;font-size:12px;letter-spacing:0.04em}
+.gantt-table thead th.week-header{top:32px;min-width:90px;font-family:var(--mono);font-size:11px;font-weight:600}
+.gantt-table thead th.label-header{top:0;left:0;background:#1e3a8a;text-align:left;min-width:220px;z-index:9}
+.gantt-table thead th.sys-header{top:0;left:220px;background:#1e3a8a;min-width:60px;text-align:center;z-index:9}
 .gantt-table th.today-week-th{background:#2563eb}
 
 /* 左側標籤欄 */
@@ -654,7 +658,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   min-width:220px;max-width:320px;
   overflow:hidden;text-overflow:ellipsis;
 }
-.gantt-table tr:hover td.label-cell{background:#f8fafc}
 .gantt-table td.sys-cell{
   background:#fff;font-size:11px;font-weight:600;
   padding:5px 8px;border:1px solid var(--border);
@@ -662,7 +665,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   position:sticky;left:220px;z-index:5;
   min-width:60px;
 }
-.gantt-table tr:hover td.sys-cell{background:#f8fafc}
 .sys-cell.wms{color:#1e40af}
 .sys-cell.laas{color:#065f46}
 
@@ -750,10 +752,56 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   position:sticky;left:280px;z-index:5;
   min-width:90px;
 }
-.gantt-table tr:hover td.status-cell{background:#f8fafc}
 .gantt-table th.status-header{
   background:#1e3a8a;min-width:90px;text-align:center;
-  position:sticky;left:280px;z-index:6;
+  position:sticky;top:0;left:280px;z-index:9;
+}
+
+/* ── ★ Hover：整列同步亮起（不只 sticky 三欄，週格也會） ── */
+.gantt-table tbody tr:not(.group-row):hover td.label-cell,
+.gantt-table tbody tr:not(.group-row):hover td.sys-cell,
+.gantt-table tbody tr:not(.group-row):hover td.status-cell{
+  background:#eef2f7;
+}
+.gantt-table tbody tr:not(.group-row):hover td.week-cell.empty{
+  background:#eef2f7;
+}
+.gantt-table tbody tr:not(.group-row):hover td.week-cell:not(.empty){
+  box-shadow:inset 0 0 0 9999px rgba(15,23,42,0.05);
+}
+
+/* ── ★ Delay 列：淺粉紅標示 ── */
+.gantt-table tbody tr.gantt-row-delay td.label-cell,
+.gantt-table tbody tr.gantt-row-delay td.sys-cell,
+.gantt-table tbody tr.gantt-row-delay td.status-cell{
+  background:#fef2f2;
+}
+.gantt-table tbody tr.gantt-row-delay td.week-cell.empty{
+  background:#fef2f2;
+}
+.gantt-table tbody tr.gantt-row-delay td.week-cell:not(.empty){
+  box-shadow:inset 0 0 0 9999px rgba(254,202,202,0.45);
+}
+/* Delay 列被 hover 時：稍深粉紅 */
+.gantt-table tbody tr.gantt-row-delay:hover td.label-cell,
+.gantt-table tbody tr.gantt-row-delay:hover td.sys-cell,
+.gantt-table tbody tr.gantt-row-delay:hover td.status-cell{
+  background:#fee2e2;
+}
+.gantt-table tbody tr.gantt-row-delay:hover td.week-cell.empty{
+  background:#fee2e2;
+}
+.gantt-table tbody tr.gantt-row-delay:hover td.week-cell:not(.empty){
+  box-shadow:inset 0 0 0 9999px rgba(252,165,165,0.55);
+}
+
+/* Tooltip 內 delay 訊息樣式 */
+.gantt-tooltip-delay{
+  margin-top:6px;padding:5px 10px;
+  background:linear-gradient(135deg,rgba(220,38,38,0.4),rgba(185,28,28,0.5));
+  border-left:3px solid #fecaca;border-radius:5px;
+  color:#fef2f2;font-weight:700;font-size:12px;
+  display:flex;align-items:center;gap:6px;
 }
 </style>
 </head>
@@ -2478,9 +2526,9 @@ const STATUS_OPTS = ['','RA分析中','RA分析完','SA分析中','SA分析完',
 const STATUS_CLASS = {'RA分析中':'s-ra-ing','RA分析完':'s-ra-done','SA分析中':'s-sa-ing','SA分析完':'s-sa-done','PD開發中':'s-pd-ing','PD開發完':'s-pd-done','SA測試中':'s-sa-test-ing','SA測試完':'s-sa-test-done','QA測試中':'s-qa-ing','QA測試完':'s-qa-done','USER測試中':'s-user-ing','USER測試完':'s-user-done','待上線':'s-pending','已上線':'s-online'};
 
 /* ITSR 狀態選項（13 項） */
-const ITSR_OPTS = ['AM','PM','需求評估','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
+const ITSR_OPTS = ['AM','PM','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
 const ITSR_CLASS = {
-  'AM':'itsr-am','PM':'itsr-pm','需求評估':'itsr-assessment','系統分析':'itsr-sa','主管審核':'itsr-review',
+  'AM':'itsr-am','PM':'itsr-pm','系統分析':'itsr-sa','主管審核':'itsr-review',
   '程式開發':'itsr-dev','程式驗收/測試':'itsr-test','申請人驗收':'itsr-uat',
   '上線申請':'itsr-apply','上線追蹤':'itsr-track','待重新上線':'itsr-relaunch','處理階段':'itsr-processing',
   '結案':'itsr-done','Reject':'itsr-reject'
@@ -3108,6 +3156,39 @@ function ganttWeekIndex(date, weekStart) {
   return Math.floor(diff / (7 * 24 * 3600 * 1000));
 }
 
+/* ── ★ Delay 判斷：依系統狀態與對應預計時間比較「查詢當天」(預設今天) ──
+   - 「RA分析中」          → 比 sys.raDate
+   - 「RA分析完/SA分析中」 → 比 sys.saDate
+   - 「SA分析完/PD開發中」 → 比 sys.pdDate
+   - 「PD開發完/SA測試中」 → 比 master.integTest
+   - 預計時間早於等於今天視為 delay；無時間則略過比較 */
+function ganttGetDelayInfo(sys, integTest, today) {
+  const status = (sys.status || '').trim();
+  let dateStr = '', message = '';
+  if(status === 'RA分析中') {
+    dateStr = sys.raDate || sys.ra || '';
+    message = 'Warning: RA schedule may be delayed';
+  } else if(status === 'RA分析完' || status === 'SA分析中') {
+    dateStr = sys.saDate || sys.sa || '';
+    message = 'Warning: SA schedule may be delayed';
+  } else if(status === 'SA分析完' || status === 'PD開發中') {
+    dateStr = sys.pdDate || sys.pd || '';
+    message = 'Warning: PD schedule may be delayed';
+  } else if(status === 'PD開發完' || status === 'SA測試中') {
+    dateStr = integTest || '';
+    message = 'Warning: SA Testing schedule may be delayed';
+  } else {
+    return null;
+  }
+  if(!dateStr) return null;            // 該欄位沒有時間 → 不比較
+  const d = ganttParseDate(dateStr);
+  if(!d) return null;
+  if(d.getTime() <= today.getTime()) { // 預計時間 ≤ 今天 → delay
+    return { isDelay:true, message, expectedDate:dateStr };
+  }
+  return null;
+}
+
 let ganttInited = false;
 
 // ── 月份資料快取（所有日期中出現過的月份）──
@@ -3372,7 +3453,11 @@ function renderGantt() {
       (m.systems||[]).forEach(sys=>{
         if(sysFilter    !== 'all' && sys.system !== sysFilter)    return;
         if(statusFilter !== 'all' && sys.status !== statusFilter) return;
-        items.push({ type, mis:m.mis||'', name:m.name||'', sys });
+        items.push({
+          type, mis:m.mis||'', name:m.name||'', sys,
+          integTest: m.integTest||'',
+          delay: ganttGetDelayInfo(sys, m.integTest||'', today)
+        });
       });
     });
   });
@@ -3461,10 +3546,17 @@ function renderGantt() {
       if(raD) tipLines.push(`RA：${raD}`);
       if(saD) tipLines.push(`SA：${saD}`);
       if(pdD) tipLines.push(`PD：${pdD}`);
+      if(item.integTest) tipLines.push(`預計整合測試：${item.integTest}`);
       if(sys.status) tipLines.push(`狀態：${sys.status}`);
 
       const statusCls2 = STATUS_CLASS[sys.status]||'';
-      html += `<tr>`;
+      const delayMsg   = item.delay ? (item.delay.message) : '';
+      const delayCls   = item.delay ? 'gantt-row-delay' : '';
+
+      // hover 時讓整列（包含週格）都顯示 delay 訊息與資訊
+      const onHoverAttrs = `onmouseenter="showGanttTip2(event,'${esc(item.mis)}','${esc(item.name)}','${esc(sys.system||'')}','${esc(tipLines.join(' | '))}','${esc(delayMsg)}')" onmouseleave="hideGanttTip()"`;
+
+      html += `<tr class="${delayCls}" ${onHoverAttrs}>`;
       html += `<td class="label-cell" title="${esc(labelText)}">${esc(labelText)}</td>`;
       html += `<td class="sys-cell ${sysCls}">${esc(sys.system)||'?'}</td>`;
       html += `<td class="status-cell"><span class="status-select ${statusCls2}" style="padding:2px 6px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap">${esc(sys.status)||'—'}</span></td>`;
@@ -3479,9 +3571,7 @@ function renderGantt() {
         const order=['ra','sa','pd'];
         const tags = order.filter(p=>phases.has(p)).map(p=>`<span class="phase-tag ${p}">${p.toUpperCase()}</span>`).join('');
         const bgCls = phases.has('pd')?'style="background:#f0fdf4"':phases.has('sa')?'style="background:#eff6ff"':'style="background:#fffbeb"';
-        html += `<td class="week-cell${isTodayWeek?' today-week':''}" ${bgCls}
-          onmouseenter="showGanttTip2(event,'${esc(item.mis)}','${esc(item.name)}','${esc(sys.system||'')}','${esc(tipLines.join(' | '))}')"
-          onmouseleave="hideGanttTip()">
+        html += `<td class="week-cell${isTodayWeek?' today-week':''}" ${bgCls}>
           <div class="phase-tags-wrap">${tags}</div></td>`;
       });
       html += `</tr>`;
@@ -3499,12 +3589,19 @@ function renderGantt() {
 }
 
 // ── Tooltip ──
-function showGanttTip2(e, mis, name, sys, detail) {
+function showGanttTip2(e, mis, name, sys, detail, delayMsg) {
   const tip = document.getElementById('gantt-tooltip');
+  const detailLines = detail
+    ? detail.split(' | ').map(l=>`<div class="gantt-tooltip-row"><span class="gantt-tooltip-val" style="color:#a5f3fc">${l}</span></div>`).join('')
+    : '';
+  const delayHtml = delayMsg
+    ? `<div class="gantt-tooltip-delay"><span>⚠</span><span>${delayMsg}</span></div>`
+    : '';
   tip.innerHTML = `<div class="gantt-tooltip-title">${mis}</div>
     <div class="gantt-tooltip-row"><span class="gantt-tooltip-label">需求</span><span class="gantt-tooltip-val">${name}</span></div>
     <div class="gantt-tooltip-row"><span class="gantt-tooltip-label">系統</span><span class="gantt-tooltip-val">${sys}</span></div>
-    ${detail.split(' | ').map(l=>`<div class="gantt-tooltip-row"><span class="gantt-tooltip-val" style="color:#a5f3fc">${l}</span></div>`).join('')}`;
+    ${detailLines}
+    ${delayHtml}`;
   tip.classList.add('show');
   posGanttTip(e);
 }
