@@ -288,6 +288,61 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .s-user-done{background:#fed7aa;color:#7c2d12}
 .s-pending{background:#f1f5f9;color:#475569}
 .s-online{background:#dcfce7;color:#166534}
+
+/* ── ITSR 狀態下拉樣式 ── */
+.itsr-select{border:1px solid #e2e8f0;background:#f8fafc;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--text);width:100%;transition:all 0.15s}
+.itsr-select:hover{border-color:#93c5fd;background:#eff6ff}
+.itsr-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.08);background:#fff}
+.itsr-select.itsr-am{background:#fef3c7;border-color:#fde68a;color:#92400e}
+.itsr-select.itsr-pm{background:#fed7aa;border-color:#fdba74;color:#9a3412}
+.itsr-select.itsr-sa{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
+.itsr-select.itsr-review{background:#ede9fe;border-color:#ddd6fe;color:#4c1d95}
+.itsr-select.itsr-dev{background:#dcfce7;border-color:#bbf7d0;color:#065f46}
+.itsr-select.itsr-test{background:#cffafe;border-color:#a5f3fc;color:#155e75}
+.itsr-select.itsr-uat{background:#fce7f3;border-color:#fbcfe8;color:#9d174d}
+.itsr-select.itsr-apply{background:#fef9c3;border-color:#fef08a;color:#713f12}
+.itsr-select.itsr-track{background:#e0e7ff;border-color:#c7d2fe;color:#3730a3}
+.itsr-select.itsr-relaunch{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
+.itsr-select.itsr-processing{background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6}
+.itsr-select.itsr-done{background:#d1fae5;border-color:#a7f3d0;color:#065f46}
+.itsr-select.itsr-reject{background:#fee2e2;border-color:#fecaca;color:#991b1b}
+
+/* ── ITSR 篩選器（多選下拉） ── */
+.itsr-filter-wrap{position:relative;display:inline-block}
+.itsr-filter-btn{font-family:var(--font);font-size:12px;padding:5px 10px;border-radius:7px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:5px;transition:all 0.15s;white-space:nowrap}
+.itsr-filter-btn:hover{background:#dbeafe;border-color:#60a5fa}
+.itsr-filter-btn.has-filter{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border-color:#1d4ed8;box-shadow:0 1px 3px rgba(37,99,235,0.3)}
+.itsr-filter-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;background:rgba(255,255,255,0.25);border-radius:9px;font-size:10px;font-weight:700;margin-left:2px}
+.itsr-filter-btn:not(.has-filter) .itsr-filter-badge{background:#dbeafe;color:#1e40af}
+.itsr-filter-panel{display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:500;min-width:240px;max-width:280px;padding:8px;animation:itsr-fade-in 0.15s ease-out}
+.itsr-filter-panel.show{display:block}
+@keyframes itsr-fade-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.itsr-filter-head{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 8px;border-bottom:1px solid var(--border);margin-bottom:6px}
+.itsr-filter-title{font-size:12px;font-weight:700;color:var(--text)}
+.itsr-filter-actions{display:flex;gap:4px}
+.itsr-filter-action-btn{font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--text2);cursor:pointer;font-family:var(--font);font-weight:500;transition:all 0.15s}
+.itsr-filter-action-btn:hover{background:#f1f5f9;border-color:#cbd5e1;color:var(--text)}
+.itsr-filter-list{max-height:300px;overflow-y:auto;padding:2px}
+.itsr-filter-item{display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;border-radius:6px;font-size:12px;color:var(--text);transition:background 0.1s;user-select:none}
+.itsr-filter-item:hover{background:#f1f5f9}
+.itsr-filter-item input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:#2563eb;flex-shrink:0}
+.itsr-filter-item .itsr-tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;line-height:1.4}
+.itsr-tag.itsr-am{background:#fef3c7;color:#92400e}
+.itsr-tag.itsr-pm{background:#fed7aa;color:#9a3412}
+.itsr-tag.itsr-sa{background:#dbeafe;color:#1e40af}
+.itsr-tag.itsr-review{background:#ede9fe;color:#4c1d95}
+.itsr-tag.itsr-dev{background:#dcfce7;color:#065f46}
+.itsr-tag.itsr-test{background:#cffafe;color:#155e75}
+.itsr-tag.itsr-uat{background:#fce7f3;color:#9d174d}
+.itsr-tag.itsr-apply{background:#fef9c3;color:#713f12}
+.itsr-tag.itsr-track{background:#e0e7ff;color:#3730a3}
+.itsr-tag.itsr-relaunch{background:#fff1f2;color:#9f1239}
+.itsr-tag.itsr-processing{background:#f5f3ff;color:#5b21b6}
+.itsr-tag.itsr-done{background:#d1fae5;color:#065f46}
+.itsr-tag.itsr-reject{background:#fee2e2;color:#991b1b}
+.itsr-filter-empty{display:none;text-align:center;padding:20px 12px;color:var(--text3);font-size:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:8px;margin:8px 0}
+.itsr-filter-empty.show{display:block}
+
 .row-add{background:#f8fafc;cursor:pointer;transition:background 0.15s}
 .row-add:hover{background:#eff6ff}
 .row-add td{color:var(--accent);font-weight:500;text-align:center;padding:10px}
@@ -536,7 +591,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .expand-btn:hover{background:#dbeafe;color:var(--accent)}
 /* 進度表欄寬 */
 /* Master-Detail Table — 固定欄寬（可手動拖拉調整） */
-.progress-table.master-detail-table{table-layout:fixed;width:100%;min-width:900px}
+.progress-table.master-detail-table{table-layout:fixed;width:100%;min-width:1080px}
 /* 拖曳把手 */
 .progress-table.master-detail-table th:nth-child(1){width:28px;min-width:28px}
 /* 展開按鈕 */
@@ -551,8 +606,21 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .progress-table.master-detail-table th:nth-child(6){width:200px;min-width:100px}
 /* 預計上線日期 */
 .progress-table.master-detail-table th:nth-child(7){width:200px;min-width:100px}
+/* 備註 Memo */
+.progress-table.master-detail-table th:nth-child(8){width:240px;min-width:140px}
 /* 刪除按鈕 */
-.progress-table.master-detail-table th:nth-child(8){width:28px;min-width:28px}
+.progress-table.master-detail-table th:nth-child(9){width:28px;min-width:28px}
+
+/* memo 欄位專屬樣式 */
+.cell-memo{
+  width:100%;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;
+  padding:5px 8px;font-family:var(--font);font-size:12px;color:#78350f;
+  resize:none;line-height:1.5;min-height:30px;max-height:80px;overflow-y:auto;
+  transition:all 0.15s;
+}
+.cell-memo::placeholder{color:#fbbf24;font-style:italic}
+.cell-memo:hover{border-color:#fcd34d;background:#fef9c3}
+.cell-memo:focus{outline:none;border-color:#f59e0b;background:#fff;box-shadow:0 0 0 3px rgba(245,158,11,0.12);color:var(--text)}
 
 /* ══════════════════════════════════════
    甘特圖 頁面
@@ -905,6 +973,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
             style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:600">
             ▼ 全部展開
           </button>
+          <div class="itsr-filter-wrap" id="itsr-filter-wrap-opt">
+            <button class="itsr-filter-btn" id="itsr-filter-btn-opt"
+              onclick="toggleItsrFilterPanel('opt',event)" title="ITSR 狀態篩選（多選）">
+              <span>🔍 ITSR 篩選</span>
+              <span class="itsr-filter-badge" id="itsr-filter-badge-opt">0</span>
+            </button>
+            <div class="itsr-filter-panel" id="itsr-filter-panel-opt"></div>
+          </div>
           <button class="btn btn-sm" onclick="addProgressRow(&#39;opt&#39;)">＋ 新增主項目</button>
         </div>
       </div>
@@ -919,6 +995,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
               <th>ITSR狀態</th>
               <th>預計整合測試</th>
               <th>預計上線日期</th>
+              <th>備註 Memo</th>
               <th></th>
             </tr>
           </thead>
@@ -938,6 +1015,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
             style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:600">
             ▼ 全部展開
           </button>
+          <div class="itsr-filter-wrap" id="itsr-filter-wrap-req">
+            <button class="itsr-filter-btn" id="itsr-filter-btn-req"
+              onclick="toggleItsrFilterPanel('req',event)" title="ITSR 狀態篩選（多選）">
+              <span>🔍 ITSR 篩選</span>
+              <span class="itsr-filter-badge" id="itsr-filter-badge-req">0</span>
+            </button>
+            <div class="itsr-filter-panel" id="itsr-filter-panel-req"></div>
+          </div>
           <button class="btn btn-sm" onclick="addProgressRow(&#39;req&#39;)">＋ 新增主項目</button>
         </div>
       </div>
@@ -952,6 +1037,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
               <th>ITSR狀態</th>
               <th>預計整合測試</th>
               <th>預計上線日期</th>
+              <th>備註 Memo</th>
               <th></th>
             </tr>
           </thead>
@@ -2389,6 +2475,35 @@ function inlineMarkdown(text) {
 const STATUS_OPTS = ['','RA分析中','RA分析完','SA分析中','SA分析完','PD開發中','PD開發完','SA測試中','SA測試完','QA測試中','QA測試完','USER測試中','USER測試完','待上線','已上線'];
 const STATUS_CLASS = {'RA分析中':'s-ra-ing','RA分析完':'s-ra-done','SA分析中':'s-sa-ing','SA分析完':'s-sa-done','PD開發中':'s-pd-ing','PD開發完':'s-pd-done','SA測試中':'s-sa-test-ing','SA測試完':'s-sa-test-done','QA測試中':'s-qa-ing','QA測試完':'s-qa-done','USER測試中':'s-user-ing','USER測試完':'s-user-done','待上線':'s-pending','已上線':'s-online'};
 
+/* ITSR 狀態選項（13 項） */
+const ITSR_OPTS = ['AM','PM','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
+const ITSR_CLASS = {
+  'AM':'itsr-am','PM':'itsr-pm','系統分析':'itsr-sa','主管審核':'itsr-review',
+  '程式開發':'itsr-dev','程式驗收/測試':'itsr-test','申請人驗收':'itsr-uat',
+  '上線申請':'itsr-apply','上線追蹤':'itsr-track','待重新上線':'itsr-relaunch','處理階段':'itsr-processing',
+  '結案':'itsr-done','Reject':'itsr-reject'
+};
+
+/* ITSR 篩選器狀態（每個區段獨立） */
+const STORAGE_KEY_ITSR_FILTER = 'bbp_itsr_filter_v1';
+let itsrFilter = (function(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY_ITSR_FILTER);
+    if(raw){
+      const obj = JSON.parse(raw);
+      return { opt: new Set(obj.opt||[]), req: new Set(obj.req||[]) };
+    }
+  }catch(e){}
+  return { opt: new Set(), req: new Set() };
+})();
+function saveItsrFilter(){
+  try{
+    localStorage.setItem(STORAGE_KEY_ITSR_FILTER, JSON.stringify({
+      opt: Array.from(itsrFilter.opt), req: Array.from(itsrFilter.req)
+    }));
+  }catch(e){}
+}
+
 function renderProgress() {
   renderTable('opt'); renderTable('req');
 }
@@ -2451,6 +2566,7 @@ function upgradeProgressItem(item) {
   item.itsr   = item.itsr   || '';
   item.integTest = item.integTest || '';
   item.golive = item.golive || '';
+  item.memo   = item.memo   || '';
   delete item.sa; delete item.pd; delete item.test; delete item.status;
   item.systems = [sys];
   return item;
@@ -2472,8 +2588,32 @@ function getSysColorClass(sys) {
 
 function renderTable(type) {
   const tbody = document.getElementById('tbody-'+type);
-  const rows = (progressData[type]||[]).map(upgradeProgressItem);
+  const allRows = (progressData[type]||[]).map(upgradeProgressItem);
+
+  // 套用 ITSR 多選篩選（若有選擇）
+  const filterSet = itsrFilter[type] || new Set();
+  const rows = filterSet.size > 0
+    ? allRows.filter(r => filterSet.has((r.itsr||'').trim()))
+    : allRows;
+
   let html = '';
+
+  // 沒有符合的列時顯示空狀態
+  if(filterSet.size > 0 && rows.length === 0){
+    html = `<tr><td colspan="9" style="padding:24px;text-align:center;color:var(--text3);font-size:13px;background:#fafbfc">
+      <div style="margin-bottom:6px">📭 沒有符合篩選條件的項目</div>
+      <div style="font-size:11px">已篩選：${Array.from(filterSet).map(s=>esc(s)).join('、')}
+        <button onclick="clearItsrFilter('${type}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:var(--font);font-weight:600;margin-left:6px">清除篩選</button>
+      </div>
+    </td></tr>`;
+    tbody.innerHTML = html;
+    setTimeout(() => {
+      initResizableCols(document.getElementById('table-' + type));
+      syncSectionToggleBtn(type);
+      syncItsrFilterBtn(type);
+    }, 0);
+    return;
+  }
 
   rows.forEach((r) => {
     const pts      = calcTotalPoints(r.systems);
@@ -2494,9 +2634,18 @@ function renderTable(type) {
           ${pts?`<span class="master-point-total">${pts}pt</span>`:''}
         </div>
       </td>
-      <td><input class="cell-input" value="${esc(r.itsr||'')}" onchange="updateMasterCell('${type}','${r.id}','itsr',this.value)" placeholder="ITSR狀態" style="font-size:12px"></td>
+      <td>
+        <select class="itsr-select ${ITSR_CLASS[r.itsr]||''}"
+          onchange="updateMasterCell('${type}','${r.id}','itsr',this.value);this.className='itsr-select '+(ITSR_CLASS[this.value]||'');refreshItsrFilterPanel('${type}')">
+          <option value="" ${!r.itsr?'selected':''}>— 請選擇 —</option>
+          ${ITSR_OPTS.map(o=>`<option value="${esc(o)}" ${r.itsr===o?'selected':''}>${esc(o)}</option>`).join('')}
+          ${r.itsr && !ITSR_OPTS.includes(r.itsr)?`<option value="${esc(r.itsr)}" selected>${esc(r.itsr)}（舊值）</option>`:''}
+        </select>
+      </td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.integTest||'')}" onchange="updateMasterCell('${type}','${r.id}','integTest',inputValToDate(this.value))" title="預計整合測試" style="width:100%"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.golive||'')}" onchange="updateMasterCell('${type}','${r.id}','golive',inputValToDate(this.value))" title="預計上線日期" style="width:100%"></td>
+      <td><textarea class="cell-memo" rows="1" placeholder="可備註說明…" title="備註 Memo（自由輸入）"
+        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px';updateMasterCell('${type}','${r.id}','memo',this.value)">${esc(r.memo||'')}</textarea></td>
       <td><button class="row-del-btn" onclick="deleteMasterRow('${type}','${r.id}')">✕</button></td>
     </tr>`;
 
@@ -2516,6 +2665,7 @@ function renderTable(type) {
         <span style="margin-right:48px">PD 負責人</span><span>PD 預計</span>
       </td>
       <td style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;padding:4px 8px;background:#f8fafc;border-bottom:1px solid var(--border)">狀態 / Points</td>
+      <td style="background:#f8fafc;border-bottom:1px solid var(--border)"></td>
       <td style="background:#f8fafc;border-bottom:1px solid var(--border)"></td>
     </tr>`;
 
@@ -2594,6 +2744,9 @@ function renderTable(type) {
           </div>
         </td>
 
+        <!-- memo 欄位（master-level，detail 列保留空白） -->
+        <td style="border-right:1px solid var(--border)"></td>
+
         <!-- 刪除 -->
         <td style="text-align:center;padding:4px">
           <button class="row-del-btn" style="opacity:1" onclick="deleteDetailRow('${type}','${r.id}','${sys.id}')" title="刪除此系統">✕</button>
@@ -2603,7 +2756,7 @@ function renderTable(type) {
 
     // ── 新增系統按鈕列 ──
     html += `<tr class="detail-add-row" data-master-id="${r.id}">
-      <td colspan="8" style="padding:5px 10px 8px 48px;background:#fafcff;border-bottom:2px solid var(--border)">
+      <td colspan="9" style="padding:5px 10px 8px 48px;background:#fafcff;border-bottom:2px solid var(--border)">
         <button class="add-detail-btn" onclick="addDetailRow('${type}','${r.id}')">＋ 新增系統</button>
       </td>
     </tr>`;
@@ -2614,8 +2767,127 @@ function renderTable(type) {
   setTimeout(() => {
     initResizableCols(document.getElementById('table-' + type));
     syncSectionToggleBtn(type);
+    syncItsrFilterBtn(type);
   }, 0);
 }
+
+/* ══════════════════════════════════════
+   ITSR 篩選器：UI、邏輯、儲存
+══════════════════════════════════════ */
+// 切換顯示 / 隱藏面板
+function toggleItsrFilterPanel(type, evt){
+  if(evt) evt.stopPropagation();
+  const panel = document.getElementById('itsr-filter-panel-'+type);
+  if(!panel) return;
+  // 關閉另一個區段的面板
+  const other = type==='opt'?'req':'opt';
+  const otherPanel = document.getElementById('itsr-filter-panel-'+other);
+  if(otherPanel) otherPanel.classList.remove('show');
+  // 渲染並切換
+  renderItsrFilterPanel(type);
+  panel.classList.toggle('show');
+}
+
+// 渲染面板內容（每次開啟都重新渲染，以反映目前資料中存在的狀態）
+function renderItsrFilterPanel(type){
+  const panel = document.getElementById('itsr-filter-panel-'+type);
+  if(!panel) return;
+  const filterSet = itsrFilter[type] || new Set();
+
+  // 統計目前資料中各 ITSR 狀態出現次數（提示用戶）
+  const allRows = (progressData[type]||[]).map(upgradeProgressItem);
+  const countMap = {};
+  allRows.forEach(r=>{
+    const v = (r.itsr||'').trim();
+    if(v) countMap[v] = (countMap[v]||0)+1;
+  });
+
+  let html = `
+    <div class="itsr-filter-head">
+      <div class="itsr-filter-title">ITSR 狀態（多選）</div>
+      <div class="itsr-filter-actions">
+        <button class="itsr-filter-action-btn" onclick="selectAllItsrFilter('${type}')">全選</button>
+        <button class="itsr-filter-action-btn" onclick="clearItsrFilter('${type}')">清除</button>
+      </div>
+    </div>
+    <div class="itsr-filter-list">
+  `;
+  ITSR_OPTS.forEach(opt=>{
+    const checked = filterSet.has(opt) ? 'checked' : '';
+    const cls = ITSR_CLASS[opt] || '';
+    const cnt = countMap[opt] || 0;
+    html += `
+      <label class="itsr-filter-item">
+        <input type="checkbox" value="${esc(opt)}" ${checked}
+          onchange="onItsrFilterChange('${type}','${esc(opt)}',this.checked)">
+        <span class="itsr-tag ${cls}">${esc(opt)}</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--text3);font-family:var(--mono)">${cnt}</span>
+      </label>
+    `;
+  });
+  html += `</div>`;
+  panel.innerHTML = html;
+}
+
+// 重新整理目前已開啟的面板（資料變動時呼叫）
+function refreshItsrFilterPanel(type){
+  const panel = document.getElementById('itsr-filter-panel-'+type);
+  if(panel && panel.classList.contains('show')) renderItsrFilterPanel(type);
+  syncItsrFilterBtn(type);
+}
+
+// 勾選 / 取消勾選某個狀態
+function onItsrFilterChange(type, opt, checked){
+  if(!itsrFilter[type]) itsrFilter[type] = new Set();
+  if(checked) itsrFilter[type].add(opt);
+  else itsrFilter[type].delete(opt);
+  saveItsrFilter();
+  syncItsrFilterBtn(type);
+  renderTable(type);
+}
+
+// 全選 / 清除
+function selectAllItsrFilter(type){
+  itsrFilter[type] = new Set(ITSR_OPTS);
+  saveItsrFilter();
+  renderItsrFilterPanel(type);
+  syncItsrFilterBtn(type);
+  renderTable(type);
+}
+function clearItsrFilter(type){
+  itsrFilter[type] = new Set();
+  saveItsrFilter();
+  renderItsrFilterPanel(type);
+  syncItsrFilterBtn(type);
+  renderTable(type);
+}
+
+// 同步按鈕外觀（顯示已選數量、變色）
+function syncItsrFilterBtn(type){
+  const btn = document.getElementById('itsr-filter-btn-'+type);
+  const badge = document.getElementById('itsr-filter-badge-'+type);
+  if(!btn||!badge) return;
+  const n = (itsrFilter[type]||new Set()).size;
+  badge.textContent = n;
+  if(n>0){
+    btn.classList.add('has-filter');
+    btn.title = `已篩選 ${n} 項：${Array.from(itsrFilter[type]).join('、')}（點擊調整）`;
+  } else {
+    btn.classList.remove('has-filter');
+    btn.title = 'ITSR 狀態篩選（多選）';
+  }
+}
+
+// 點擊面板外部時關閉
+document.addEventListener('click', function(e){
+  ['opt','req'].forEach(type=>{
+    const wrap = document.getElementById('itsr-filter-wrap-'+type);
+    const panel = document.getElementById('itsr-filter-panel-'+type);
+    if(wrap && panel && panel.classList.contains('show') && !wrap.contains(e.target)){
+      panel.classList.remove('show');
+    }
+  });
+});
 
 function toggleSysNameEdit(btn) {
   const td    = btn.closest('td');
@@ -2715,7 +2987,7 @@ function addProgressRow(type) {
   if(!progressData[type]) progressData[type]=[];
   const newId = 'm'+Date.now();
   progressData[type].push({
-    id: newId, mis:'', name:'', itsr:'', integTest:'', golive:'', _expanded:true,
+    id: newId, mis:'', name:'', itsr:'', integTest:'', golive:'', memo:'', _expanded:true,
     systems:[{id:newId+'_sys1',system:'WMS',ra:'',raDate:'',sa:'',saDate:'',pd:'',pdDate:'',status:'',raPoint:'',saPoint:'',pdPoint:'',uatPoint:''}]
   });
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
@@ -3269,6 +3541,7 @@ async function syncProgressToSheets() {
         flatData[type].push({
           id:m.id, mis:m.mis, name:m.name,
           itsr:m.itsr||'', integTest:m.integTest||'', golive:m.golive||'',
+          memo:m.memo||'',
           sysId:sys.id, system:sys.system,
           ra:sys.ra||'', raDate:sys.raDate||'',
           sa:sys.sa||'', saDate:sys.saDate||'',
@@ -3321,6 +3594,7 @@ async function loadProgressFromSheets() {
             masterMap.set(row.id, {
               id:row.id, mis:row.mis||'', name:row.name||'',
               itsr:row.itsr||'', integTest:row.integTest||'', golive:row.golive||'',
+              memo:row.memo||'',
               _expanded:true, systems:[]
             });
           }
