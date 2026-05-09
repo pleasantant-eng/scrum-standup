@@ -893,6 +893,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 </head>
 <body>
 
@@ -1343,8 +1344,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap">
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <button class="pv-chart-type-btn active" onclick="pvSwitchChart('bar',this)">長條圖</button>
-            <button class="pv-chart-type-btn" onclick="pvSwitchChart('stackedBar',this)">堆疊長條</button>
-            <button class="pv-chart-type-btn" onclick="pvSwitchChart('line',this)">線圖</button>
             <button class="pv-chart-type-btn" onclick="pvSwitchChart('pie',this)">圓餅圖</button>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
@@ -4313,24 +4312,132 @@ function pvGetChartData(){
 function pvRenderChart(){
   if(pvChartInstance){pvChartInstance.destroy();pvChartInstance=null;}
   const {labels,md,pList}=pvGetChartData();
+  // 圖例列（長條圖用；圓餅圖因扇形已有標籤，圖例仍保留色塊參考）
   document.getElementById('pv-legend-row').innerHTML=pList.map((m,i)=>`<div class="pv-legend-item"><div class="pv-legend-dot" style="background:${md[m].color}"></div>${m}</div>`).join('');
   const chartWrap=document.querySelector('.pv-chart-wrap');
   if(chartWrap&&!document.getElementById('pvMainChart'))chartWrap.innerHTML='<canvas id="pvMainChart" role="img" aria-label="個人產值圖表"></canvas>';
   const canvas=document.getElementById('pvMainChart');if(!canvas)return;
   if(!labels.length){if(chartWrap)chartWrap.innerHTML='<div class="pv-empty" style="padding:1.5rem;text-align:center;color:var(--text3)">目前無 Done 任務資料</div>';return;}
-  const scX={ticks:{autoSkip:false,maxRotation:45,color:'#64748b',font:{size:11}},grid:{color:'#f1f5f9'}};
-  const scY={beginAtZero:true,title:{display:true,text:'點數',color:'#64748b',font:{size:11}},ticks:{color:'#64748b',font:{size:11}},grid:{color:'#f1f5f9'}};
-  const tip=ctx=>`${ctx.dataset.label}: ${ctx.parsed.y} 點`;
-  if(pvCurrentChart==='pie'){const tot=pList.map(m=>md[m].data.reduce((a,b)=>a+b,0));
-    pvChartInstance=new Chart(canvas,{type:'pie',data:{labels:pList,datasets:[{data:tot,backgroundColor:pList.map((_,i)=>PV_COLORS[i%PV_COLORS.length]),borderWidth:2,borderColor:'#fff'}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} 點`}}}}});return;}
-  if(pvCurrentChart==='stackedBar'){pvChartInstance=new Chart(canvas,{type:'bar',
-    data:{labels,datasets:pList.map((m,i)=>({label:m,data:md[m].data,backgroundColor:md[m].color+'cc',borderColor:md[m].color,borderWidth:1}))},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:tip}}},scales:{x:{...scX,stacked:true},y:{...scY,stacked:true}}}});return;}
-  const isLine=pvCurrentChart==='line';
-  pvChartInstance=new Chart(canvas,{type:isLine?'line':'bar',
-    data:{labels,datasets:pList.map((m,i)=>isLine?{label:m,data:md[m].data,borderColor:md[m].color,backgroundColor:md[m].color+'22',pointBackgroundColor:md[m].color,pointRadius:5,pointHoverRadius:7,tension:.3,fill:false,borderWidth:2}:{label:m,data:md[m].data,backgroundColor:md[m].color+'cc',borderColor:md[m].color,borderWidth:1})},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:tip}}},scales:{x:scX,y:scY}}});
+
+  // ── 圓餅圖 ──
+  if(pvCurrentChart==='pie'){
+    const tot=pList.map(m=>md[m].data.reduce((a,b)=>a+b,0));
+    const grandTotal=tot.reduce((a,b)=>a+b,0)||1;
+    pvChartInstance=new Chart(canvas,{
+      type:'pie',
+      data:{
+        labels:pList,
+        datasets:[{
+          data:tot,
+          backgroundColor:pList.map((_,i)=>PV_COLORS[i%PV_COLORS.length]),
+          borderWidth:2,borderColor:'#fff'
+        }]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        layout:{padding:30},
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{label:c=>`${c.label}：${c.parsed} 點 (${Math.round(c.parsed/grandTotal*100)}%)`}},
+          // 扇形標籤：名字 + 點數 + 百分比
+          datalabels:{
+            display:ctx=>ctx.dataset.data[ctx.dataIndex]>0,
+            formatter:(val,ctx)=>{
+              const name=ctx.chart.data.labels[ctx.dataIndex];
+              const pct=Math.round(val/grandTotal*100);
+              return `${name}\n${val} 點 (${pct}%)`;
+            },
+            font:{size:11,weight:'700'},
+            textAlign:'center',
+            // 小扇形（<8%）拉到外側，用深色字
+            anchor:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'end':'center';},
+            align:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'end':'center';},
+            color:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'#1e293b':'#fff';},
+            offset:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?8:0;},
+            textStrokeColor:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'transparent':'rgba(0,0,0,0.25)';},
+            textStrokeWidth:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?0:2;},
+          }
+        }
+      },
+      plugins:[ChartDataLabels]
+    });
+    return;
+  }
+
+  // ── 長條圖 ──
+  // 短名（取 FirstName，避免頂端標籤重疊）
+  const shortName=m=>m.split(' ')[0];
+  // 每個 label 下有幾根柱子
+  const barCount=pList.length;
+  // 動態字體：人多就縮小
+  const nameFontSize=barCount<=3?12:barCount<=5?10:9;
+  const valFontSize=barCount<=3?12:barCount<=5?11:10;
+
+  pvChartInstance=new Chart(canvas,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:pList.map((m,i)=>({
+        label:m,
+        data:md[m].data,
+        backgroundColor:md[m].color+'cc',
+        borderColor:md[m].color,
+        borderWidth:1
+      }))
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      layout:{padding:{top:28}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y} 點`}},
+        datalabels:{
+          display:ctx=>ctx.dataset.data[ctx.dataIndex]>0,
+          // 柱子內部中間顯示點數
+          anchor:'center',align:'center',
+          formatter:(val)=>val,
+          color:'#fff',
+          font:{size:valFontSize,weight:'700'},
+          textStrokeColor:'rgba(0,0,0,0.3)',textStrokeWidth:2,
+          // 覆寫：頂端顯示名字（用第二層 datalabels 配合 afterDatasetsDraw 較複雜，
+          // 改用單一 datalabels 加入自訂 afterDraw plugin 畫名字）
+        }
+      },
+      scales:{
+        x:{ticks:{autoSkip:false,maxRotation:0,color:'#64748b',font:{size:11}},grid:{color:'#f1f5f9'}},
+        y:{beginAtZero:true,title:{display:true,text:'點數',color:'#64748b',font:{size:11}},ticks:{color:'#64748b',font:{size:11}},grid:{color:'#f1f5f9'}}
+      }
+    },
+    plugins:[
+      ChartDataLabels,
+      // ── 自訂 plugin：柱子頂端畫名字 ──
+      {
+        id:'pvBarNameLabel',
+        afterDatasetsDraw(chart){
+          const {ctx,data}=chart;
+          ctx.save();
+          chart.data.datasets.forEach((ds,di)=>{
+            const meta=chart.getDatasetMeta(di);
+            if(meta.hidden)return;
+            meta.data.forEach((bar,idx)=>{
+              const val=ds.data[idx];
+              if(!val||val<=0)return;
+              const name=shortName(ds.label);
+              const x=bar.x, y=bar.y-5;
+              ctx.font=`700 ${nameFontSize}px 'Noto Sans TC',sans-serif`;
+              ctx.textAlign='center';ctx.textBaseline='bottom';
+              // 白描邊防重疊干擾
+              ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=3;
+              ctx.strokeText(name,x,y);
+              ctx.fillStyle='#1e293b';
+              ctx.fillText(name,x,y);
+            });
+          });
+          ctx.restore();
+        }
+      }
+    ]
+  });
 }
 function pvRenderSettingsPanel(){
   document.getElementById('pv-setting-sprint-tabs').innerHTML=PV_SPRINTS.map((sp,i)=>`<button class="pv-sprint-tab ${i===pvSettingSprintIdx?'active':''}" onclick="pvSetSettingSprint(${i})">${sp.name}</button>`).join('');
