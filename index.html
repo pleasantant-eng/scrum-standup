@@ -295,7 +295,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.08);background:#fff}
 .itsr-select.itsr-am{background:#fef3c7;border-color:#fde68a;color:#92400e}
 .itsr-select.itsr-pm{background:#fed7aa;border-color:#fdba74;color:#9a3412}
-.itsr-select.itsr-assessment{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
 .itsr-select.itsr-sa{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
 .itsr-select.itsr-review{background:#ede9fe;border-color:#ddd6fe;color:#4c1d95}
 .itsr-select.itsr-dev{background:#dcfce7;border-color:#bbf7d0;color:#065f46}
@@ -330,7 +329,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-filter-item .itsr-tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;line-height:1.4}
 .itsr-tag.itsr-am{background:#fef3c7;color:#92400e}
 .itsr-tag.itsr-pm{background:#fed7aa;color:#9a3412}
-.itsr-tag.itsr-assessment{background:#dbeafe;color:#1e40af}
 .itsr-tag.itsr-sa{background:#dbeafe;color:#1e40af}
 .itsr-tag.itsr-review{background:#ede9fe;color:#4c1d95}
 .itsr-tag.itsr-dev{background:#dcfce7;color:#065f46}
@@ -344,6 +342,15 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-tag.itsr-reject{background:#fee2e2;color:#991b1b}
 .itsr-filter-empty{display:none;text-align:center;padding:20px 12px;color:var(--text3);font-size:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:8px;margin:8px 0}
 .itsr-filter-empty.show{display:block}
+
+/* ── 模糊搜尋 ── */
+.fuzzy-search-wrap{position:relative;display:inline-flex;align-items:center}
+.fuzzy-search-input{font-family:var(--font);font-size:12px;padding:5px 28px 5px 10px;border-radius:7px;border:1px solid var(--border);background:#f8fafc;color:var(--text);width:160px;transition:all 0.15s;outline:none}
+.fuzzy-search-input:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
+.fuzzy-search-input.has-value{border-color:#60a5fa;background:#eff6ff}
+.fuzzy-search-clear{position:absolute;right:7px;background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;padding:0;line-height:1;display:none}
+.fuzzy-search-clear.show{display:block}
+.fuzzy-search-clear:hover{color:var(--text)}
 
 .row-add{background:#f8fafc;cursor:pointer;transition:background 0.15s}
 .row-add:hover{background:#eff6ff}
@@ -805,95 +812,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   color:#fef2f2;font-weight:700;font-size:12px;
   display:flex;align-items:center;gap:6px;
 }
-
-/* ══ 個人產值 ══ */
-.pv-container{max-width:1000px;margin:0 auto;padding:1.5rem 1rem 4rem}
-.pv-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;box-shadow:var(--shadow)}
-.pv-toolbar-title{font-size:15px;font-weight:700;color:var(--text);flex:1}
-.pv-status-bar{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;margin-bottom:1rem;border:1px solid}
-.pv-status-loading{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
-.pv-status-ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
-.pv-status-error{background:#fef2f2;border-color:#fecaca;color:#991b1b}
-.pv-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;box-shadow:var(--shadow)}
-.pv-filter-label{font-size:12px;font-weight:600;color:var(--text2)}
-.pv-select{font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:7px;background:#f8fafc;color:var(--text);font-family:var(--font);cursor:pointer}
-.pv-select:focus{outline:none;border-color:var(--accent)}
-.pv-input-date{font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:7px;background:#f8fafc;color:var(--text);font-family:var(--mono)}
-.pv-metric-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:1.25rem}
-.pv-metric{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;box-shadow:var(--shadow)}
-.pv-metric-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
-.pv-metric-val{font-size:24px;font-weight:700;color:var(--text)}
-.pv-metric-sub{font-size:11px;color:var(--text3);margin-top:3px}
-.pv-view-tabs{display:flex;gap:4px;background:#f1f5f9;border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:1rem;width:fit-content}
-.pv-view-tab{padding:6px 16px;font-size:13px;font-weight:600;border:none;background:transparent;border-radius:6px;cursor:pointer;color:var(--text2);font-family:var(--font);transition:all 0.15s}
-.pv-view-tab.active{background:#fff;color:var(--accent);box-shadow:var(--shadow)}
-.pv-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:1rem}
-.pv-table{width:100%;border-collapse:collapse;font-size:13px}
-.pv-table th{background:#1e40af;color:#fff;padding:9px 14px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap}
-.pv-table th.th-num{text-align:right}
-.pv-table td{padding:8px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
-.pv-table tr:last-child td{border-bottom:none}
-.pv-table .td-num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono)}
-.pv-table .td-name{font-weight:700}
-.pv-row-member{cursor:pointer;user-select:none;transition:background 0.1s}
-.pv-row-member:hover td{background:#eff6ff}
-.pv-row-member td:first-child{padding-left:10px}
-.pv-chevron{display:inline-block;font-size:10px;color:var(--text3);margin-right:6px;transition:transform 0.2s;vertical-align:middle}
-.pv-chevron.open{transform:rotate(90deg)}
-.pv-detail-row{display:none}
-.pv-detail-row.open{display:table-row}
-.pv-detail-row td{padding:0;border-bottom:1px solid var(--border)}
-.pv-detail-inner{padding:8px 14px 12px 32px;background:#f8fafc}
-.pv-task-table{width:100%;font-size:12px;border-collapse:collapse}
-.pv-task-table th{font-size:11px;font-weight:600;color:var(--text2);padding:5px 10px;border-bottom:1px solid var(--border);text-align:left;background:transparent;text-transform:uppercase;letter-spacing:0.04em}
-.pv-task-table td{padding:5px 10px;border-bottom:1px solid var(--border);color:var(--text)}
-.pv-task-table tr:last-child td{border-bottom:none}
-.pv-task-table tr:hover td{background:#fff}
-.pv-sp-badge{display:inline-block;min-width:26px;text-align:center;padding:1px 7px;border-radius:20px;font-size:11px;font-weight:700}
-.pv-sp-done{background:#dcfce7;color:#065f46}
-.pv-sp-pending{background:#fef3c7;color:#92400e}
-.pv-sp-other{background:#f1f5f9;color:#475569}
-.pv-state-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.pv-state-Done{background:#dcfce7;color:#065f46}
-.pv-state-Committed{background:#dbeafe;color:#1e40af}
-.pv-state-Approved{background:#fef3c7;color:#92400e}
-.pv-state-New{background:#f1f5f9;color:#475569}
-.pv-progress-wrap{display:flex;align-items:center;gap:8px}
-.pv-progress-bar{flex:1;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:60px}
-.pv-progress-fill{height:100%;border-radius:4px;transition:width 0.3s}
-.pv-fill-ok{background:var(--green)}.pv-fill-warn{background:var(--yellow)}.pv-fill-low{background:#cbd5e1}
-.pv-total-row td{background:#f1f5f9;font-weight:700;border-top:2px solid var(--border)}
-.pv-chart-type-btn{padding:5px 14px;font-size:12px;font-weight:600;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s;box-shadow:var(--shadow)}
-.pv-chart-type-btn:hover{border-color:#93c5fd;color:var(--accent)}
-.pv-chart-type-btn.active{background:#1e40af;border-color:#1e40af;color:#fff}
-.pv-grain-tabs{display:flex;gap:4px;background:#f1f5f9;border:1px solid var(--border);border-radius:7px;padding:3px;width:fit-content}
-.pv-grain-tab{padding:4px 12px;font-size:12px;font-weight:600;border:none;background:transparent;border-radius:5px;cursor:pointer;color:var(--text2);font-family:var(--font)}
-.pv-grain-tab.active{background:#fff;color:var(--accent);box-shadow:var(--shadow)}
-.pv-legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px}
-.pv-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text2)}
-.pv-legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-.pv-chart-wrap{position:relative;width:100%;height:320px}
-.pv-import-area{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:var(--radius);padding:1rem;margin-bottom:1rem}
-.pv-import-area textarea{width:100%;min-height:110px;font-size:12px;font-family:var(--mono);padding:8px 10px;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--text);resize:vertical}
-.pv-import-area textarea:focus{outline:none;border-color:var(--accent)}
-.pv-settings-panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1rem;box-shadow:var(--shadow);display:none}
-.pv-settings-panel.open{display:block}
-.pv-settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:10px}
-.pv-settings-row{display:flex;flex-direction:column;gap:4px}
-.pv-settings-row label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em}
-.pv-settings-row input[type=number]{width:90px;padding:5px 8px;border:1px solid var(--border);border-radius:7px;background:#f8fafc;color:var(--text);font-family:var(--mono);font-size:13px;font-weight:700}
-.pv-settings-row input[type=text]{width:100%;padding:5px 8px;border:1px solid var(--border);border-radius:7px;background:#f8fafc;color:var(--text);font-family:var(--font);font-size:12px}
-.pv-settings-row input:focus{outline:none;border-color:var(--accent)}
-.pv-sprint-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
-.pv-sprint-tab{padding:3px 10px;font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:20px;background:#f1f5f9;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
-.pv-sprint-tab.active{background:#1e40af;border-color:#1e40af;color:#fff}
-.pv-hint{font-size:11px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:4px}
-.pv-empty{text-align:center;padding:3rem;color:var(--text3)}
-.pv-empty-icon{font-size:36px;margin-bottom:8px}
-
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 </head>
 <body>
 
@@ -994,18 +913,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
       <div class="theme-card-icon">📅</div>
       <div class="theme-card-title">甘特圖追蹤</div>
       <div class="theme-card-desc">依週顯示 BBP 各系統執行時程</div>
-      <div class="theme-card-arrow">›</div>
-    </div>
-  
-    <div class="theme-card color-teal" onclick="showPage('productivity')">
-      <div class="theme-card-icon">📊</div>
-      <div class="theme-card-title">個人產值</div>
-      <div class="theme-card-desc">依時間顯示各成員 Story Point 認列點數</div>
-      <div class="theme-card-actions">
-        <span class="theme-tag">Sprint</span>
-        <span class="theme-tag">週次</span>
-        <span class="theme-tag">圖表</span>
-      </div>
       <div class="theme-card-arrow">›</div>
     </div>
   
@@ -1125,6 +1032,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
             style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:600">
             ▼ 全部展開
           </button>
+          <div class="fuzzy-search-wrap">
+            <input class="fuzzy-search-input" id="fuzzy-search-opt" type="text"
+              placeholder="🔎 搜尋單號／名稱"
+              oninput="onFuzzySearchChange('opt',this.value)"
+              autocomplete="off">
+            <button class="fuzzy-search-clear" id="fuzzy-search-clear-opt"
+              onclick="clearFuzzySearch('opt')" title="清除搜尋">✕</button>
+          </div>
           <div class="itsr-filter-wrap" id="itsr-filter-wrap-opt">
             <button class="itsr-filter-btn" id="itsr-filter-btn-opt"
               onclick="toggleItsrFilterPanel('opt',event)" title="ITSR 狀態篩選（多選）">
@@ -1167,6 +1082,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
             style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;font-weight:600">
             ▼ 全部展開
           </button>
+          <div class="fuzzy-search-wrap">
+            <input class="fuzzy-search-input" id="fuzzy-search-req" type="text"
+              placeholder="🔎 搜尋單號／名稱"
+              oninput="onFuzzySearchChange('req',this.value)"
+              autocomplete="off">
+            <button class="fuzzy-search-clear" id="fuzzy-search-clear-req"
+              onclick="clearFuzzySearch('req')" title="清除搜尋">✕</button>
+          </div>
           <div class="itsr-filter-wrap" id="itsr-filter-wrap-req">
             <button class="itsr-filter-btn" id="itsr-filter-btn-req"
               onclick="toggleItsrFilterPanel('req',event)" title="ITSR 狀態篩選（多選）">
@@ -1277,89 +1200,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   </div>
 </div>
 <div class="gantt-tooltip" id="gantt-tooltip"></div>
-
-<!-- ══════════════════════════════════════
-     頁面：個人產值
-══════════════════════════════════════ -->
-<div class="page" id="page-productivity">
-  <div class="pv-container">
-    <div class="pv-toolbar">
-      <span class="pv-toolbar-title">📊 個人產值</span>
-      <button class="btn btn-sm" onclick="pvToggleImport()">📥 匯入資料</button>
-      <button class="btn btn-sm" onclick="pvToggleSettings()">⚙️ 目標設定</button>
-      <button class="btn btn-sm" onclick="pvRefresh()">🔄 重新整理</button>
-    </div>
-    <div id="pv-status-bar" class="pv-status-bar" style="display:none"></div>
-    <div class="pv-import-area" id="pv-import-area" style="display:none">
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">貼上 CSV 資料（從 Azure DevOps 匯出，Tab 分隔）</div>
-      <div style="font-size:11px;color:var(--text2);margin-bottom:8px">欄位：Title, State, Story Point, Assigned To, Work Item Type, Created By, ID, Tags, Start Date, Due Date, Iteration Path</div>
-      <textarea id="pv-csv-input" placeholder="貼上 CSV 內容..."></textarea>
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn btn-accent btn-sm" onclick="pvParseCSV()">解析並匯入</button>
-        <button class="btn btn-sm" onclick="pvClearData()">清除資料</button>
-        <span id="pv-import-msg" style="font-size:12px"></span>
-      </div>
-    </div>
-    <div class="pv-settings-panel" id="pv-settings-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:14px;font-weight:700;color:var(--text)">目標點數設定</span>
-        <span style="font-size:11px;color:var(--text2)">同 Sprint 同職級共用，修改後自動同步至 Sheets</span>
-      </div>
-      <div class="pv-sprint-tabs" id="pv-setting-sprint-tabs"></div>
-      <div id="pv-settings-body"></div>
-    </div>
-    <div class="pv-filter-bar">
-      <span class="pv-filter-label">篩選：</span>
-      <select class="pv-select" id="pv-filter-mode" onchange="pvOnFilterModeChange()">
-        <option value="sprint">Sprint</option>
-        <option value="week">週次</option>
-        <option value="range">自訂日期</option>
-      </select>
-      <select class="pv-select" id="pv-filter-sprint" onchange="pvRenderAll()">
-        <option value="all">全部 Sprint</option>
-      </select>
-      <div id="pv-filter-week-wrap" style="display:none">
-        <select class="pv-select" id="pv-filter-week" onchange="pvRenderAll()"></select>
-      </div>
-      <div id="pv-filter-range-wrap" style="display:none;gap:6px;align-items:center">
-        <input type="date" class="pv-input-date" id="pv-filter-from" onchange="pvRenderAll()">
-        <span class="pv-filter-label">～</span>
-        <input type="date" class="pv-input-date" id="pv-filter-to" onchange="pvRenderAll()">
-      </div>
-      <select class="pv-select" id="pv-filter-person" onchange="pvRenderAll()">
-        <option value="all">所有成員</option>
-      </select>
-    </div>
-    <div class="pv-metric-row" id="pv-metric-row"></div>
-    <div class="pv-view-tabs">
-      <button class="pv-view-tab active" id="pv-tab-table" onclick="pvSwitchView('table')">📋 表格</button>
-      <button class="pv-view-tab" id="pv-tab-chart" onclick="pvSwitchView('chart')">📈 圖表</button>
-    </div>
-    <div id="pv-view-table">
-      <div class="pv-hint">▸ 點擊成員列可展開任務明細</div>
-      <div class="pv-card" id="pv-table-wrap"></div>
-    </div>
-    <div id="pv-view-chart" style="display:none">
-      <div class="pv-card" style="padding:1.25rem">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap">
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="pv-chart-type-btn active" onclick="pvSwitchChart('bar',this)">長條圖</button>
-            <button class="pv-chart-type-btn" onclick="pvSwitchChart('pie',this)">圓餅圖</button>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:12px;font-weight:600;color:var(--text2)">時間粒度：</span>
-            <div class="pv-grain-tabs">
-              <button class="pv-grain-tab active" id="pv-grain-sprint" onclick="pvSwitchGrain('sprint',this)">Sprint</button>
-              <button class="pv-grain-tab" id="pv-grain-week" onclick="pvSwitchGrain('week',this)">週</button>
-            </div>
-          </div>
-        </div>
-        <div class="pv-legend" id="pv-legend-row"></div>
-        <div class="pv-chart-wrap"><canvas id="pvMainChart" role="img" aria-label="個人產值圖表"></canvas></div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ══════════════════════════════════════
      Modals
@@ -1623,7 +1463,6 @@ const DEFAULT_THEMES = [
   {id:'bbp',    name:'BBP 產值評估（需求、優化）',desc:'點數評估', icon:'📑',color:'green', page:'bbp',      builtin:true},
   {id:'progress',name:'BBP 進度',              desc:'優化與需求項目進度追蹤',       icon:'📈',color:'orange',page:'progress', builtin:true},
   {id:'gantt',  name:'甘特圖追蹤',             desc:'依週顯示 BBP 各系統執行時程',  icon:'📅',color:'purple',page:'gantt',    builtin:true},
-  {id:'productivity',name:'個人產值',desc:'依時間顯示各成員 Story Point 認列點數',icon:'📊',color:'teal',page:'productivity',builtin:true},
 ];
 
 let themes = loadFromStorage(STORAGE_KEY_THEMES, DEFAULT_THEMES);
@@ -1735,7 +1574,6 @@ function showPage(pageId) {
   if(pageId === 'bbp') initBbp();
   if(pageId === 'progress') initProgress();
   if(pageId === 'gantt') initGantt();
-  if(pageId === 'productivity') pvInit();
 }
 
 function goHome() { showPage('home'); }
@@ -2713,13 +2551,46 @@ const STATUS_OPTS = ['','RA分析中','RA分析完','SA分析中','SA分析完',
 const STATUS_CLASS = {'RA分析中':'s-ra-ing','RA分析完':'s-ra-done','SA分析中':'s-sa-ing','SA分析完':'s-sa-done','PD開發中':'s-pd-ing','PD開發完':'s-pd-done','SA測試中':'s-sa-test-ing','SA測試完':'s-sa-test-done','QA測試中':'s-qa-ing','QA測試完':'s-qa-done','USER測試中':'s-user-ing','USER測試完':'s-user-done','待上線':'s-pending','已上線':'s-online'};
 
 /* ITSR 狀態選項（13 項） */
-const ITSR_OPTS = ['AM','PM','需求評估','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
+const ITSR_OPTS = ['AM','PM','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
 const ITSR_CLASS = {
-  'AM':'itsr-am','PM':'itsr-pm','需求評估':'itsr-assessment','系統分析':'itsr-sa','主管審核':'itsr-review',
+  'AM':'itsr-am','PM':'itsr-pm','系統分析':'itsr-sa','主管審核':'itsr-review',
   '程式開發':'itsr-dev','程式驗收/測試':'itsr-test','申請人驗收':'itsr-uat',
   '上線申請':'itsr-apply','上線追蹤':'itsr-track','待重新上線':'itsr-relaunch','處理階段':'itsr-processing',
   '結案':'itsr-done','Reject':'itsr-reject'
 };
+
+/* 模糊搜尋狀態（每個區段獨立） */
+let fuzzySearchState = { opt: '', req: '' };
+
+function fuzzyMatch(query, text) {
+  if(!query) return true;
+  query = query.toLowerCase();
+  text  = (text||'').toLowerCase();
+  // 連續子字串比對（支援部分輸入）
+  let qi = 0;
+  for(let i = 0; i < text.length && qi < query.length; i++){
+    if(text[i] === query[qi]) qi++;
+  }
+  return qi === query.length;
+}
+
+function onFuzzySearchChange(type, value){
+  fuzzySearchState[type] = value.trim();
+  const clearBtn = document.getElementById('fuzzy-search-clear-'+type);
+  const input    = document.getElementById('fuzzy-search-'+type);
+  if(clearBtn) clearBtn.classList.toggle('show', !!fuzzySearchState[type]);
+  if(input)    input.classList.toggle('has-value', !!fuzzySearchState[type]);
+  renderTable(type);
+}
+
+function clearFuzzySearch(type){
+  fuzzySearchState[type] = '';
+  const input    = document.getElementById('fuzzy-search-'+type);
+  const clearBtn = document.getElementById('fuzzy-search-clear-'+type);
+  if(input)    { input.value = ''; input.classList.remove('has-value'); }
+  if(clearBtn) clearBtn.classList.remove('show');
+  renderTable(type);
+}
 
 /* ITSR 篩選器狀態（每個區段獨立） */
 const STORAGE_KEY_ITSR_FILTER = 'bbp_itsr_filter_v1';
@@ -2829,19 +2700,30 @@ function renderTable(type) {
 
   // 套用 ITSR 多選篩選（若有選擇）
   const filterSet = itsrFilter[type] || new Set();
-  const rows = filterSet.size > 0
+  let rows = filterSet.size > 0
     ? allRows.filter(r => filterSet.has((r.itsr||'').trim()))
     : allRows;
+
+  // 套用模糊搜尋（需求單號 / 需求名稱）
+  const fuzzyQ = fuzzySearchState[type] || '';
+  if(fuzzyQ){
+    rows = rows.filter(r => fuzzyMatch(fuzzyQ, r.mis) || fuzzyMatch(fuzzyQ, r.name));
+  }
 
   let html = '';
 
   // 沒有符合的列時顯示空狀態
-  if(filterSet.size > 0 && rows.length === 0){
+  if(rows.length === 0 && (filterSet.size > 0 || fuzzyQ)){
+    const hints = [];
+    if(filterSet.size > 0) hints.push(`ITSR：${Array.from(filterSet).map(s=>esc(s)).join('、')}`);
+    if(fuzzyQ) hints.push(`搜尋：「${esc(fuzzyQ)}」`);
+    const clearBtns = [
+      filterSet.size > 0 ? `<button onclick="clearItsrFilter('${type}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:var(--font);font-weight:600;margin-left:6px">清除 ITSR 篩選</button>` : '',
+      fuzzyQ ? `<button onclick="clearFuzzySearch('${type}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:var(--font);font-weight:600;margin-left:6px">清除搜尋</button>` : ''
+    ].join('');
     html = `<tr><td colspan="9" style="padding:24px;text-align:center;color:var(--text3);font-size:13px;background:#fafbfc">
-      <div style="margin-bottom:6px">📭 沒有符合篩選條件的項目</div>
-      <div style="font-size:11px">已篩選：${Array.from(filterSet).map(s=>esc(s)).join('、')}
-        <button onclick="clearItsrFilter('${type}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:var(--font);font-weight:600;margin-left:6px">清除篩選</button>
-      </div>
+      <div style="margin-bottom:6px">📭 沒有符合條件的項目</div>
+      <div style="font-size:11px">${hints.join('　')}${clearBtns}</div>
     </td></tr>`;
     tbody.innerHTML = html;
     setTimeout(() => {
@@ -3354,16 +3236,16 @@ function ganttGetDelayInfo(sys, integTest, today) {
   let dateStr = '', message = '';
   if(status === 'RA分析中') {
     dateStr = sys.raDate || sys.ra || '';
-    message = 'Warning: RA schedule may be delayed';
+    message = 'RA Delay';
   } else if(status === 'RA分析完' || status === 'SA分析中') {
     dateStr = sys.saDate || sys.sa || '';
-    message = 'Warning: SA schedule may be delayed';
+    message = 'SA Delay';
   } else if(status === 'SA分析完' || status === 'PD開發中') {
     dateStr = sys.pdDate || sys.pd || '';
-    message = 'Warning: PD schedule may be delayed';
+    message = 'PD Delay';
   } else if(status === 'PD開發完' || status === 'SA測試中') {
     dateStr = integTest || '';
-    message = 'Warning: SA Testing schedule may be delayed';
+    message = 'SA驗收 Delay';
   } else {
     return null;
   }
@@ -3737,7 +3619,7 @@ function renderGantt() {
       if(sys.status) tipLines.push(`狀態：${sys.status}`);
 
       const statusCls2 = STATUS_CLASS[sys.status]||'';
-      const delayMsg   = item.delay ? (item.delay.message) : '';
+      const delayMsg   = item.delay ? ('訊息: ' + item.delay.message) : '';
       const delayCls   = item.delay ? 'gantt-row-delay' : '';
 
       // hover 時讓整列（包含週格）都顯示 delay 訊息與資訊
@@ -4071,422 +3953,6 @@ function initResizableCols(table) {
   });
 }
 
-
-/* ══ 個人產值 JS — Google Sheets 同步版 ══ */
-const PV_SPRINTS=[
-  {name:'Sprint1',start:'2026/1/2',end:'2026/2/4'},{name:'Sprint2',start:'2026/2/4',end:'2026/3/11'},
-  {name:'Sprint3',start:'2026/3/11',end:'2026/4/15'},{name:'Sprint4',start:'2026/4/15',end:'2026/5/20'},
-  {name:'Sprint5',start:'2026/5/20',end:'2026/6/24'},{name:'Sprint6',start:'2026/6/24',end:'2026/7/1'},
-  {name:'Sprint7',start:'2026/7/1',end:'2026/8/5'},{name:'Sprint8',start:'2026/8/5',end:'2026/9/9'},
-  {name:'Sprint9',start:'2026/9/9',end:'2026/10/14'},{name:'Sprint10',start:'2026/10/14',end:'2026/11/18'},
-  {name:'Sprint11',start:'2026/11/18',end:'2026/12/23'},{name:'Sprint12',start:'2026/12/23',end:'2026/12/31'},
-];
-const PV_COLORS=['#2563eb','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#be185d','#64748b'];
-let pvTasks=[],pvMembers=[],pvExpandedRows=new Set();
-let pvCurrentView='table',pvCurrentChart='bar',pvCurrentGrain='sprint';
-let pvChartInstance=null,pvSettingSprintIdx=3,pvTargets={},pvInited=false,pvIsBusy=false;
-
-function pvSetStatus(type,msg){
-  const el=document.getElementById('pv-status-bar');if(!el)return;
-  el.style.display='flex';el.className='pv-status-bar pv-status-'+type;
-  el.innerHTML=`<span style="margin-right:4px">${type==='loading'?'⏳':type==='ok'?'✓':'✗'}</span><span>${msg}</span>`;
-  if(type==='ok')setTimeout(()=>{el.style.display='none';},3000);
-}
-
-async function pvLoadTasksFromSheets(){
-  pvSetStatus('loading','從 Google Sheets 載入任務資料...');
-  try{
-    const r=await callGAS({action:'loadPvTasks'});
-    if(r.ok&&r.tasks){
-      pvTasks=r.tasks.map(t=>({...t,startDate:t.startDate?pvParseDate(t.startDate):null,dueDate:t.dueDate?pvParseDate(t.dueDate):null}));
-      pvSetStatus('ok',`已載入 ${pvTasks.length} 筆任務`);return true;
-    }else{pvSetStatus('error',r.message||'載入失敗');return false;}
-  }catch(e){pvSetStatus('error','連線失敗：'+e.message);return false;}
-}
-
-async function pvSaveTasksToSheets(){
-  if(pvIsBusy)return;pvIsBusy=true;
-  pvSetStatus('loading','正在同步至 Google Sheets...');
-  try{
-    const s=pvTasks.map(t=>({...t,startDate:t.startDate?t.startDate.toISOString():null,dueDate:t.dueDate?t.dueDate.toISOString():null}));
-    const r=await callGAS({action:'savePvTasks',data:JSON.stringify(s)});
-    if(r.ok)pvSetStatus('ok',r.message);else pvSetStatus('error',r.message||'儲存失敗');
-  }catch(e){pvSetStatus('error','連線失敗：'+e.message);}
-  finally{pvIsBusy=false;}
-}
-
-async function pvLoadTargetsFromSheets(){
-  try{
-    const r=await callGAS({action:'loadPvTargets'});
-    if(r.ok&&r.targets&&Object.keys(r.targets).length)pvTargets=r.targets;else pvSetDefaultTargets();
-  }catch(e){pvSetDefaultTargets();}
-}
-
-async function pvSaveTargetsToSheets(){
-  try{await callGAS({action:'savePvTargets',data:JSON.stringify(pvTargets)});pvSetStatus('ok','目標設定已同步');}
-  catch(e){pvSetStatus('error','目標同步失敗');}
-}
-
-function pvSetDefaultTargets(){
-  const def={'資深工程師':{members:['Nick Hsieh','Nick Li','Ryan Ho'],target:16},'工程師':{members:['Terry Tu','Jake Huang'],target:12},'初級工程師':{members:['Arina Liu'],target:10}};
-  PV_SPRINTS.forEach(sp=>{if(!pvTargets[sp.name])pvTargets[sp.name]=JSON.parse(JSON.stringify(def));});
-}
-
-function pvParseDate(s){
-  if(!s)return null;
-  // ISO string (從前端儲存回來的格式)
-  if(typeof s==='string'&&s.includes('T'))return new Date(s);
-  const c=String(s).replace(/上午|下午|午前|午後/g,'').trim();
-  // yyyy/M/d 或 yyyy-M-d
-  const m=c.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-  if(m)return new Date(+m[1],+m[2]-1,+m[3]);
-  // M/d 格式（safeReadDateCell 回傳，補上 2026 年）
-  const m2=c.match(/^(\d{1,2})\/(\d{1,2})$/);
-  if(m2)return new Date(2026,+m2[1]-1,+m2[2]);
-  return null;
-}
-function pvFmtDate(d){if(!d)return '—';return `${d.getMonth()+1}/${d.getDate()}`;}
-function pvExtractName(raw){
-  if(!raw)return '未指派';
-  const noA=raw.replace(/<[^>]+>/g,'').trim();
-  if(/^[\w.\-]+@[\w.\-]+$/.test(noA))return noA.split('@')[0].split('.').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
-  const parts=noA.split(/\s+/),eng=[];
-  for(const p of parts){if(/^[A-Za-z]+$/.test(p))eng.push(p);else break;}
-  if(eng.length>=2)return eng[0]+' '+eng[1];if(eng.length===1)return eng[0];
-  return noA.split(/\s+/)[0];
-}
-function pvExtractSprint(path){if(!path)return null;const m=path.match(/Sprint\s*(\d+)/i);return m?'Sprint'+m[1]:null;}
-function pvGetSprintForDate(d){
-  if(!d)return null;
-  for(const sp of PV_SPRINTS){const s=pvParseDate(sp.start),e=pvParseDate(sp.end);if(s&&e&&d>=s&&d<e)return sp.name;}
-  return null;
-}
-function pvGetWeekKey(d){
-  if(!d)return null;
-  const day=d.getDay(),diff=day===0?-6:1-day;
-  const mon=new Date(d);mon.setDate(d.getDate()+diff);
-  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
-  const fmt=x=>`${x.getMonth()+1}/${x.getDate()}`;
-  return `${fmt(mon)}~${fmt(sun)}`;
-}
-function pvParseTSV(raw){
-  const rows=[];
-  for(const line of raw.split('\n')){
-    if(!line.trim())continue;
-    const cols=[];let i=0,cur='',inQ=false,len=line.length;
-    while(i<len){const ch=line[i];if(ch==='"')inQ=!inQ;else if(ch==='\t'&&!inQ){cols.push(cur.trim());cur='';}else cur+=ch;i++;}
-    cols.push(cur.trim());rows.push(cols);
-  }
-  return rows;
-}
-
-async function pvParseCSV(){
-  const raw=document.getElementById('pv-csv-input').value.trim();
-  const msg=document.getElementById('pv-import-msg');
-  if(!raw){msg.innerHTML='<span style="color:var(--red)">請貼上資料</span>';return;}
-  const rows=pvParseTSV(raw);if(rows.length<2){msg.innerHTML='<span style="color:var(--red)">資料不足</span>';return;}
-  const hdr=rows[0].map(h=>h.toLowerCase()),col=k=>hdr.indexOf(k);
-  const iT=col('title'),iSt=col('state'),iSP=col('story point'),iAs=col('assigned to'),
-        iSta=col('start date'),iDue=col('due date'),iIt=col('iteration path');
-  if(iT<0||iSt<0){msg.innerHTML='<span style="color:var(--red)">找不到必要欄位（Title/State）</span>';return;}
-  const parsed=[];
-  for(let i=1;i<rows.length;i++){
-    const c=rows[i];if(!c[iT])continue;
-    const sp=parseFloat(c[iSP]);if(isNaN(sp))continue;
-    const state=(c[iSt]||'').trim(),dueDate=pvParseDate(c[iDue]),startDate=pvParseDate(c[iSta]);
-    const sprint=pvExtractSprint(c[iIt]||'')||pvGetSprintForDate(dueDate);
-    parsed.push({title:(c[iT]||'').trim(),state,sp,assignedTo:pvExtractName(c[iAs]||''),
-      startDate,dueDate,sprint,weekKey:pvGetWeekKey(dueDate||startDate),done:state==='Done'});
-  }
-  pvTasks=parsed;pvExpandedRows.clear();pvRebuildMembers();pvRenderAll();
-  msg.innerHTML=`<span style="color:var(--green);font-weight:600">✓ 解析 ${parsed.length} 筆，同步中...</span>`;
-  await pvSaveTasksToSheets();
-  msg.innerHTML=`<span style="color:var(--green);font-weight:600">✓ 已匯入並同步 ${parsed.length} 筆至 Google Sheets</span>`;
-}
-
-function pvRebuildMembers(){
-  const s=new Set(pvTasks.map(t=>t.assignedTo).filter(n=>n&&n!=='未指派'));pvMembers=[...s].sort();
-  const sel=document.getElementById('pv-filter-person');
-  sel.innerHTML='<option value="all">所有成員</option>';
-  pvMembers.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);});
-  pvRebuildSprintFilter();pvRebuildWeekFilter();pvRenderSettingsPanel();
-}
-function pvRebuildSprintFilter(){
-  const sel=document.getElementById('pv-filter-sprint'),cur=sel.value;
-  sel.innerHTML='<option value="all">全部 Sprint</option>';
-  const used=new Set(pvTasks.map(t=>t.sprint).filter(Boolean));
-  // 有資料時只顯示用到的 Sprint；無資料時顯示全部
-  const sprintsToShow = used.size > 0 ? PV_SPRINTS.filter(s=>used.has(s.name)) : PV_SPRINTS;
-  sprintsToShow.forEach(sp=>{const o=document.createElement('option');o.value=sp.name;o.textContent=sp.name;sel.appendChild(o);});
-  if([...sel.options].some(o=>o.value===cur))sel.value=cur;
-  else if([...sel.options].some(o=>o.value==='Sprint4'))sel.value='Sprint4';
-}
-function pvRebuildWeekFilter(){
-  const weeks=[...new Set(pvTasks.map(t=>t.weekKey).filter(Boolean))].sort(),sel=document.getElementById('pv-filter-week');
-  sel.innerHTML='';weeks.forEach(w=>{const o=document.createElement('option');o.value=w;o.textContent=w;sel.appendChild(o);});
-}
-function pvGetFilteredTasks(){
-  const mode=document.getElementById('pv-filter-mode').value,person=document.getElementById('pv-filter-person').value;
-  let f=pvTasks;
-  if(mode==='sprint'){const sp=document.getElementById('pv-filter-sprint').value;if(sp!=='all')f=f.filter(t=>t.sprint===sp);}
-  else if(mode==='week'){const w=document.getElementById('pv-filter-week').value;f=f.filter(t=>t.weekKey===w);}
-  else{const from=document.getElementById('pv-filter-from').value,to=document.getElementById('pv-filter-to').value;
-    if(from)f=f.filter(t=>t.dueDate&&t.dueDate>=new Date(from));if(to)f=f.filter(t=>t.dueDate&&t.dueDate<=new Date(to));}
-  if(person!=='all')f=f.filter(t=>t.assignedTo===person);
-  return f;
-}
-function pvGetTarget(member,sprint){
-  if(!sprint||!pvTargets[sprint])return null;
-  for(const g in pvTargets[sprint])if((pvTargets[sprint][g].members||[]).includes(member))return pvTargets[sprint][g].target;
-  return null;
-}
-function pvRenderMetrics(filtered){
-  const tD=filtered.filter(t=>t.done).reduce((a,t)=>a+t.sp,0),tA=filtered.reduce((a,t)=>a+t.sp,0);
-  const dC=filtered.filter(t=>t.done).length,ov=filtered.filter(t=>!t.done&&t.dueDate&&t.dueDate<new Date()).length;
-  document.getElementById('pv-metric-row').innerHTML=`
-    <div class="pv-metric"><div class="pv-metric-label">已認列點數</div><div class="pv-metric-val">${tD}</div><div class="pv-metric-sub">Done 任務</div></div>
-    <div class="pv-metric"><div class="pv-metric-label">含未完成總點數</div><div class="pv-metric-val">${tA.toFixed(1)}</div><div class="pv-metric-sub">全部任務</div></div>
-    <div class="pv-metric"><div class="pv-metric-label">已完成任務</div><div class="pv-metric-val">${dC}</div><div class="pv-metric-sub">共 ${filtered.length} 筆</div></div>
-    <div class="pv-metric"><div class="pv-metric-label" style="color:${ov>0?'var(--red)':'var(--text2)'}">逾期未完成</div><div class="pv-metric-val" style="color:${ov>0?'var(--red)':'var(--text)'}">${ov}</div><div class="pv-metric-sub">筆</div></div>`;
-}
-function pvToggleRow(m){
-  const id='pvrow_'+m.replace(/\W/g,'_');
-  if(pvExpandedRows.has(m))pvExpandedRows.delete(m);else pvExpandedRows.add(m);
-  const chev=document.getElementById('pvchev_'+id),det=document.getElementById('pvdet_'+id);
-  if(chev)chev.classList.toggle('open',pvExpandedRows.has(m));if(det)det.classList.toggle('open',pvExpandedRows.has(m));
-}
-function pvRenderTable(filtered){
-  const sprintMode=document.getElementById('pv-filter-mode').value==='sprint',selSprint=document.getElementById('pv-filter-sprint').value;
-  const byP={};pvMembers.forEach(m=>byP[m]={done:0,total:0,count:0,tasks:[]});
-  filtered.forEach(t=>{
-    if(!byP[t.assignedTo])byP[t.assignedTo]={done:0,total:0,count:0,tasks:[]};
-    byP[t.assignedTo].total+=t.sp;byP[t.assignedTo].tasks.push(t);
-    if(t.done){byP[t.assignedTo].done+=t.sp;byP[t.assignedTo].count++;}
-  });
-  const pList=Object.keys(byP).filter(p=>byP[p].tasks.length>0);
-  if(!pList.length){document.getElementById('pv-table-wrap').innerHTML='<div class="pv-empty"><div class="pv-empty-icon">📭</div>尚無資料，請點「匯入資料」貼上 CSV</div>';return;}
-  const showTgt=sprintMode&&selSprint!=='all';
-  let html=`<table class="pv-table"><thead><tr><th>成員</th><th class="th-num">認列點數</th><th class="th-num">未完成</th><th class="th-num">任務數</th>`;
-  if(showTgt)html+=`<th class="th-num">目標</th><th>達成率</th>`;html+=`</tr></thead><tbody>`;
-  let tD=0,tP=0;
-  for(const m of pList){
-    const d=byP[m],pend=+(d.total-d.done).toFixed(1);tD+=d.done;tP+=pend;
-    const isOpen=pvExpandedRows.has(m),id='pvrow_'+m.replace(/\W/g,'_');
-    let tgtH='',prgH='';
-    if(showTgt){const tgt=pvGetTarget(m,selSprint);
-      if(tgt!=null){const pct=Math.min(Math.round(d.done/tgt*100),200),cls=pct>=100?'pv-fill-ok':pct>=60?'pv-fill-warn':'pv-fill-low',col=pct>=100?'var(--green)':pct>=60?'var(--yellow)':'var(--text3)';
-        tgtH=`<td class="td-num">${tgt}</td>`;
-        prgH=`<td><div class="pv-progress-wrap"><div class="pv-progress-bar"><div class="pv-progress-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div><span style="font-size:12px;font-weight:700;min-width:38px;text-align:right;color:${col}">${pct}%</span></div></td>`;
-      }else{tgtH='<td class="td-num" style="color:var(--text3)">—</td>';prgH='<td></td>';}}
-    html+=`<tr class="pv-row-member" onclick="pvToggleRow('${m}')">
-      <td class="td-name"><span class="pv-chevron ${isOpen?'open':''}" id="pvchev_${id}">▶</span>${m}</td>
-      <td class="td-num"><strong style="color:var(--accent);font-size:15px">${d.done}</strong></td>
-      <td class="td-num" style="color:${pend>0?'var(--yellow)':'var(--text3)'}">${pend>0?pend:'—'}</td>
-      <td class="td-num">${d.count}<span style="color:var(--text3)"> / ${d.tasks.length}</span></td>${tgtH}${prgH}</tr>`;
-    const sorted=[...d.tasks].sort((a,b)=>(b.done-a.done)||((a.dueDate||0)-(b.dueDate||0)));
-    let tRows='';
-    for(const t of sorted){
-      const spCls=t.done?'pv-sp-done':t.state==='Committed'||t.state==='Approved'?'pv-sp-pending':'pv-sp-other';
-      const short=t.title.length>70?t.title.slice(0,70)+'…':t.title;
-      tRows+=`<tr title="${t.title.replace(/"/g,'&quot;')}"><td style="max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${short}</td>
-        <td style="text-align:center"><span class="pv-sp-badge ${spCls}">${t.sp}</span></td>
-        <td style="text-align:center"><span class="pv-state-badge pv-state-${t.state}">${t.state}</span></td>
-        <td style="color:var(--text2);white-space:nowrap;font-size:12px">${t.sprint||'—'}</td>
-        <td style="color:var(--text3);white-space:nowrap;font-size:12px;font-family:var(--mono)">${pvFmtDate(t.dueDate)}</td></tr>`;
-    }
-    const cs=showTgt?6:4;
-    html+=`<tr class="pv-detail-row ${isOpen?'open':''}" id="pvdet_${id}"><td colspan="${cs}"><div class="pv-detail-inner"><table class="pv-task-table"><thead><tr><th>任務名稱</th><th style="text-align:center">SP</th><th style="text-align:center">狀態</th><th>Sprint</th><th>Due Date</th></tr></thead><tbody>${tRows}</tbody></table></div></td></tr>`;
-  }
-  html+=`<tr class="pv-total-row"><td class="td-name">合計</td><td class="td-num"><strong style="color:var(--accent)">${tD}</strong></td><td class="td-num" style="color:var(--text3)">${tP>0?tP.toFixed(1):'—'}</td><td class="td-num"></td>`;
-  if(showTgt)html+=`<td></td><td></td>`;html+=`</tr></tbody></table>`;
-  document.getElementById('pv-table-wrap').innerHTML=html;
-}
-function pvGetChartData(){
-  const allDone=pvTasks.filter(t=>t.done);
-  const labels=pvCurrentGrain==='sprint'?PV_SPRINTS.map(s=>s.name).filter(n=>allDone.some(t=>t.sprint===n)):[...new Set(allDone.map(t=>t.weekKey).filter(Boolean))].sort();
-  const pf=document.getElementById('pv-filter-person').value,pList=pf==='all'?pvMembers:[pf];
-  const md={};
-  pList.forEach((m,i)=>{md[m]={data:labels.map(l=>allDone.filter(t=>t.assignedTo===m&&(pvCurrentGrain==='sprint'?t.sprint===l:t.weekKey===l)).reduce((a,t)=>a+t.sp,0)),color:PV_COLORS[i%PV_COLORS.length]};});
-  return {labels,md,pList};
-}
-function pvRenderChart(){
-  if(pvChartInstance){pvChartInstance.destroy();pvChartInstance=null;}
-  const {labels,md,pList}=pvGetChartData();
-  // 圖例列（長條圖用；圓餅圖因扇形已有標籤，圖例仍保留色塊參考）
-  document.getElementById('pv-legend-row').innerHTML=pList.map((m,i)=>`<div class="pv-legend-item"><div class="pv-legend-dot" style="background:${md[m].color}"></div>${m}</div>`).join('');
-  const chartWrap=document.querySelector('.pv-chart-wrap');
-  if(chartWrap&&!document.getElementById('pvMainChart'))chartWrap.innerHTML='<canvas id="pvMainChart" role="img" aria-label="個人產值圖表"></canvas>';
-  const canvas=document.getElementById('pvMainChart');if(!canvas)return;
-  if(!labels.length){if(chartWrap)chartWrap.innerHTML='<div class="pv-empty" style="padding:1.5rem;text-align:center;color:var(--text3)">目前無 Done 任務資料</div>';return;}
-
-  // ── 圓餅圖 ──
-  if(pvCurrentChart==='pie'){
-    const tot=pList.map(m=>md[m].data.reduce((a,b)=>a+b,0));
-    const grandTotal=tot.reduce((a,b)=>a+b,0)||1;
-    pvChartInstance=new Chart(canvas,{
-      type:'pie',
-      data:{
-        labels:pList,
-        datasets:[{
-          data:tot,
-          backgroundColor:pList.map((_,i)=>PV_COLORS[i%PV_COLORS.length]),
-          borderWidth:2,borderColor:'#fff'
-        }]
-      },
-      options:{
-        responsive:true,maintainAspectRatio:false,
-        layout:{padding:30},
-        plugins:{
-          legend:{display:false},
-          tooltip:{callbacks:{label:c=>`${c.label}：${c.parsed} 點 (${Math.round(c.parsed/grandTotal*100)}%)`}},
-          // 扇形標籤：名字 + 點數 + 百分比
-          datalabels:{
-            display:ctx=>ctx.dataset.data[ctx.dataIndex]>0,
-            formatter:(val,ctx)=>{
-              const name=ctx.chart.data.labels[ctx.dataIndex];
-              const pct=Math.round(val/grandTotal*100);
-              return `${name}\n${val} 點 (${pct}%)`;
-            },
-            font:{size:11,weight:'700'},
-            textAlign:'center',
-            // 小扇形（<8%）拉到外側，用深色字
-            anchor:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'end':'center';},
-            align:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'end':'center';},
-            color:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'#1e293b':'#fff';},
-            offset:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?8:0;},
-            textStrokeColor:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?'transparent':'rgba(0,0,0,0.25)';},
-            textStrokeWidth:ctx=>{const pct=ctx.dataset.data[ctx.dataIndex]/grandTotal*100;return pct<8?0:2;},
-          }
-        }
-      },
-      plugins:[ChartDataLabels]
-    });
-    return;
-  }
-
-  // ── 長條圖 ──
-  // 短名（取 FirstName，避免頂端標籤重疊）
-  const shortName=m=>m.split(' ')[0];
-  // 每個 label 下有幾根柱子
-  const barCount=pList.length;
-  // 動態字體：人多就縮小
-  const nameFontSize=barCount<=3?12:barCount<=5?10:9;
-  const valFontSize=barCount<=3?12:barCount<=5?11:10;
-
-  pvChartInstance=new Chart(canvas,{
-    type:'bar',
-    data:{
-      labels,
-      datasets:pList.map((m,i)=>({
-        label:m,
-        data:md[m].data,
-        backgroundColor:md[m].color+'cc',
-        borderColor:md[m].color,
-        borderWidth:1
-      }))
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      layout:{padding:{top:28}},
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y} 點`}},
-        datalabels:{
-          display:ctx=>ctx.dataset.data[ctx.dataIndex]>0,
-          // 柱子內部中間顯示點數
-          anchor:'center',align:'center',
-          formatter:(val)=>val,
-          color:'#fff',
-          font:{size:valFontSize,weight:'700'},
-          textStrokeColor:'rgba(0,0,0,0.3)',textStrokeWidth:2,
-          // 覆寫：頂端顯示名字（用第二層 datalabels 配合 afterDatasetsDraw 較複雜，
-          // 改用單一 datalabels 加入自訂 afterDraw plugin 畫名字）
-        }
-      },
-      scales:{
-        x:{ticks:{autoSkip:false,maxRotation:0,color:'#64748b',font:{size:11}},grid:{color:'#f1f5f9'}},
-        y:{beginAtZero:true,title:{display:true,text:'點數',color:'#64748b',font:{size:11}},ticks:{color:'#64748b',font:{size:11}},grid:{color:'#f1f5f9'}}
-      }
-    },
-    plugins:[
-      ChartDataLabels,
-      // ── 自訂 plugin：柱子頂端畫名字 ──
-      {
-        id:'pvBarNameLabel',
-        afterDatasetsDraw(chart){
-          const {ctx,data}=chart;
-          ctx.save();
-          chart.data.datasets.forEach((ds,di)=>{
-            const meta=chart.getDatasetMeta(di);
-            if(meta.hidden)return;
-            meta.data.forEach((bar,idx)=>{
-              const val=ds.data[idx];
-              if(!val||val<=0)return;
-              const name=shortName(ds.label);
-              const x=bar.x, y=bar.y-5;
-              ctx.font=`700 ${nameFontSize}px 'Noto Sans TC',sans-serif`;
-              ctx.textAlign='center';ctx.textBaseline='bottom';
-              // 白描邊防重疊干擾
-              ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=3;
-              ctx.strokeText(name,x,y);
-              ctx.fillStyle='#1e293b';
-              ctx.fillText(name,x,y);
-            });
-          });
-          ctx.restore();
-        }
-      }
-    ]
-  });
-}
-function pvRenderSettingsPanel(){
-  document.getElementById('pv-setting-sprint-tabs').innerHTML=PV_SPRINTS.map((sp,i)=>`<button class="pv-sprint-tab ${i===pvSettingSprintIdx?'active':''}" onclick="pvSetSettingSprint(${i})">${sp.name}</button>`).join('');
-  pvRenderSettingsBody();
-}
-function pvSetSettingSprint(i){pvSettingSprintIdx=i;pvRenderSettingsPanel();}
-function pvRenderSettingsBody(){
-  const sp=PV_SPRINTS[pvSettingSprintIdx].name;if(!pvTargets[sp])pvTargets[sp]={};
-  if(!Object.keys(pvTargets[sp]).length)pvTargets[sp]={'資深工程師':{members:['Nick Hsieh','Nick Li','Ryan Ho'],target:16},'工程師':{members:['Terry Tu','Jake Huang'],target:12},'初級工程師':{members:['Arina Liu'],target:10}};
-  let html=`<div class="pv-settings-grid">`;
-  for(const g in pvTargets[sp])html+=`<div class="pv-settings-row"><label>${g}（目標點數）</label><input type="number" value="${pvTargets[sp][g].target||0}" step="0.5" onchange="pvUpdateTarget('${sp}','${g}',this.value)"><div style="font-size:11px;color:var(--text3);margin-top:3px">${(pvTargets[sp][g].members||[]).join('、')}</div></div>`;
-  html+=`</div><div style="margin-top:10px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em">職級成員（逗號分隔）</div><div class="pv-settings-grid" style="margin-top:8px">`;
-  for(const g in pvTargets[sp])html+=`<div class="pv-settings-row"><label>${g}</label><input type="text" value="${(pvTargets[sp][g].members||[]).join(',')}" onchange="pvUpdateMembers('${sp}','${g}',this.value)"></div>`;
-  html+=`</div>`;document.getElementById('pv-settings-body').innerHTML=html;
-}
-async function pvUpdateTarget(sp,g,v){if(!pvTargets[sp])pvTargets[sp]={};if(!pvTargets[sp][g])pvTargets[sp][g]={members:[],target:0};pvTargets[sp][g].target=parseFloat(v)||0;await pvSaveTargetsToSheets();}
-async function pvUpdateMembers(sp,g,v){if(pvTargets[sp]&&pvTargets[sp][g]){pvTargets[sp][g].members=v.split(',').map(s=>s.trim()).filter(Boolean);await pvSaveTargetsToSheets();}}
-function pvOnFilterModeChange(){
-  const m=document.getElementById('pv-filter-mode').value;
-  document.getElementById('pv-filter-sprint').style.display=m==='sprint'?'':'none';
-  document.getElementById('pv-filter-week-wrap').style.display=m==='week'?'block':'none';
-  document.getElementById('pv-filter-range-wrap').style.display=m==='range'?'flex':'none';pvRenderAll();
-}
-function pvSwitchView(v){
-  pvCurrentView=v;
-  document.getElementById('pv-tab-table').classList.toggle('active',v==='table');
-  document.getElementById('pv-tab-chart').classList.toggle('active',v==='chart');
-  document.getElementById('pv-view-table').style.display=v==='table'?'':'none';
-  document.getElementById('pv-view-chart').style.display=v==='chart'?'':'none';
-  if(v==='chart')pvRenderChart();
-}
-function pvSwitchChart(type,btn){pvCurrentChart=type;document.querySelectorAll('.pv-chart-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');pvRenderChart();}
-function pvSwitchGrain(grain,btn){pvCurrentGrain=grain;document.getElementById('pv-grain-sprint').classList.toggle('active',grain==='sprint');document.getElementById('pv-grain-week').classList.toggle('active',grain==='week');pvRenderChart();}
-function pvToggleImport(){const el=document.getElementById('pv-import-area');el.style.display=el.style.display==='none'?'':'none';}
-function pvToggleSettings(){document.getElementById('pv-settings-panel').classList.toggle('open');}
-async function pvClearData(){
-  if(!confirm('確定要清除所有任務資料？也會清除 Google Sheets 上的資料。'))return;
-  pvTasks=[];pvMembers=[];pvExpandedRows.clear();
-  document.getElementById('pv-csv-input').value='';document.getElementById('pv-import-msg').innerHTML='';
-  pvRebuildMembers();pvRenderAll();await pvSaveTasksToSheets();
-}
-async function pvRefresh(){pvInited=false;await pvInit();}
-function pvRenderAll(){const f=pvGetFilteredTasks();pvRenderMetrics(f);pvRenderTable(f);if(pvCurrentView==='chart')pvRenderChart();}
-async function pvInit(){
-  if(pvInited)return;pvInited=true;
-  pvSetStatus('loading','載入個人產值資料...');
-  await Promise.all([pvLoadTasksFromSheets(),pvLoadTargetsFromSheets()]);
-  pvRebuildMembers();pvRenderAll();
-}
 
 </script>
 
