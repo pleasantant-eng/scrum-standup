@@ -1009,7 +1009,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   <div class="progress-container">
     <!-- Sheets 同步工具列 -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px">
-      <div style="font-size:16px;font-weight:700;color:var(--text)">📈 BBP 進度追蹤</div>
+      <div id="progress-title" style="font-size:16px;font-weight:700;color:var(--text)">📈 BBP 進度追蹤</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn btn-green" id="progress-load-btn" onclick="loadProgressFromSheets()" style="font-weight:600">🔄 重新整理</button>
         <button class="btn btn-accent" id="progress-sync-btn" onclick="syncProgressToSheets()" style="font-weight:600">↑ 儲存至 Sheets</button>
@@ -1461,11 +1461,19 @@ let selectedColor = 'blue';
 const DEFAULT_THEMES = [
   {id:'scrum',  name:'Scrum 立會記錄',        desc:'每日立會工作進度記錄',         icon:'🏃',color:'blue',  page:'scrum',    builtin:true},
   {id:'bbp',    name:'BBP 產值評估（需求、優化）',desc:'點數評估', icon:'📑',color:'green', page:'bbp',      builtin:true},
-  {id:'progress',name:'BBP 進度',              desc:'優化與需求項目進度追蹤',       icon:'📈',color:'orange',page:'progress', builtin:true},
+  {id:'progress',name:'BBP 進度',              desc:'優化與需求項目進度追蹤',       icon:'📈',color:'orange',page:'progress', board:'bbp', builtin:true},
   {id:'gantt',  name:'甘特圖追蹤',             desc:'依週顯示 BBP 各系統執行時程',  icon:'📅',color:'purple',page:'gantt',    builtin:true},
+  {id:'iedprog',name:'進度追蹤 (IED)',         desc:'IED 優化與需求項目進度追蹤',   icon:'🚀',color:'teal',  page:'progress', board:'ied', builtin:true},
 ];
 
 let themes = loadFromStorage(STORAGE_KEY_THEMES, DEFAULT_THEMES);
+// 合併新增的內建主題（即使瀏覽器快取的是舊版 4 張，也會把新卡片補進來）
+DEFAULT_THEMES.forEach(d => { if (!themes.some(t => t.id === d.id)) themes.push(d); });
+// 補上 board 欄位（區分 BBP 唯讀檢視 / IED 可編輯）
+themes.forEach(t => { if (t.page === 'progress' && !t.board) t.board = (t.id === 'iedprog' ? 'ied' : 'bbp'); });
+saveToStorage(STORAGE_KEY_THEMES, themes);
+let progressBoard = 'ied';   // 目前進度看板：'ied'=IED進度 / 'bbp'=BBP進度（兩邊各自可編輯）
+let loadedBoard = null;      // 已從 Sheets 載入的看板
 let bbpDocs = loadFromStorage(STORAGE_KEY_DOCS, getDefaultDocs());
 let progressData = loadFromStorage(STORAGE_KEY_PROGRESS, getDefaultProgress());
 
@@ -1563,7 +1571,7 @@ function showPage(pageId) {
     document.getElementById('hero-sub').textContent = 'SCRUM PO 產值 & 進度管理';
     heroRight.innerHTML = '<span class="hero-badge">⚡ Google Sheets 同步</span>';
   } else {
-    const t = themes.find(x=>x.page===pageId) || {};
+    const t = (currentTheme && currentTheme.page===pageId) ? currentTheme : (themes.find(x=>x.page===pageId) || {});
     document.getElementById('hero-title').textContent = t.name || 'LSD1(運籌系統1處)';
     document.getElementById('hero-sub').textContent = t.desc || '';
     heroRight.innerHTML = '<button class="back-btn" onclick="goHome()"><span style="font-size:16px;line-height:1">‹</span> 返回首頁</button>';
@@ -1578,6 +1586,15 @@ function showPage(pageId) {
 
 function goHome() { showPage('home'); }
 
+// 從首頁卡片進入：依卡片決定進度看板（BBP 唯讀 / IED 可編輯）
+let currentTheme = null;
+function openTheme(id) {
+  const t = themes.find(x => x.id === id) || {};
+  currentTheme = t;
+  if (t.page === 'progress') progressBoard = t.board || 'ied';
+  showPage(t.page);
+}
+
 let bbpInited = false;
 function initBbp() {
   renderDocs();
@@ -1587,12 +1604,15 @@ function initBbp() {
   }
 }
 
-let progressInited = false;
 function initProgress() {
-  renderProgress();
-  if(!progressInited) {
-    progressInited = true;
-    loadProgressFromSheets().catch(()=>{ progressInited = false; });
+  const title = document.getElementById('progress-title');
+  if(title) title.textContent = (progressBoard === 'ied') ? '🚀 IED 進度追蹤' : '📈 BBP 進度追蹤';
+  if(loadedBoard !== progressBoard) {
+    progressData = { opt:[], req:[] };
+    renderProgress();
+    loadProgressFromSheets().catch(()=>{});
+  } else {
+    renderProgress();
   }
 }
 
@@ -1602,7 +1622,7 @@ function initProgress() {
 function renderHomeThemes() {
   const grid = document.getElementById('theme-grid');
   grid.innerHTML = themes.map(t=>`
-    <div class="theme-card color-${t.color}" onclick="showPage('${t.page}')">
+    <div class="theme-card color-${t.color}" onclick="openTheme('${t.id}')">
       ${t.builtin ? '' : `<button class="theme-card-del" onclick="deleteTheme(event,'${t.id}')" title="刪除">✕</button>`}
       <div class="theme-card-icon">${t.icon}</div>
       <div class="theme-card-title">${t.name}</div>
@@ -3724,7 +3744,7 @@ async function syncProgressToSheets() {
     });
   });
   try {
-    const result = await callGAS({ action: 'saveProgress', data: JSON.stringify(flatData) });
+    const result = await callGAS({ action: 'saveProgress', data: JSON.stringify(flatData), board: progressBoard });
     hideLoading('progress-status-bar');
     if(result && result.ok) {
       const total = (progressData.opt||[]).length + (progressData.req||[]).length;
@@ -3750,8 +3770,9 @@ async function loadProgressFromSheets() {
   if(btn) { btn.textContent = '⏳ 載入中...'; btn.disabled = true; }
   showLoading('從 Google Sheets 載入資料中...', 'progress-status-bar');
   try {
-    const result = await callGAS({ action: 'loadProgress' });
+    const result = await callGAS({ action: 'loadProgress', board: progressBoard });
     if(result && result.ok && result.data) {
+      loadedBoard = progressBoard;
       // Re-assemble flat rows → master-detail
       const rawData = result.data;
       const assembled = { opt:[], req:[] };
