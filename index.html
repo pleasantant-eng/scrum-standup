@@ -293,6 +293,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-select{border:1px solid #e2e8f0;background:#f8fafc;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--text);width:100%;transition:all 0.15s}
 .itsr-select:hover{border-color:#93c5fd;background:#eff6ff}
 .itsr-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,0.08);background:#fff}
+.itsr-select.itsr-assess{background:#f1f5f9;border-color:#cbd5e1;color:#475569}
 .itsr-select.itsr-am{background:#fef3c7;border-color:#fde68a;color:#92400e}
 .itsr-select.itsr-pm{background:#fed7aa;border-color:#fdba74;color:#9a3412}
 .itsr-select.itsr-sa{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
@@ -327,6 +328,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .itsr-filter-item:hover{background:#f1f5f9}
 .itsr-filter-item input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:#2563eb;flex-shrink:0}
 .itsr-filter-item .itsr-tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;line-height:1.4}
+.itsr-tag.itsr-assess{background:#f1f5f9;color:#475569}
 .itsr-tag.itsr-am{background:#fef3c7;color:#92400e}
 .itsr-tag.itsr-pm{background:#fed7aa;color:#9a3412}
 .itsr-tag.itsr-sa{background:#dbeafe;color:#1e40af}
@@ -640,8 +642,6 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .gantt-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;box-shadow:var(--shadow)}
 .gantt-filter-group{display:flex;align-items:center;gap:6px}
 .gantt-filter-label{font-size:12px;color:var(--text2);font-weight:500;white-space:nowrap}
-.gantt-filter-select{border:1px solid var(--border);border-radius:6px;background:#f8fafc;font-family:var(--font);font-size:12px;color:var(--text);padding:5px 8px;cursor:pointer}
-.gantt-filter-select:focus{outline:none;border-color:var(--accent)}
 
 /* ── 甘特表格主體 ── */
 .gantt-wrap{
@@ -1178,37 +1178,33 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <div class="gantt-filter-group">
           <span class="gantt-filter-label">類型：</span>
-          <select class="gantt-filter-select" id="gantt-filter-type" onchange="renderGantt()">
-            <option value="all">全部</option>
-            <option value="opt">⚡ 優化</option>
-            <option value="req">📋 需求</option>
-          </select>
+          <div class="itsr-filter-wrap" id="gantt-filter-wrap-type">
+            <button class="itsr-filter-btn" id="gantt-filter-btn-type" onclick="toggleGanttFilterPanel('type',event)" title="類型篩選（多選）">
+              <span id="gantt-filter-label-type">全部</span>
+              <span class="itsr-filter-badge" id="gantt-filter-badge-type">0</span>
+            </button>
+            <div class="itsr-filter-panel" id="gantt-filter-panel-type"></div>
+          </div>
         </div>
         <div class="gantt-filter-group">
           <span class="gantt-filter-label">系統：</span>
-          <select class="gantt-filter-select" id="gantt-filter-sys" onchange="renderGantt()">
-            <option value="all">全部</option>
-          </select>
+          <div class="itsr-filter-wrap" id="gantt-filter-wrap-sys">
+            <button class="itsr-filter-btn" id="gantt-filter-btn-sys" onclick="toggleGanttFilterPanel('sys',event)" title="系統篩選（多選）">
+              <span id="gantt-filter-label-sys">全部</span>
+              <span class="itsr-filter-badge" id="gantt-filter-badge-sys">0</span>
+            </button>
+            <div class="itsr-filter-panel" id="gantt-filter-panel-sys"></div>
+          </div>
         </div>
         <div class="gantt-filter-group">
           <span class="gantt-filter-label">狀態：</span>
-          <select class="gantt-filter-select" id="gantt-filter-status" onchange="renderGantt()">
-            <option value="all">全部</option>
-            <option value="RA分析中">RA分析中</option>
-            <option value="RA分析完">RA分析完</option>
-            <option value="SA分析中">SA分析中</option>
-            <option value="SA分析完">SA分析完</option>
-            <option value="PD開發中">PD開發中</option>
-            <option value="PD開發完">PD開發完</option>
-            <option value="SA測試中">SA測試中</option>
-            <option value="SA測試完">SA測試完</option>
-            <option value="QA測試中">QA測試中</option>
-            <option value="QA測試完">QA測試完</option>
-            <option value="USER測試中">USER測試中</option>
-            <option value="USER測試完">USER測試完</option>
-            <option value="待上線">待上線</option>
-            <option value="已上線">已上線</option>
-          </select>
+          <div class="itsr-filter-wrap" id="gantt-filter-wrap-status">
+            <button class="itsr-filter-btn" id="gantt-filter-btn-status" onclick="toggleGanttFilterPanel('status',event)" title="狀態篩選（多選）">
+              <span id="gantt-filter-label-status">全部</span>
+              <span class="itsr-filter-badge" id="gantt-filter-badge-status">0</span>
+            </button>
+            <div class="itsr-filter-panel" id="gantt-filter-panel-status"></div>
+          </div>
         </div>
         <div class="spacer"></div>
         <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text2);flex-wrap:wrap">
@@ -2611,9 +2607,10 @@ function inlineMarkdown(text) {
 const STATUS_OPTS = ['','RA分析中','RA分析完','SA分析中','SA分析完','PD開發中','PD開發完','SA測試中','SA測試完','QA測試中','QA測試完','USER測試中','USER測試完','待上線','已上線'];
 const STATUS_CLASS = {'RA分析中':'s-ra-ing','RA分析完':'s-ra-done','SA分析中':'s-sa-ing','SA分析完':'s-sa-done','PD開發中':'s-pd-ing','PD開發完':'s-pd-done','SA測試中':'s-sa-test-ing','SA測試完':'s-sa-test-done','QA測試中':'s-qa-ing','QA測試完':'s-qa-done','USER測試中':'s-user-ing','USER測試完':'s-user-done','待上線':'s-pending','已上線':'s-online'};
 
-/* ITSR 狀態選項（13 項） */
-const ITSR_OPTS = ['AM','PM','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
+/* ITSR 狀態選項（14 項；★ 補回「需求評估」，放在最前面代表送件後的第一階段） */
+const ITSR_OPTS = ['需求評估','AM','PM','系統分析','主管審核','程式開發','程式驗收/測試','申請人驗收','上線申請','上線追蹤','待重新上線','處理階段','結案','Reject'];
 const ITSR_CLASS = {
+  '需求評估':'itsr-assess',
   'AM':'itsr-am','PM':'itsr-pm','系統分析':'itsr-sa','主管審核':'itsr-review',
   '程式開發':'itsr-dev','程式驗收/測試':'itsr-test','申請人驗收':'itsr-uat',
   '上線申請':'itsr-apply','上線追蹤':'itsr-track','待重新上線':'itsr-relaunch','處理階段':'itsr-processing',
@@ -3359,7 +3356,8 @@ function initGantt() {
   ganttAllMonths = [];
   ganttSelMonths = new Set();
   buildGanttMonthList();
-  updateGanttSysFilter();
+  // 篩選器選項是動態的（尤其系統），這裡不重置已選條件，只同步按鈕外觀
+  Object.keys(GANTT_FILTER_LABELS).forEach(syncGanttFilterBtn);
   renderGanttDebugInfo();
   renderGantt();
 }
@@ -3530,29 +3528,133 @@ function ganttWeekIndex(date, weekStart) {
   return Math.floor(diff / (7 * 24 * 3600 * 1000));
 }
 
-// ── 系統篩選器更新 ──
-function updateGanttSysFilter() {
-  const sel = document.getElementById('gantt-filter-sys');
-  if(!sel) return;
-  const curVal = sel.value;
-  const systems = new Set();
-  ['opt','req'].forEach(type=>{
-    (progressData[type]||[]).map(upgradeProgressItem).forEach(m=>{
-      (m.systems||[]).forEach(s=>{ if(s.system) systems.add(s.system); });
+/* ══════════════════════════════════════
+   甘特圖篩選器（類型／系統／狀態，皆為多選；沿用 BBP 進度頁 ITSR 篩選器的視覺樣式）
+   Set 為空 = 不篩選（顯示全部），跟原本單選下拉的「全部」語意一致
+══════════════════════════════════════ */
+let ganttFilter = { type: new Set(), sys: new Set(), status: new Set() };
+const GANTT_FILTER_LABELS = { type: '類型', sys: '系統', status: '狀態' };
+
+// 每個篩選器目前可選的選項（系統是動態的，隨資料變化；每次開面板都重新計算）
+function ganttFilterOptions(key) {
+  if(key === 'type')   return [{value:'opt',label:'⚡ 優化'},{value:'req',label:'📋 需求'}];
+  if(key === 'status') return STATUS_OPTS.filter(s=>s).map(s=>({value:s,label:s}));
+  if(key === 'sys') {
+    const systems = new Set();
+    ['opt','req'].forEach(type=>{
+      (progressData[type]||[]).map(upgradeProgressItem).forEach(m=>{
+        (m.systems||[]).forEach(s=>{ if(s.system) systems.add(s.system); });
+      });
     });
-  });
-  sel.innerHTML = '<option value="all">全部</option>' +
-    [...systems].map(s=>`<option value="${s}"${s===curVal?' selected':''}>${s}</option>`).join('');
+    return [...systems].sort().map(s=>({value:s,label:s}));
+  }
+  return [];
 }
+
+function toggleGanttFilterPanel(key, evt) {
+  if(evt) evt.stopPropagation();
+  const panel = document.getElementById('gantt-filter-panel-'+key);
+  if(!panel) return;
+  // 關閉其他篩選面板
+  Object.keys(GANTT_FILTER_LABELS).forEach(k=>{
+    if(k===key) return;
+    const p = document.getElementById('gantt-filter-panel-'+k);
+    if(p) p.classList.remove('show');
+  });
+  renderGanttFilterPanel(key);
+  panel.classList.toggle('show');
+}
+
+function renderGanttFilterPanel(key) {
+  const panel = document.getElementById('gantt-filter-panel-'+key);
+  if(!panel) return;
+  const filterSet = ganttFilter[key] || new Set();
+  const opts = ganttFilterOptions(key);
+  let html = `
+    <div class="itsr-filter-head">
+      <div class="itsr-filter-title">${GANTT_FILTER_LABELS[key]}（多選，不選＝全部）</div>
+      <div class="itsr-filter-actions">
+        <button class="itsr-filter-action-btn" onclick="selectAllGanttFilter('${key}')">全選</button>
+        <button class="itsr-filter-action-btn" onclick="clearGanttFilter('${key}')">清除</button>
+      </div>
+    </div>
+    <div class="itsr-filter-list">
+  `;
+  if(!opts.length) {
+    html += `<div style="padding:16px 8px;text-align:center;color:var(--text3);font-size:12px">目前沒有可篩選的選項</div>`;
+  } else {
+    opts.forEach(o=>{
+      const checked = filterSet.has(o.value) ? 'checked' : '';
+      html += `
+        <label class="itsr-filter-item">
+          <input type="checkbox" value="${esc(o.value)}" ${checked}
+            onchange="onGanttFilterChange('${key}','${esc(o.value)}',this.checked)">
+          <span>${esc(o.label)}</span>
+        </label>
+      `;
+    });
+  }
+  html += `</div>`;
+  panel.innerHTML = html;
+}
+
+function onGanttFilterChange(key, value, checked) {
+  if(!ganttFilter[key]) ganttFilter[key] = new Set();
+  if(checked) ganttFilter[key].add(value);
+  else ganttFilter[key].delete(value);
+  syncGanttFilterBtn(key);
+  renderGantt();
+}
+
+function selectAllGanttFilter(key) {
+  ganttFilter[key] = new Set(ganttFilterOptions(key).map(o=>o.value));
+  renderGanttFilterPanel(key);
+  syncGanttFilterBtn(key);
+  renderGantt();
+}
+function clearGanttFilter(key) {
+  ganttFilter[key] = new Set();
+  renderGanttFilterPanel(key);
+  syncGanttFilterBtn(key);
+  renderGantt();
+}
+
+function syncGanttFilterBtn(key) {
+  const btn   = document.getElementById('gantt-filter-btn-'+key);
+  const badge = document.getElementById('gantt-filter-badge-'+key);
+  const label = document.getElementById('gantt-filter-label-'+key);
+  if(!btn||!badge||!label) return;
+  const n = (ganttFilter[key]||new Set()).size;
+  badge.textContent = n;
+  if(n>0) {
+    btn.classList.add('has-filter');
+    label.textContent = `已選 ${n}`;
+    btn.title = `已篩選 ${n} 項（點擊調整）`;
+  } else {
+    btn.classList.remove('has-filter');
+    label.textContent = '全部';
+    btn.title = `${GANTT_FILTER_LABELS[key]}篩選（多選）`;
+  }
+}
+
+// 點擊面板外部時關閉
+document.addEventListener('click', function(e){
+  Object.keys(GANTT_FILTER_LABELS).forEach(key=>{
+    const wrap = document.getElementById('gantt-filter-wrap-'+key);
+    const panel = document.getElementById('gantt-filter-panel-'+key);
+    if(wrap && panel && panel.classList.contains('show') && !wrap.contains(e.target)){
+      panel.classList.remove('show');
+    }
+  });
+});
 
 // ── 主渲染函式 ──
 function renderGantt() {
   if(ganttAllMonths.length === 0) buildGanttMonthList();
-  updateGanttSysFilter();
 
-  const typeFilter   = (document.getElementById('gantt-filter-type')  ||{}).value || 'all';
-  const sysFilter    = (document.getElementById('gantt-filter-sys')   ||{}).value || 'all';
-  const statusFilter = (document.getElementById('gantt-filter-status')||{}).value || 'all';
+  const typeSet   = ganttFilter.type   || new Set();
+  const sysSet    = ganttFilter.sys    || new Set();
+  const statusSet = ganttFilter.status || new Set();
   const el = document.getElementById('gantt-content');
   if(!el) return;
 
@@ -3607,11 +3709,11 @@ function renderGantt() {
   // ── 收集資料列 ──
   let items = [];
   ['opt','req'].forEach(type=>{
-    if(typeFilter !== 'all' && typeFilter !== type) return;
+    if(typeSet.size && !typeSet.has(type)) return;
     (progressData[type]||[]).map(upgradeProgressItem).forEach(m=>{
       (m.systems||[]).forEach(sys=>{
-        if(sysFilter    !== 'all' && sys.system !== sysFilter)    return;
-        if(statusFilter !== 'all' && sys.status !== statusFilter) return;
+        if(sysSet.size    && !sysSet.has(sys.system))    return;
+        if(statusSet.size && !statusSet.has(sys.status)) return;
         items.push({
           type, mis:m.mis||'', name:m.name||'', sys,
           integTest: m.integTest||'',
@@ -3684,14 +3786,10 @@ function renderGantt() {
   });
   html += '</tr></thead><tbody>';
 
-  // 分組資料列
+  // 分組資料列（items 在收集階段已套用類型篩選，這裡只需依類型分組顯示）
   const groups = [];
-  if(typeFilter==='all'||typeFilter==='opt'){
-    const g=items.filter(x=>x.type==='opt'); if(g.length) groups.push({label:'⚡ 優化項目',items:g});
-  }
-  if(typeFilter==='all'||typeFilter==='req'){
-    const g=items.filter(x=>x.type==='req'); if(g.length) groups.push({label:'📋 需求項目',items:g});
-  }
+  const optItems = items.filter(x=>x.type==='opt'); if(optItems.length) groups.push({label:'⚡ 優化項目',items:optItems});
+  const reqItems = items.filter(x=>x.type==='req'); if(reqItems.length) groups.push({label:'📋 需求項目',items:reqItems});
 
   groups.forEach(grp=>{
     html += `<tr class="group-row"><td colspan="${3+weeks.length}">${grp.label}</td></tr>`;
