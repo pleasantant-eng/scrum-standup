@@ -600,7 +600,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .expand-btn:hover{background:#dbeafe;color:var(--accent)}
 /* 進度表欄寬 */
 /* Master-Detail Table — 固定欄寬（可手動拖拉調整） */
-.progress-table.master-detail-table{table-layout:fixed;width:100%;min-width:1080px}
+.progress-table.master-detail-table{table-layout:fixed;width:100%;min-width:1260px}
 /* 拖曳把手 */
 .progress-table.master-detail-table th:nth-child(1){width:28px;min-width:28px}
 /* 展開按鈕 */
@@ -615,10 +615,12 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
 .progress-table.master-detail-table th:nth-child(6){width:200px;min-width:100px}
 /* 預計上線日期 */
 .progress-table.master-detail-table th:nth-child(7){width:200px;min-width:100px}
+/* 預計交付日期（對客戶） */
+.progress-table.master-detail-table th:nth-child(8){width:180px;min-width:100px}
 /* 備註 Memo */
-.progress-table.master-detail-table th:nth-child(8){width:240px;min-width:140px}
+.progress-table.master-detail-table th:nth-child(9){width:240px;min-width:140px}
 /* 刪除按鈕 */
-.progress-table.master-detail-table th:nth-child(9){width:28px;min-width:28px}
+.progress-table.master-detail-table th:nth-child(10){width:28px;min-width:28px}
 
 /* memo 欄位專屬樣式 */
 .cell-memo{
@@ -1062,6 +1064,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
               <th>ITSR狀態</th>
               <th>預計整合測試</th>
               <th>預計上線日期</th>
+              <th>預計交付日期</th>
               <th>備註 Memo</th>
               <th></th>
             </tr>
@@ -1112,6 +1115,7 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
               <th>ITSR狀態</th>
               <th>預計整合測試</th>
               <th>預計上線日期</th>
+              <th>預計交付日期</th>
               <th>備註 Memo</th>
               <th></th>
             </tr>
@@ -2694,6 +2698,7 @@ function upgradeProgressItem(item) {
   item.itsr   = item.itsr   || '';
   item.integTest = item.integTest || '';
   item.golive = item.golive || '';
+  item.deliveryDate = item.deliveryDate || '';
   item.memo   = item.memo   || '';
   delete item.sa; delete item.pd; delete item.test; delete item.status;
   item.systems = [sys];
@@ -2741,7 +2746,7 @@ function renderTable(type) {
       filterSet.size > 0 ? `<button onclick="clearItsrFilter('${type}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:var(--font);font-weight:600;margin-left:6px">清除 ITSR 篩選</button>` : '',
       fuzzyQ ? `<button onclick="clearFuzzySearch('${type}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:var(--font);font-weight:600;margin-left:6px">清除搜尋</button>` : ''
     ].join('');
-    html = `<tr><td colspan="9" style="padding:24px;text-align:center;color:var(--text3);font-size:13px;background:#fafbfc">
+    html = `<tr><td colspan="10" style="padding:24px;text-align:center;color:var(--text3);font-size:13px;background:#fafbfc">
       <div style="margin-bottom:6px">📭 沒有符合條件的項目</div>
       <div style="font-size:11px">${hints.join('　')}${clearBtns}</div>
     </td></tr>`;
@@ -2783,6 +2788,7 @@ function renderTable(type) {
       </td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.integTest||'')}" onchange="updateMasterCell('${type}','${r.id}','integTest',inputValToDate(this.value))" title="預計整合測試" style="width:100%"></td>
       <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.golive||'')}" onchange="updateMasterCell('${type}','${r.id}','golive',inputValToDate(this.value))" title="預計上線日期" style="width:100%"></td>
+      <td><input type="date" class="cell-date-picker" value="${dateToInputVal(r.deliveryDate||'')}" onchange="updateMasterCell('${type}','${r.id}','deliveryDate',inputValToDate(this.value))" title="預計交付日期（對客戶）" style="width:100%"></td>
       <td><textarea class="cell-memo" rows="1" placeholder="可備註說明…" title="備註 Memo（自由輸入）"
         oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px';updateMasterCell('${type}','${r.id}','memo',this.value)">${esc(r.memo||'')}</textarea></td>
       <td><button class="row-del-btn" onclick="deleteMasterRow('${type}','${r.id}')">✕</button></td>
@@ -2804,6 +2810,7 @@ function renderTable(type) {
         <span style="margin-right:48px">PD 負責人</span><span>PD 預計</span>
       </td>
       <td style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;padding:4px 8px;background:#f8fafc;border-bottom:1px solid var(--border)">狀態 / Points</td>
+      <td style="background:#f8fafc;border-bottom:1px solid var(--border)"></td>
       <td style="background:#f8fafc;border-bottom:1px solid var(--border)"></td>
       <td style="background:#f8fafc;border-bottom:1px solid var(--border)"></td>
     </tr>`;
@@ -2883,7 +2890,8 @@ function renderTable(type) {
           </div>
         </td>
 
-        <!-- memo 欄位（master-level，detail 列保留空白） -->
+        <!-- 預計交付日期 / memo 欄位（master-level，detail 列保留空白） -->
+        <td style="border-right:1px solid var(--border)"></td>
         <td style="border-right:1px solid var(--border)"></td>
 
         <!-- 刪除 -->
@@ -2895,7 +2903,7 @@ function renderTable(type) {
 
     // ── 新增系統按鈕列 ──
     html += `<tr class="detail-add-row" data-master-id="${r.id}">
-      <td colspan="9" style="padding:5px 10px 8px 48px;background:#fafcff;border-bottom:2px solid var(--border)">
+      <td colspan="10" style="padding:5px 10px 8px 48px;background:#fafcff;border-bottom:2px solid var(--border)">
         <button class="add-detail-btn" onclick="addDetailRow('${type}','${r.id}')">＋ 新增系統</button>
       </td>
     </tr>`;
@@ -3126,7 +3134,7 @@ function addProgressRow(type) {
   if(!progressData[type]) progressData[type]=[];
   const newId = 'm'+Date.now();
   progressData[type].push({
-    id: newId, mis:'', name:'', itsr:'', integTest:'', golive:'', memo:'', _expanded:true,
+    id: newId, mis:'', name:'', itsr:'', integTest:'', golive:'', deliveryDate:'', memo:'', _expanded:true,
     systems:[{id:newId+'_sys1',system:'WMS',ra:'',raDate:'',sa:'',saDate:'',pd:'',pdDate:'',status:'',raPoint:'',saPoint:'',pdPoint:'',uatPoint:''}]
   });
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
@@ -3729,6 +3737,7 @@ async function syncProgressToSheets() {
         flatData[type].push({
           id:m.id, mis:m.mis, name:m.name,
           itsr:m.itsr||'', integTest:m.integTest||'', golive:m.golive||'',
+          deliveryDate:m.deliveryDate||'',
           memo:m.memo||'',
           sysId:sys.id, system:sys.system,
           ra:sys.ra||'', raDate:sys.raDate||'',
@@ -3783,6 +3792,7 @@ async function loadProgressFromSheets() {
             masterMap.set(row.id, {
               id:row.id, mis:row.mis||'', name:row.name||'',
               itsr:row.itsr||'', integTest:row.integTest||'', golive:row.golive||'',
+              deliveryDate:row.deliveryDate||'',
               memo:row.memo||'',
               _expanded:true, systems:[]
             });
