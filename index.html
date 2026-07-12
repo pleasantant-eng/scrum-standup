@@ -806,6 +806,37 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
   box-shadow:inset 0 0 0 9999px rgba(252,165,165,0.55);
 }
 
+/* ── ★ 交付日期緊急警示列：比 Delay 更顯眼的紅（交付前 1 週內仍未達待上線） ── */
+.gantt-table tbody tr.gantt-row-urgent td.label-cell,
+.gantt-table tbody tr.gantt-row-urgent td.sys-cell,
+.gantt-table tbody tr.gantt-row-urgent td.status-cell{
+  background:#fecaca;font-weight:700;color:#7f1d1d;
+}
+.gantt-table tbody tr.gantt-row-urgent td.week-cell.empty{
+  background:#fecaca;
+}
+.gantt-table tbody tr.gantt-row-urgent td.week-cell:not(.empty){
+  box-shadow:inset 0 0 0 9999px rgba(248,113,113,0.6);
+}
+.gantt-table tbody tr.gantt-row-urgent:hover td.label-cell,
+.gantt-table tbody tr.gantt-row-urgent:hover td.sys-cell,
+.gantt-table tbody tr.gantt-row-urgent:hover td.status-cell{
+  background:#f87171;color:#fff;
+}
+.gantt-table tbody tr.gantt-row-urgent:hover td.week-cell.empty{
+  background:#f87171;
+}
+.gantt-table tbody tr.gantt-row-urgent:hover td.week-cell:not(.empty){
+  box-shadow:inset 0 0 0 9999px rgba(239,68,68,0.7);
+}
+
+/* 預計交付週旗標 */
+.delivery-flag{
+  position:absolute;top:1px;right:2px;font-size:11px;line-height:1;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,0.25));
+}
+.gantt-table tbody tr td.week-cell{position:relative}
+
 /* Tooltip 內 delay 訊息樣式 */
 .gantt-tooltip-delay{
   margin-top:6px;padding:5px 10px;
@@ -1180,10 +1211,14 @@ code{background:#e2e8f0;padding:1px 5px;border-radius:3px;font-family:var(--mono
           </select>
         </div>
         <div class="spacer"></div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text2)">
+        <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text2);flex-wrap:wrap">
           <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:28px;height:14px;border-radius:3px;background:#fef3c7;border:1px solid #fde68a;display:inline-block"></span>RA</span>
           <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:28px;height:14px;border-radius:3px;background:#dbeafe;border:1px solid #93c5fd;display:inline-block"></span>SA</span>
           <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:28px;height:14px;border-radius:3px;background:#dcfce7;border:1px solid #6ee7b7;display:inline-block"></span>PD</span>
+          <span style="width:1px;height:14px;background:var(--border);display:inline-block"></span>
+          <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:28px;height:14px;border-radius:3px;background:#fef2f2;border:1px solid #fecaca;display:inline-block"></span>交付前2週未達待上線</span>
+          <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:28px;height:14px;border-radius:3px;background:#fecaca;border:1px solid #f87171;display:inline-block"></span>交付前1週未達待上線</span>
+          <span style="display:inline-flex;align-items:center;gap:4px">🚩 預計交付週</span>
         </div>
       </div>
       <!-- 第二列：月份選擇 -->
@@ -3295,6 +3330,24 @@ function ganttGetDelayInfo(sys, integTest, today) {
   return null;
 }
 
+/* ── ★ 交付日期警示：狀態尚未達到「待上線」，且距離預計交付日期越來越近 ──
+   - 剩餘天數 ≤ 7  → urgent（更顯眼的紅）
+   - 剩餘天數 ≤ 14 → warn（沿用現有 delay 淺紅）
+   - 已達「待上線」或「已上線」→ 不警示（不管交付日期多近）
+   - 沒有填交付日期 → 不警示 */
+const GANTT_PENDING_LAUNCH_IDX = STATUS_OPTS.indexOf('待上線');
+function ganttGetDeliveryAlert(sys, deliveryDate, today) {
+  if(!deliveryDate) return null;
+  const statusIdx = STATUS_OPTS.indexOf((sys.status || '').trim());
+  if(statusIdx >= GANTT_PENDING_LAUNCH_IDX && statusIdx !== -1) return null; // 已達待上線/已上線
+  const d = ganttParseDate(deliveryDate);
+  if(!d) return null;
+  const daysLeft = Math.round((d.getTime() - today.getTime()) / (24*3600*1000));
+  if(daysLeft <= 7)  return { level:'urgent', daysLeft };
+  if(daysLeft <= 14) return { level:'warn',   daysLeft };
+  return null;
+}
+
 let ganttInited = false;
 
 // ── 月份資料快取（所有日期中出現過的月份）──
@@ -3562,7 +3615,9 @@ function renderGantt() {
         items.push({
           type, mis:m.mis||'', name:m.name||'', sys,
           integTest: m.integTest||'',
-          delay: ganttGetDelayInfo(sys, m.integTest||'', today)
+          deliveryDate: m.deliveryDate||'',
+          delay: ganttGetDelayInfo(sys, m.integTest||'', today),
+          deliveryAlert: ganttGetDeliveryAlert(sys, m.deliveryDate||'', today)
         });
       });
     });
@@ -3653,13 +3708,26 @@ function renderGantt() {
       if(saD) tipLines.push(`SA：${saD}`);
       if(pdD) tipLines.push(`PD：${pdD}`);
       if(item.integTest) tipLines.push(`預計整合測試：${item.integTest}`);
+      if(item.deliveryDate) tipLines.push(`預計交付：${item.deliveryDate}`);
       if(sys.status) tipLines.push(`狀態：${sys.status}`);
 
       const statusCls2 = STATUS_CLASS[sys.status]||'';
-      const delayMsg   = item.delay ? ('訊息: ' + item.delay.message) : '';
-      const delayCls   = item.delay ? 'gantt-row-delay' : '';
 
-      // hover 時讓整列（包含週格）都顯示 delay 訊息與資訊
+      // 交付日期警示（urgent/warn）優先於舊的階段 delay 警示；訊息則兩者並列顯示
+      const alertMsgs = [];
+      if(item.deliveryAlert) {
+        const dl = item.deliveryAlert.daysLeft;
+        const dayLabel = dl < 0 ? `已逾交付期 ${Math.abs(dl)} 天` : dl === 0 ? '今日即為交付期' : `距交付僅剩 ${dl} 天`;
+        alertMsgs.push(`${dayLabel}，狀態仍為「${sys.status||'未設定'}」`);
+      }
+      if(item.delay) alertMsgs.push(item.delay.message);
+      const delayMsg = alertMsgs.join('；');
+
+      const delayCls = item.deliveryAlert?.level === 'urgent' ? 'gantt-row-urgent'
+                      : (item.deliveryAlert?.level === 'warn' || item.delay) ? 'gantt-row-delay'
+                      : '';
+
+      // hover 時讓整列（包含週格）都顯示 delay/交付警示訊息與資訊
       const onHoverAttrs = `onmouseenter="showGanttTip2(event,'${esc(item.mis)}','${esc(item.name)}','${esc(sys.system||'')}','${esc(tipLines.join(' | '))}','${esc(delayMsg)}')" onmouseleave="hideGanttTip()"`;
 
       html += `<tr class="${delayCls}" ${onHoverAttrs}>`;
@@ -3667,18 +3735,21 @@ function renderGantt() {
       html += `<td class="sys-cell ${sysCls}">${esc(sys.system)||'?'}</td>`;
       html += `<td class="status-cell"><span class="status-select ${statusCls2}" style="padding:2px 6px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap">${esc(sys.status)||'—'}</span></td>`;
 
+      const deliveryWeekIdx = item.deliveryDate ? weekIdxOf(item.deliveryDate) : -1;
+
       weeks.forEach((w,wi)=>{
         const isTodayWeek = wi===todayWeekIdx;
+        const flagHtml = wi===deliveryWeekIdx ? `<span class="delivery-flag" title="預計交付：${esc(item.deliveryDate)}">🚩</span>` : '';
         const phases = phaseMap.get(wi);
         if(!phases||phases.size===0){
-          html += `<td class="week-cell empty${isTodayWeek?' today-week':''}"></td>`;
+          html += `<td class="week-cell empty${isTodayWeek?' today-week':''}">${flagHtml}</td>`;
           return;
         }
         const order=['ra','sa','pd'];
         const tags = order.filter(p=>phases.has(p)).map(p=>`<span class="phase-tag ${p}">${p.toUpperCase()}</span>`).join('');
         const bgCls = phases.has('pd')?'style="background:#f0fdf4"':phases.has('sa')?'style="background:#eff6ff"':'style="background:#fffbeb"';
         html += `<td class="week-cell${isTodayWeek?' today-week':''}" ${bgCls}>
-          <div class="phase-tags-wrap">${tags}</div></td>`;
+          ${flagHtml}<div class="phase-tags-wrap">${tags}</div></td>`;
       });
       html += `</tr>`;
     });
@@ -3751,7 +3822,18 @@ async function syncProgressToSheets(opts) {
   const silent = !!opts.silent;
   const board  = opts.board || progressBoard;
   const source = opts.data  || progressData;
-  if(isBusyProgress) return;
+  if(isBusyProgress) {
+    // ★ 自動儲存若剛好撞上另一次載入/儲存正在進行中，不能就這樣悄悄放棄這次異動
+    // （會造成使用者完全看不到任何回饋、也不會重試）。改成 1 秒後自動重試一次。
+    if(silent) {
+      if(progressAutoSaveTimer) clearTimeout(progressAutoSaveTimer);
+      progressAutoSaveTimer = setTimeout(() => {
+        progressAutoSaveTimer = null;
+        syncProgressToSheets(opts);
+      }, 1000);
+    }
+    return;
+  }
   const totalRows = (source.opt||[]).length + (source.req||[]).length;
   if(!totalRows) { if(!silent) showToast('尚無進度資料可同步','error'); return; }
   isBusyProgress = true;
