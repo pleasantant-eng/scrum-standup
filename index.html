@@ -1492,8 +1492,6 @@ let nid = DEFAULT_NAMES.length + 1;
 let isBusy = false;
 let isBusyBbp = false;
 let isBusyProgress = false;
-let progressAutoSaveTimer = null;
-const PROGRESS_AUTOSAVE_DELAY_MS = 3000; // 停止編輯 3 秒後自動儲存至 Sheets
 let toastTimer = null;
 let selectedIcon = '📋';
 let selectedColor = 'blue';
@@ -3146,7 +3144,6 @@ function updateMasterCell(type, rowId, field, val) {
   const row = progressData[type].find(r=>r.id===rowId);
   if(row) row[field] = val;
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-  scheduleProgressAutoSave();
 }
 
 function updateDetailCell(type, masterId, sysId, field, val) {
@@ -3155,7 +3152,6 @@ function updateDetailCell(type, masterId, sysId, field, val) {
   const sys = (master.systems||[]).find(s=>s.id===sysId);
   if(sys) sys[field] = val;
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-  scheduleProgressAutoSave();
   // refresh point total in master row
   const pts = calcTotalPoints(master.systems);
   const tbody = document.getElementById('tbody-'+type);
@@ -3178,7 +3174,6 @@ function addProgressRow(type) {
     systems:[{id:newId+'_sys1',system:'WMS',ra:'',raDate:'',sa:'',saDate:'',pd:'',pdDate:'',status:'',raPoint:'',saPoint:'',pdPoint:'',uatPoint:''}]
   });
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-  scheduleProgressAutoSave();
   renderTable(type);
 }
 
@@ -3189,7 +3184,6 @@ function addDetailRow(type, masterId) {
   master._expanded = true;
   master.systems.push({id:masterId+'_sys'+Date.now(),system:'',ra:'',raDate:'',sa:'',saDate:'',pd:'',pdDate:'',status:'',raPoint:'',saPoint:'',pdPoint:'',uatPoint:''});
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-  scheduleProgressAutoSave();
   renderTable(type);
 }
 
@@ -3199,7 +3193,6 @@ function deleteMasterRow(type, rowId) {
   if(!confirm(`確定要刪除「${name}」及其所有子系統記錄？`)) return;
   progressData[type] = progressData[type].filter(r=>r.id!==rowId);
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-  scheduleProgressAutoSave();
   renderTable(type);
 }
 
@@ -3210,7 +3203,6 @@ function deleteDetailRow(type, masterId, sysId) {
   if(!confirm('確定要刪除此子系統記錄？')) return;
   master.systems = master.systems.filter(s=>s.id!==sysId);
   saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-  scheduleProgressAutoSave();
   renderTable(type);
 }
 
@@ -3239,7 +3231,6 @@ function initMasterDrag(type) {
       });
       progressData[type] = newOrder;
       saveToStorage(STORAGE_KEY_PROGRESS, progressData);
-      scheduleProgressAutoSave();
       renderTable(type);
       showToast('✅ 排序已儲存','success');
     });
@@ -3936,53 +3927,24 @@ document.addEventListener('mousemove', e=>{
 });
 
 /* ══════════════════════════════════════
-   BBP 進度 — 自動即時儲存（Debounce）
-   停止編輯 PROGRESS_AUTOSAVE_DELAY_MS 後，在背景靜默同步至 Sheets；
-   手動「↑ 儲存至 Sheets」按鈕行為完全不變，繼續保留作為備援。
-══════════════════════════════════════ */
-function scheduleProgressAutoSave() {
-  if(progressAutoSaveTimer) clearTimeout(progressAutoSaveTimer);
-  // 在排程當下就鎖住 board 與資料快照，避免使用者在等待期間切換看板
-  // （BBP／IED）導致背景儲存誤用切換後的資料與 board 參數。
-  const board = progressBoard;
-  const snapshot = JSON.parse(JSON.stringify(progressData));
-  progressAutoSaveTimer = setTimeout(() => {
-    progressAutoSaveTimer = null;
-    syncProgressToSheets({ silent:true, board:board, data:snapshot });
-  }, PROGRESS_AUTOSAVE_DELAY_MS);
-}
-
-/* ══════════════════════════════════════
    BBP 進度 — 儲存至 Sheets / 從 Sheets 載入
+   ★ 已移除自動即時儲存（debounce autosave）：多人同時編輯時，背景自動儲存
+   會用「整表覆寫」的方式把別人剛存的異動蓋掉，且使用者不容易查覺是誰蓋了誰。
+   現在只保留手動「↑ 儲存至 Sheets」按鈕，讓使用者自己決定何時真正寫回 Sheets。
 ══════════════════════════════════════ */
-async function syncProgressToSheets(opts) {
-  opts = opts || {};
-  const silent = !!opts.silent;
-  const board  = opts.board || progressBoard;
-  const source = opts.data  || progressData;
-  if(isBusyProgress) {
-    // ★ 自動儲存若剛好撞上另一次載入/儲存正在進行中，不能就這樣悄悄放棄這次異動
-    // （會造成使用者完全看不到任何回饋、也不會重試）。改成 1 秒後自動重試一次。
-    if(silent) {
-      if(progressAutoSaveTimer) clearTimeout(progressAutoSaveTimer);
-      progressAutoSaveTimer = setTimeout(() => {
-        progressAutoSaveTimer = null;
-        syncProgressToSheets(opts);
-      }, 1000);
-    }
-    return;
-  }
-  const totalRows = (source.opt||[]).length + (source.req||[]).length;
-  if(!totalRows) { if(!silent) showToast('尚無進度資料可同步','error'); return; }
+async function syncProgressToSheets() {
+  if(isBusyProgress) return;
+  const totalRows = (progressData.opt||[]).length + (progressData.req||[]).length;
+  if(!totalRows) { showToast('尚無進度資料可同步','error'); return; }
   isBusyProgress = true;
   const btn = document.getElementById('progress-sync-btn');
   const origHTML = btn ? btn.innerHTML : '';
-  if(!silent && btn) { btn.textContent = '⏳ 儲存中...'; btn.disabled = true; }
-  showLoading(silent ? '🔄 自動儲存中...' : '儲存資料至 Google Sheets...', 'progress-status-bar');
+  if(btn) { btn.textContent = '⏳ 儲存中...'; btn.disabled = true; }
+  showLoading('儲存資料至 Google Sheets...', 'progress-status-bar');
   // Flatten for GAS: each system row becomes one spreadsheet row
   const flatData = { opt:[], req:[] };
   ['opt','req'].forEach(type=>{
-    (source[type]||[]).map(upgradeProgressItem).forEach(m=>{
+    (progressData[type]||[]).map(upgradeProgressItem).forEach(m=>{
       (m.systems||[]).forEach(sys=>{
         flatData[type].push({
           id:m.id, mis:m.mis, name:m.name,
@@ -4003,25 +3965,19 @@ async function syncProgressToSheets(opts) {
     });
   });
   try {
-    const result = await callGAS({ action: 'saveProgress', data: JSON.stringify(flatData), board: board });
+    const result = await callGAS({ action: 'saveProgress', data: JSON.stringify(flatData), board: progressBoard });
     hideLoading('progress-status-bar');
     if(result && result.ok) {
-      const total = (source.opt||[]).length + (source.req||[]).length;
-      if(silent) {
-        const now = new Date();
-        const hhmm = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-        setStatus('ok', `✓ 已自動儲存（${hhmm}）`, 'progress-status-bar');
-      } else {
-        setStatus('ok', `已儲存 ${total} 筆進度資料至 Sheets`, 'progress-status-bar');
-        showToast('✅ 已儲存進度至 Sheets', 'success');
-      }
+      const total = (progressData.opt||[]).length + (progressData.req||[]).length;
+      setStatus('ok', `已儲存 ${total} 筆進度資料至 Sheets`, 'progress-status-bar');
+      showToast('✅ 已儲存進度至 Sheets', 'success');
     } else {
       throw new Error((result && result.message) || '儲存失敗');
     }
   } catch(e) {
     hideLoading('progress-status-bar');
-    setStatus('error', (silent ? '自動儲存失敗：' : '儲存失敗：') + e.message, 'progress-status-bar');
-    if(!silent) showToast('❌ 儲存失敗：' + e.message, 'error');
+    setStatus('error', '儲存失敗：' + e.message, 'progress-status-bar');
+    showToast('❌ 儲存失敗：' + e.message, 'error');
   }
   if(btn) { btn.innerHTML = origHTML; btn.disabled = false; }
   isBusyProgress = false;
